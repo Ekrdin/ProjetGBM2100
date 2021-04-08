@@ -63,6 +63,7 @@ end
 % plot(signal.HeartRate);
 % hold off
 
+% Pour comparer mon SpO2 avec celui du fichier exemple 
 % x3 = linspace(1,nbre_battements-1, length(SpO2)); 
 % figure (4)
 % hold on 

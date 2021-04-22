@@ -1,0 +1,4933 @@
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.fpu fpv4-sp-d16
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.thumb
+  15              		.syntax unified
+  16              		.file	"main_cm4.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.section	.text.main,"ax",%progbits
+  21              		.align	2
+  22              		.global	main
+  23              		.thumb
+  24              		.thumb_func
+  25              		.type	main, %function
+  26              	main:
+  27              	.LFB518:
+  28              		.file 1 "main_cm4.c"
+   1:main_cm4.c    **** /* ========================================
+   2:main_cm4.c    ****  *
+   3:main_cm4.c    ****  * Copyright YOUR COMPANY, THE YEAR
+   4:main_cm4.c    ****  * All Rights Reserved
+   5:main_cm4.c    ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:main_cm4.c    ****  *
+   7:main_cm4.c    ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:main_cm4.c    ****  * WHICH IS THE PROPERTY OF your company.
+   9:main_cm4.c    ****  *
+  10:main_cm4.c    ****  * ========================================
+  11:main_cm4.c    **** */
+  12:main_cm4.c    **** #include "project.h"
+  13:main_cm4.c    **** #include "TraitementdeSignal.h"
+  14:main_cm4.c    **** #include "FreeRTOS.h"
+  15:main_cm4.c    **** #include "task.h"
+  16:main_cm4.c    **** 
+  17:main_cm4.c    ****  float testR[BUFFER_LENGTH]  ={374249,374010,374994,374039,374770,374191,375723,374211,375684,37439
+  18:main_cm4.c    **** float testIR[BUFFER_LENGTH] = {196393,197802,196742,197984,196884,197960,196961,197825,197464,19776
+  19:main_cm4.c    **** 
+  20:main_cm4.c    **** //float testY[BUFFER_LENGTH] = {90608,57557,73896,90282,90781,90782,90791,90807,90798,90808,90800,9
+  21:main_cm4.c    **** //float32_t firCoeffs32_LowPass[NUM_TAPS] ={-0.0003990634,-0.0003171842,-0.0001608431,4.61881e-05,0
+  22:main_cm4.c    **** //float32_t firCoeffs32_HighPass[NUM_TAPS]= {0.0003028259,0.0003338057,0.0003688092,0.000408625,0.0
+  23:main_cm4.c    **** 
+  24:main_cm4.c    **** float32_t firCoeffs32_LowPass[NUM_TAPS] = {0.0134731639,0.0292821044,0.0713088173,0.1246269648,0.16
+  25:main_cm4.c    **** float32_t firCoeffs32_HighPass[NUM_TAPS] = {-0.0005744427,-0.0012061943,-0.0028606938,-0.0049069693
+  26:main_cm4.c    **** 
+  27:main_cm4.c    **** 
+  28:main_cm4.c    **** int main(void){
+  29              		.loc 1 28 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 2
+
+
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 30B5     		push	{r4, r5, lr}
+  34              		.cfi_def_cfa_offset 12
+  35              		.cfi_offset 4, -12
+  36              		.cfi_offset 5, -8
+  37              		.cfi_offset 14, -4
+  38 0002 83B0     		sub	sp, sp, #12
+  39              		.cfi_def_cfa_offset 24
+  29:main_cm4.c    **** 
+  30:main_cm4.c    ****     SystemInit();
+  40              		.loc 1 30 0
+  41 0004 FFF7FEFF 		bl	SystemInit
+  42              	.LVL0:
+  31:main_cm4.c    ****     SystemCoreClockUpdate();
+  43              		.loc 1 31 0
+  44 0008 FFF7FEFF 		bl	SystemCoreClockUpdate
+  45              	.LVL1:
+  46              	.LBB5:
+  47              	.LBB6:
+  48              		.file 2 ".\\CMSIS\\Core\\Include/cmsis_gcc.h"
+   1:.\CMSIS\Core\Include/cmsis_gcc.h **** /**************************************************************************//**
+   2:.\CMSIS\Core\Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
+   3:.\CMSIS\Core\Include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
+   4:.\CMSIS\Core\Include/cmsis_gcc.h ****  * @version  V5.0.4
+   5:.\CMSIS\Core\Include/cmsis_gcc.h ****  * @date     09. April 2018
+   6:.\CMSIS\Core\Include/cmsis_gcc.h ****  ******************************************************************************/
+   7:.\CMSIS\Core\Include/cmsis_gcc.h **** /*
+   8:.\CMSIS\Core\Include/cmsis_gcc.h ****  * Copyright (c) 2009-2018 Arm Limited. All rights reserved.
+   9:.\CMSIS\Core\Include/cmsis_gcc.h ****  *
+  10:.\CMSIS\Core\Include/cmsis_gcc.h ****  * SPDX-License-Identifier: Apache-2.0
+  11:.\CMSIS\Core\Include/cmsis_gcc.h ****  *
+  12:.\CMSIS\Core\Include/cmsis_gcc.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  13:.\CMSIS\Core\Include/cmsis_gcc.h ****  * not use this file except in compliance with the License.
+  14:.\CMSIS\Core\Include/cmsis_gcc.h ****  * You may obtain a copy of the License at
+  15:.\CMSIS\Core\Include/cmsis_gcc.h ****  *
+  16:.\CMSIS\Core\Include/cmsis_gcc.h ****  * www.apache.org/licenses/LICENSE-2.0
+  17:.\CMSIS\Core\Include/cmsis_gcc.h ****  *
+  18:.\CMSIS\Core\Include/cmsis_gcc.h ****  * Unless required by applicable law or agreed to in writing, software
+  19:.\CMSIS\Core\Include/cmsis_gcc.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  20:.\CMSIS\Core\Include/cmsis_gcc.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  21:.\CMSIS\Core\Include/cmsis_gcc.h ****  * See the License for the specific language governing permissions and
+  22:.\CMSIS\Core\Include/cmsis_gcc.h ****  * limitations under the License.
+  23:.\CMSIS\Core\Include/cmsis_gcc.h ****  */
+  24:.\CMSIS\Core\Include/cmsis_gcc.h **** 
+  25:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
+  26:.\CMSIS\Core\Include/cmsis_gcc.h **** #define __CMSIS_GCC_H
+  27:.\CMSIS\Core\Include/cmsis_gcc.h **** 
+  28:.\CMSIS\Core\Include/cmsis_gcc.h **** /* ignore some GCC warnings */
+  29:.\CMSIS\Core\Include/cmsis_gcc.h **** #pragma GCC diagnostic push
+  30:.\CMSIS\Core\Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
+  31:.\CMSIS\Core\Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wconversion"
+  32:.\CMSIS\Core\Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
+  33:.\CMSIS\Core\Include/cmsis_gcc.h **** 
+  34:.\CMSIS\Core\Include/cmsis_gcc.h **** /* Fallback for __has_builtin */
+  35:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef __has_builtin
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 3
+
+
+  36:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __has_builtin(x) (0)
+  37:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  38:.\CMSIS\Core\Include/cmsis_gcc.h **** 
+  39:.\CMSIS\Core\Include/cmsis_gcc.h **** /* CMSIS compiler specific defines */
+  40:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __ASM
+  41:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __ASM                                  __asm
+  42:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  43:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __INLINE
+  44:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __INLINE                               inline
+  45:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  46:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __STATIC_INLINE
+  47:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __STATIC_INLINE                        static inline
+  48:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  49:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __STATIC_FORCEINLINE                 
+  50:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __STATIC_FORCEINLINE                   __attribute__((always_inline)) static inline
+  51:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif                                           
+  52:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __NO_RETURN
+  53:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __NO_RETURN                            __attribute__((__noreturn__))
+  54:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  55:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __USED
+  56:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __USED                                 __attribute__((used))
+  57:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  58:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __WEAK
+  59:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
+  60:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  61:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __PACKED
+  62:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
+  63:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  64:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __PACKED_STRUCT
+  65:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __PACKED_STRUCT                        struct __attribute__((packed, aligned(1)))
+  66:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  67:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __PACKED_UNION
+  68:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __PACKED_UNION                         union __attribute__((packed, aligned(1)))
+  69:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  70:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32        /* deprecated */
+  71:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  72:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  73:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  74:.\CMSIS\Core\Include/cmsis_gcc.h ****   struct __attribute__((packed)) T_UINT32 { uint32_t v; };
+  75:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  76:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32(x)                  (((struct T_UINT32 *)(x))->v)
+  77:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  78:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_WRITE
+  79:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  80:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  81:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  82:.\CMSIS\Core\Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_WRITE { uint16_t v; };
+  83:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  84:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_WRITE(addr, val)    (void)((((struct T_UINT16_WRITE *)(void *)(addr))-
+  85:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  86:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_READ
+  87:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  88:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  89:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  90:.\CMSIS\Core\Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_READ { uint16_t v; };
+  91:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  92:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_READ(addr)          (((const struct T_UINT16_READ *)(const void *)(add
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 4
+
+
+  93:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+  94:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_WRITE
+  95:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  96:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  97:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  98:.\CMSIS\Core\Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_WRITE { uint32_t v; };
+  99:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 100:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_WRITE(addr, val)    (void)((((struct T_UINT32_WRITE *)(void *)(addr))-
+ 101:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+ 102:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_READ
+ 103:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+ 104:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+ 105:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+ 106:.\CMSIS\Core\Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_READ { uint32_t v; };
+ 107:.\CMSIS\Core\Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 108:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_READ(addr)          (((const struct T_UINT32_READ *)(const void *)(add
+ 109:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+ 110:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __ALIGNED
+ 111:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __ALIGNED(x)                           __attribute__((aligned(x)))
+ 112:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+ 113:.\CMSIS\Core\Include/cmsis_gcc.h **** #ifndef   __RESTRICT
+ 114:.\CMSIS\Core\Include/cmsis_gcc.h ****   #define __RESTRICT                             __restrict
+ 115:.\CMSIS\Core\Include/cmsis_gcc.h **** #endif
+ 116:.\CMSIS\Core\Include/cmsis_gcc.h **** 
+ 117:.\CMSIS\Core\Include/cmsis_gcc.h **** 
+ 118:.\CMSIS\Core\Include/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
+ 119:.\CMSIS\Core\Include/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+ 120:.\CMSIS\Core\Include/cmsis_gcc.h ****     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
+ 121:.\CMSIS\Core\Include/cmsis_gcc.h ****   @{
+ 122:.\CMSIS\Core\Include/cmsis_gcc.h ****  */
+ 123:.\CMSIS\Core\Include/cmsis_gcc.h **** 
+ 124:.\CMSIS\Core\Include/cmsis_gcc.h **** /**
+ 125:.\CMSIS\Core\Include/cmsis_gcc.h ****   \brief   Enable IRQ Interrupts
+ 126:.\CMSIS\Core\Include/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
+ 127:.\CMSIS\Core\Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 128:.\CMSIS\Core\Include/cmsis_gcc.h ****  */
+ 129:.\CMSIS\Core\Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __enable_irq(void)
+ 130:.\CMSIS\Core\Include/cmsis_gcc.h **** {
+ 131:.\CMSIS\Core\Include/cmsis_gcc.h ****   __ASM volatile ("cpsie i" : : : "memory");
+  49              		.loc 2 131 0
+  50              		.syntax unified
+  51              	@ 131 ".\CMSIS\Core\Include/cmsis_gcc.h" 1
+  52 000c 62B6     		cpsie i
+  53              	@ 0 "" 2
+  54              		.thumb
+  55              		.syntax unified
+  56              	.LBE6:
+  57              	.LBE5:
+  32:main_cm4.c    ****     __enable_irq(); /* Enable global interrupts. */
+  33:main_cm4.c    ****     UART_1_Start();
+  58              		.loc 1 33 0
+  59 000e FFF7FEFF 		bl	UART_1_Start
+  60              	.LVL2:
+  61              	.LBB7:
+  34:main_cm4.c    ****     
+  35:main_cm4.c    ****     for (int i= 0; i<BUFFER_LENGTH; i++){
+  62              		.loc 1 35 0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 5
+
+
+  63 0012 0022     		movs	r2, #0
+  64 0014 10E0     		b	.L2
+  65              	.LVL3:
+  66              	.L3:
+  36:main_cm4.c    ****        dataSpo2[RED][RAW][i] = testR[i];
+  67              		.loc 1 36 0 discriminator 3
+  68 0016 1148     		ldr	r0, .L6
+  69 0018 9300     		lsls	r3, r2, #2
+  70 001a C118     		adds	r1, r0, r3
+  71 001c 0D68     		ldr	r5, [r1]	@ float
+  72 001e 1049     		ldr	r1, .L6+4
+  73 0020 CC18     		adds	r4, r1, r3
+  74 0022 2560     		str	r5, [r4]	@ float
+  37:main_cm4.c    ****        dataSpo2[IR][RAW][i] = testIR[i];
+  75              		.loc 1 37 0 discriminator 3
+  76 0024 00F57A60 		add	r0, r0, #4000
+  77 0028 0344     		add	r3, r3, r0
+  78 002a 1B68     		ldr	r3, [r3]	@ float
+  79 002c 02F6B830 		addw	r0, r2, #3000
+  80 0030 01EB8001 		add	r1, r1, r0, lsl #2
+  81 0034 0B60     		str	r3, [r1]	@ float
+  35:main_cm4.c    ****        dataSpo2[RED][RAW][i] = testR[i];
+  82              		.loc 1 35 0 discriminator 3
+  83 0036 0132     		adds	r2, r2, #1
+  84              	.LVL4:
+  85              	.L2:
+  35:main_cm4.c    ****        dataSpo2[RED][RAW][i] = testR[i];
+  86              		.loc 1 35 0 is_stmt 0 discriminator 1
+  87 0038 B2F57A7F 		cmp	r2, #1000
+  88 003c EBDB     		blt	.L3
+  89              	.LBE7:
+  38:main_cm4.c    ****     }
+  39:main_cm4.c    ****     printf("data reading done \r\n");
+  90              		.loc 1 39 0 is_stmt 1
+  91 003e 0948     		ldr	r0, .L6+8
+  92 0040 FFF7FEFF 		bl	puts
+  93              	.LVL5:
+  40:main_cm4.c    ****     
+  41:main_cm4.c    ****     xTaskCreate(TraitementSignal,"TraitementSignal",1000,NULL,0,0);
+  94              		.loc 1 41 0
+  95 0044 0023     		movs	r3, #0
+  96 0046 0193     		str	r3, [sp, #4]
+  97 0048 0093     		str	r3, [sp]
+  98 004a 4FF47A72 		mov	r2, #1000
+  99 004e 0649     		ldr	r1, .L6+12
+ 100 0050 0648     		ldr	r0, .L6+16
+ 101 0052 FFF7FEFF 		bl	xTaskCreate
+ 102              	.LVL6:
+  42:main_cm4.c    ****     vTaskStartScheduler();
+ 103              		.loc 1 42 0
+ 104 0056 FFF7FEFF 		bl	vTaskStartScheduler
+ 105              	.LVL7:
+ 106              	.L4:
+ 107 005a FEE7     		b	.L4
+ 108              	.L7:
+ 109              		.align	2
+ 110              	.L6:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 6
+
+
+ 111 005c 00000000 		.word	.LANCHOR0
+ 112 0060 00000000 		.word	dataSpo2
+ 113 0064 00000000 		.word	.LC0
+ 114 0068 14000000 		.word	.LC1
+ 115 006c 00000000 		.word	TraitementSignal
+ 116              		.cfi_endproc
+ 117              	.LFE518:
+ 118              		.size	main, .-main
+ 119              		.global	testIR
+ 120              		.global	testR
+ 121              		.comm	numBlocks,4,4
+ 122              		.comm	blockSize,4,4
+ 123              		.global	firCoeffs32_HighPass
+ 124              		.global	firCoeffs32_LowPass
+ 125              		.comm	entree,1,1
+ 126              		.comm	AlarmeBMI160,1,1
+ 127              		.comm	BPM,1,1
+ 128              		.comm	pourcentageSpO2,4,4
+ 129              		.comm	dataSpo2,24000,4
+ 130              		.comm	indexBuffer,4,4
+ 131              		.data
+ 132              		.align	2
+ 133              		.set	.LANCHOR0,. + 0
+ 134              		.type	testR, %object
+ 135              		.size	testR, 4000
+ 136              	testR:
+ 137 0000 20BDB648 		.word	1219935520
+ 138 0004 409FB648 		.word	1219927872
+ 139 0008 401AB748 		.word	1219959360
+ 140 000c E0A2B648 		.word	1219928800
+ 141 0010 40FEB648 		.word	1219952192
+ 142 0014 E0B5B648 		.word	1219933664
+ 143 0018 6075B748 		.word	1219982688
+ 144 001c 60B8B648 		.word	1219934304
+ 145 0020 8070B748 		.word	1219981440
+ 146 0024 C0CEB648 		.word	1219940032
+ 147 0028 006BB748 		.word	1219980032
+ 148 002c 40F1B648 		.word	1219948864
+ 149 0030 E0C6B748 		.word	1220003552
+ 150 0034 20FEB648 		.word	1219952160
+ 151 0038 60C0B748 		.word	1220001888
+ 152 003c 2033B748 		.word	1219965728
+ 153 0040 20C4B748 		.word	1220002848
+ 154 0044 C03FB748 		.word	1219968960
+ 155 0048 80CAB748 		.word	1220004480
+ 156 004c 2041B748 		.word	1219969312
+ 157 0050 80BEB748 		.word	1220001408
+ 158 0054 4086B748 		.word	1219987008
+ 159 0058 E0B4B748 		.word	1219998944
+ 160 005c 408FB748 		.word	1219989312
+ 161 0060 A0A6B748 		.word	1219995296
+ 162 0064 E0BAB748 		.word	1220000480
+ 163 0068 808FB748 		.word	1219989376
+ 164 006c 80EFB748 		.word	1220013952
+ 165 0070 A079B748 		.word	1219983776
+ 166 0074 E0BFB748 		.word	1220001760
+ 167 0078 0077B748 		.word	1219983104
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 7
+
+
+ 168 007c 402CB848 		.word	1220029504
+ 169 0080 A063B748 		.word	1219978144
+ 170 0084 8011B848 		.word	1220022656
+ 171 0088 2074B748 		.word	1219982368
+ 172 008c E018B848 		.word	1220024544
+ 173 0090 6078B748 		.word	1219983456
+ 174 0094 2062B848 		.word	1220043296
+ 175 0098 008DB748 		.word	1219988736
+ 176 009c 6037B848 		.word	1220032352
+ 177 00a0 A0B3B748 		.word	1219998624
+ 178 00a4 0041B848 		.word	1220034816
+ 179 00a8 C0A9B748 		.word	1219996096
+ 180 00ac E039B848 		.word	1220032992
+ 181 00b0 40BEB748 		.word	1220001344
+ 182 00b4 0039B848 		.word	1220032768
+ 183 00b8 20F8B748 		.word	1220016160
+ 184 00bc 6028B848 		.word	1220028512
+ 185 00c0 A0F2B748 		.word	1220014752
+ 186 00c4 A029B848 		.word	1220028832
+ 187 00c8 8032B848 		.word	1220031104
+ 188 00cc 001EB848 		.word	1220025856
+ 189 00d0 4061B848 		.word	1220043072
+ 190 00d4 200EB848 		.word	1220021792
+ 191 00d8 2054B848 		.word	1220039712
+ 192 00dc E017B848 		.word	1220024288
+ 193 00e0 00D2B848 		.word	1220071936
+ 194 00e4 E01AB848 		.word	1220025056
+ 195 00e8 A0BDB848 		.word	1220066720
+ 196 00ec 2038B848 		.word	1220032544
+ 197 00f0 80E2B848 		.word	1220076160
+ 198 00f4 6049B848 		.word	1220036960
+ 199 00f8 C031B948 		.word	1220096448
+ 200 00fc 8050B848 		.word	1220038784
+ 201 0100 4004B948 		.word	1220084800
+ 202 0104 0068B848 		.word	1220044800
+ 203 0108 8012B948 		.word	1220088448
+ 204 010c 6047B848 		.word	1220036448
+ 205 0110 80B0B848 		.word	1220063360
+ 206 0114 C0F7B748 		.word	1220016064
+ 207 0118 6029B848 		.word	1220028768
+ 208 011c E087B748 		.word	1219987424
+ 209 0120 407AB748 		.word	1219983936
+ 210 0124 00D1B648 		.word	1219940608
+ 211 0128 60A3B648 		.word	1219928928
+ 212 012c 0046B648 		.word	1219905024
+ 213 0130 40CEB548 		.word	1219874368
+ 214 0134 E0ACB548 		.word	1219865824
+ 215 0138 A00FB548 		.word	1219825568
+ 216 013c 00EEB448 		.word	1219816960
+ 217 0140 2070B448 		.word	1219784736
+ 218 0144 20D1B448 		.word	1219809568
+ 219 0148 00D4B348 		.word	1219744768
+ 220 014c 0023B448 		.word	1219764992
+ 221 0150 C077B348 		.word	1219721152
+ 222 0154 C0F4B348 		.word	1219753152
+ 223 0158 A03AB348 		.word	1219705504
+ 224 015c A0FFB348 		.word	1219755936
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 8
+
+
+ 225 0160 C00FB348 		.word	1219694528
+ 226 0164 8095B348 		.word	1219728768
+ 227 0168 E002B348 		.word	1219691232
+ 228 016c 80B5B348 		.word	1219736960
+ 229 0170 60F3B248 		.word	1219687264
+ 230 0174 408DB348 		.word	1219726656
+ 231 0178 400FB348 		.word	1219694400
+ 232 017c 409DB348 		.word	1219730752
+ 233 0180 6038B348 		.word	1219704928
+ 234 0184 E088B348 		.word	1219725536
+ 235 0188 6043B348 		.word	1219707744
+ 236 018c A094B348 		.word	1219728544
+ 237 0190 E09CB348 		.word	1219730656
+ 238 0194 4095B348 		.word	1219728704
+ 239 0198 E0CBB348 		.word	1219742688
+ 240 019c 609CB348 		.word	1219730528
+ 241 01a0 60D6B348 		.word	1219745376
+ 242 01a4 60B1B348 		.word	1219735904
+ 243 01a8 E05BB448 		.word	1219779552
+ 244 01ac E0B8B348 		.word	1219737824
+ 245 01b0 4049B448 		.word	1219774784
+ 246 01b4 60E8B348 		.word	1219749984
+ 247 01b8 40A1B448 		.word	1219797312
+ 248 01bc A005B448 		.word	1219757472
+ 249 01c0 E0FEB448 		.word	1219821280
+ 250 01c4 C032B448 		.word	1219769024
+ 251 01c8 00E2B448 		.word	1219813888
+ 252 01cc 006FB448 		.word	1219784448
+ 253 01d0 8037B548 		.word	1219835776
+ 254 01d4 E085B448 		.word	1219790304
+ 255 01d8 0038B548 		.word	1219835904
+ 256 01dc 20C6B448 		.word	1219806752
+ 257 01e0 0059B548 		.word	1219844352
+ 258 01e4 20FCB448 		.word	1219820576
+ 259 01e8 C060B548 		.word	1219846336
+ 260 01ec C012B548 		.word	1219826368
+ 261 01f0 406BB548 		.word	1219849024
+ 262 01f4 A062B548 		.word	1219846816
+ 263 01f8 E05EB548 		.word	1219845856
+ 264 01fc A072B548 		.word	1219850912
+ 265 0200 004AB548 		.word	1219840512
+ 266 0204 0073B548 		.word	1219851008
+ 267 0208 2025B548 		.word	1219831072
+ 268 020c 20B3B548 		.word	1219867424
+ 269 0210 80F9B448 		.word	1219819904
+ 270 0214 E061B548 		.word	1219846624
+ 271 0218 20E8B448 		.word	1219815456
+ 272 021c C08CB548 		.word	1219857600
+ 273 0220 40C8B448 		.word	1219807296
+ 274 0224 409CB548 		.word	1219861568
+ 275 0228 40BFB448 		.word	1219804992
+ 276 022c 4048B548 		.word	1219840064
+ 277 0230 40B8B448 		.word	1219803200
+ 278 0234 A076B548 		.word	1219851936
+ 279 0238 209BB448 		.word	1219795744
+ 280 023c E044B548 		.word	1219839200
+ 281 0240 A0A5B448 		.word	1219798432
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 9
+
+
+ 282 0244 E02AB548 		.word	1219832544
+ 283 0248 E0A5B448 		.word	1219798496
+ 284 024c 200EB548 		.word	1219825184
+ 285 0250 209AB448 		.word	1219795488
+ 286 0254 60F2B448 		.word	1219818080
+ 287 0258 00DEB448 		.word	1219812864
+ 288 025c 20DCB448 		.word	1219812384
+ 289 0260 60DDB448 		.word	1219812704
+ 290 0264 80C5B448 		.word	1219806592
+ 291 0268 E0F4B448 		.word	1219818720
+ 292 026c 80C6B448 		.word	1219806848
+ 293 0270 004FB548 		.word	1219841792
+ 294 0274 A0BDB448 		.word	1219804576
+ 295 0278 8029B548 		.word	1219832192
+ 296 027c E0CFB448 		.word	1219809248
+ 297 0280 8097B548 		.word	1219860352
+ 298 0284 C0E0B448 		.word	1219813568
+ 299 0288 A0B9B548 		.word	1219869088
+ 300 028c A004B548 		.word	1219822752
+ 301 0290 20ABB548 		.word	1219865376
+ 302 0294 802CB548 		.word	1219832960
+ 303 0298 A00EB648 		.word	1219890848
+ 304 029c E041B548 		.word	1219838432
+ 305 02a0 60FEB548 		.word	1219886688
+ 306 02a4 0080B548 		.word	1219854336
+ 307 02a8 E018B648 		.word	1219893472
+ 308 02ac E09AB548 		.word	1219861216
+ 309 02b0 4013B648 		.word	1219892032
+ 310 02b4 40A5B548 		.word	1219863872
+ 311 02b8 0017B648 		.word	1219892992
+ 312 02bc A0F9B548 		.word	1219885472
+ 313 02c0 401EB648 		.word	1219894848
+ 314 02c4 0017B648 		.word	1219892992
+ 315 02c8 601FB648 		.word	1219895136
+ 316 02cc 0043B648 		.word	1219904256
+ 317 02d0 4017B648 		.word	1219893056
+ 318 02d4 408EB648 		.word	1219923520
+ 319 02d8 C015B648 		.word	1219892672
+ 320 02dc 207EB648 		.word	1219919392
+ 321 02e0 602FB648 		.word	1219899232
+ 322 02e4 E0F5B648 		.word	1219950048
+ 323 02e8 0037B648 		.word	1219901184
+ 324 02ec A007B748 		.word	1219954592
+ 325 02f0 E056B648 		.word	1219909344
+ 326 02f4 00FFB648 		.word	1219952384
+ 327 02f8 207BB648 		.word	1219918624
+ 328 02fc E068B748 		.word	1219979488
+ 329 0300 008DB648 		.word	1219923200
+ 330 0304 E041B748 		.word	1219969504
+ 331 0308 E0B6B648 		.word	1219933920
+ 332 030c 804DB748 		.word	1219972480
+ 333 0310 A0C3B648 		.word	1219937184
+ 334 0314 A04AB748 		.word	1219971744
+ 335 0318 A0CFB648 		.word	1219940256
+ 336 031c 2047B748 		.word	1219970848
+ 337 0320 A012B748 		.word	1219957408
+ 338 0324 4038B748 		.word	1219967040
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 10
+
+
+ 339 0328 601AB748 		.word	1219959392
+ 340 032c E01CB748 		.word	1219960032
+ 341 0330 C03BB748 		.word	1219967936
+ 342 0334 0010B748 		.word	1219956736
+ 343 0338 8078B748 		.word	1219983488
+ 344 033c E0FBB648 		.word	1219951584
+ 345 0340 4057B748 		.word	1219974976
+ 346 0344 200EB748 		.word	1219956256
+ 347 0348 00CEB748 		.word	1220005376
+ 348 034c C00BB748 		.word	1219955648
+ 349 0350 E0C0B748 		.word	1220002016
+ 350 0354 8015B748 		.word	1219958144
+ 351 0358 60BDB748 		.word	1220001120
+ 352 035c 2022B748 		.word	1219961376
+ 353 0360 400FB848 		.word	1220022080
+ 354 0364 6031B748 		.word	1219965280
+ 355 0368 A0DEB748 		.word	1220009632
+ 356 036c E056B748 		.word	1219974880
+ 357 0370 E0F6B748 		.word	1220015840
+ 358 0374 005FB748 		.word	1219976960
+ 359 0378 40F2B748 		.word	1220014656
+ 360 037c 6068B748 		.word	1219979360
+ 361 0380 60E8B748 		.word	1220012128
+ 362 0384 C0AFB748 		.word	1219997632
+ 363 0388 E0E1B748 		.word	1220010464
+ 364 038c 40B8B748 		.word	1219999808
+ 365 0390 40DCB748 		.word	1220009024
+ 366 0394 A0F2B748 		.word	1220014752
+ 367 0398 A0D4B748 		.word	1220007072
+ 368 039c 601FB848 		.word	1220026208
+ 369 03a0 40C5B748 		.word	1220003136
+ 370 03a4 E011B848 		.word	1220022752
+ 371 03a8 60CCB748 		.word	1220004960
+ 372 03ac A091B848 		.word	1220055456
+ 373 03b0 80CEB748 		.word	1220005504
+ 374 03b4 C06AB848 		.word	1220045504
+ 375 03b8 20DDB748 		.word	1220009248
+ 376 03bc A081B848 		.word	1220051360
+ 377 03c0 C0E6B748 		.word	1220011712
+ 378 03c4 E0B6B848 		.word	1220064992
+ 379 03c8 40B2B748 		.word	1219998272
+ 380 03cc A032B848 		.word	1220031136
+ 381 03d0 8062B748 		.word	1219977856
+ 382 03d4 40C0B748 		.word	1220001856
+ 383 03d8 40CAB648 		.word	1219938880
+ 384 03dc 400FB748 		.word	1219956544
+ 385 03e0 2024B648 		.word	1219896352
+ 386 03e4 603BB648 		.word	1219902304
+ 387 03e8 208EB548 		.word	1219857952
+ 388 03ec 2076B548 		.word	1219851808
+ 389 03f0 20DBB448 		.word	1219812128
+ 390 03f4 C0BBB448 		.word	1219804096
+ 391 03f8 4076B448 		.word	1219786304
+ 392 03fc 2017B448 		.word	1219761952
+ 393 0400 6013B448 		.word	1219760992
+ 394 0404 2080B348 		.word	1219723296
+ 395 0408 607FB348 		.word	1219723104
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 11
+
+
+ 396 040c 6017B348 		.word	1219696480
+ 397 0410 809EB348 		.word	1219731072
+ 398 0414 C0B4B248 		.word	1219671232
+ 399 0418 2029B348 		.word	1219701024
+ 400 041c 808FB248 		.word	1219661696
+ 401 0420 C026B348 		.word	1219700416
+ 402 0424 8081B248 		.word	1219658112
+ 403 0428 4051B348 		.word	1219711296
+ 404 042c E074B248 		.word	1219654880
+ 405 0430 0017B348 		.word	1219696384
+ 406 0434 2086B248 		.word	1219659296
+ 407 0438 4047B348 		.word	1219708736
+ 408 043c E088B248 		.word	1219660000
+ 409 0440 2029B348 		.word	1219701024
+ 410 0444 E0A3B248 		.word	1219666912
+ 411 0448 C030B348 		.word	1219702976
+ 412 044c 80DAB248 		.word	1219680896
+ 413 0450 A02CB348 		.word	1219701920
+ 414 0454 00E7B248 		.word	1219684096
+ 415 0458 A035B348 		.word	1219704224
+ 416 045c E041B348 		.word	1219707360
+ 417 0460 6040B348 		.word	1219706976
+ 418 0464 607FB348 		.word	1219723104
+ 419 0468 E039B348 		.word	1219705312
+ 420 046c 2089B348 		.word	1219725600
+ 421 0470 6059B348 		.word	1219713376
+ 422 0474 E00AB448 		.word	1219758816
+ 423 0478 005AB348 		.word	1219713536
+ 424 047c 60F2B348 		.word	1219752544
+ 425 0480 C07EB348 		.word	1219722944
+ 426 0484 602DB448 		.word	1219767648
+ 427 0488 A08FB348 		.word	1219727264
+ 428 048c 8083B448 		.word	1219789696
+ 429 0490 00B4B348 		.word	1219736576
+ 430 0494 C064B448 		.word	1219781824
+ 431 0498 20EBB348 		.word	1219750688
+ 432 049c 40B8B448 		.word	1219803200
+ 433 04a0 E0B2B448 		.word	1219801824
+ 434 04a4 E0B2B448 		.word	1219801824
+ 435 04a8 6029B448 		.word	1219766624
+ 436 04ac 60B9B448 		.word	1219803488
+ 437 04b0 0055B448 		.word	1219777792
+ 438 04b4 A0B3B448 		.word	1219802016
+ 439 04b8 605AB448 		.word	1219779168
+ 440 04bc 609DB448 		.word	1219796320
+ 441 04c0 A099B448 		.word	1219795360
+ 442 04c4 6084B448 		.word	1219789920
+ 443 04c8 E0A2B448 		.word	1219797728
+ 444 04cc 6065B448 		.word	1219781984
+ 445 04d0 A086B448 		.word	1219790496
+ 446 04d4 804AB448 		.word	1219775104
+ 447 04d8 E0CDB448 		.word	1219808736
+ 448 04dc 4012B448 		.word	1219760704
+ 449 04e0 4081B448 		.word	1219789120
+ 450 04e4 4002B448 		.word	1219756608
+ 451 04e8 20A6B448 		.word	1219798560
+ 452 04ec 00F1B348 		.word	1219752192
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 12
+
+
+ 453 04f0 80CBB448 		.word	1219808128
+ 454 04f4 A0EDB348 		.word	1219751328
+ 455 04f8 4078B448 		.word	1219786816
+ 456 04fc 20F7B348 		.word	1219753760
+ 457 0500 A0BBB448 		.word	1219804064
+ 458 0504 A0EDB348 		.word	1219751328
+ 459 0508 C08CB448 		.word	1219792064
+ 460 050c 6000B448 		.word	1219756128
+ 461 0510 007DB448 		.word	1219788032
+ 462 0514 0013B448 		.word	1219760896
+ 463 0518 206EB448 		.word	1219784224
+ 464 051c A00DB448 		.word	1219759520
+ 465 0520 606CB448 		.word	1219783776
+ 466 0524 E059B448 		.word	1219779040
+ 467 0528 C052B448 		.word	1219777216
+ 468 052c C06FB448 		.word	1219784640
+ 469 0530 0053B448 		.word	1219777280
+ 470 0534 E085B448 		.word	1219790304
+ 471 0538 4053B448 		.word	1219777344
+ 472 053c 40E0B448 		.word	1219813440
+ 473 0540 C049B448 		.word	1219774912
+ 474 0544 00CBB448 		.word	1219808000
+ 475 0548 A070B448 		.word	1219784864
+ 476 054c 002FB548 		.word	1219833600
+ 477 0550 2089B448 		.word	1219791136
+ 478 0554 C06BB548 		.word	1219849152
+ 479 0558 00B4B448 		.word	1219802112
+ 480 055c A060B548 		.word	1219846304
+ 481 0560 C0D8B448 		.word	1219811520
+ 482 0564 60B9B548 		.word	1219869024
+ 483 0568 0002B548 		.word	1219822080
+ 484 056c C0B3B548 		.word	1219867584
+ 485 0570 C031B548 		.word	1219834304
+ 486 0574 60C7B548 		.word	1219872608
+ 487 0578 6054B548 		.word	1219843168
+ 488 057c 40D0B548 		.word	1219874880
+ 489 0580 8065B548 		.word	1219847552
+ 490 0584 00D7B548 		.word	1219876608
+ 491 0588 20C6B548 		.word	1219872288
+ 492 058c C0D8B548 		.word	1219877056
+ 493 0590 60E2B548 		.word	1219879520
+ 494 0594 20DBB548 		.word	1219877664
+ 495 0598 6015B648 		.word	1219892576
+ 496 059c C0E9B548 		.word	1219881408
+ 497 05a0 0063B648 		.word	1219912448
+ 498 05a4 80DBB548 		.word	1219877760
+ 499 05a8 C046B648 		.word	1219905216
+ 500 05ac A003B648 		.word	1219888032
+ 501 05b0 C0BCB648 		.word	1219935424
+ 502 05b4 8009B648 		.word	1219889536
+ 503 05b8 E0D9B648 		.word	1219942880
+ 504 05bc A025B648 		.word	1219896736
+ 505 05c0 20D7B648 		.word	1219942176
+ 506 05c4 A04FB648 		.word	1219907488
+ 507 05c8 E029B748 		.word	1219963360
+ 508 05cc 8054B648 		.word	1219908736
+ 509 05d0 E007B748 		.word	1219954656
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 13
+
+
+ 510 05d4 2074B648 		.word	1219916832
+ 511 05d8 000DB748 		.word	1219955968
+ 512 05dc 2087B648 		.word	1219921696
+ 513 05e0 200CB748 		.word	1219955744
+ 514 05e4 608FB648 		.word	1219923808
+ 515 05e8 80F8B648 		.word	1219950720
+ 516 05ec 00DEB648 		.word	1219943936
+ 517 05f0 A0E9B648 		.word	1219946912
+ 518 05f4 80E1B648 		.word	1219944832
+ 519 05f8 A0E1B648 		.word	1219944864
+ 520 05fc 800AB748 		.word	1219955328
+ 521 0600 60E1B648 		.word	1219944800
+ 522 0604 E056B748 		.word	1219974880
+ 523 0608 C0D2B648 		.word	1219941056
+ 524 060c E02BB748 		.word	1219963872
+ 525 0610 A0EDB648 		.word	1219947936
+ 526 0614 60A5B748 		.word	1219994976
+ 527 0618 20EBB648 		.word	1219947296
+ 528 061c 00A6B748 		.word	1219995136
+ 529 0620 200AB748 		.word	1219955232
+ 530 0624 20AEB748 		.word	1219997216
+ 531 0628 401FB748 		.word	1219960640
+ 532 062c 6006B848 		.word	1220019808
+ 533 0630 C032B748 		.word	1219965632
+ 534 0634 20E6B748 		.word	1220011552
+ 535 0638 A059B748 		.word	1219975584
+ 536 063c 80F4B748 		.word	1220015232
+ 537 0640 005EB748 		.word	1219976704
+ 538 0644 E0EEB748 		.word	1220013792
+ 539 0648 2076B748 		.word	1219982880
+ 540 064c 40F4B748 		.word	1220015168
+ 541 0650 E0B5B748 		.word	1219999200
+ 542 0654 80EEB748 		.word	1220013696
+ 543 0658 C0BEB748 		.word	1220001472
+ 544 065c 00E0B748 		.word	1220009984
+ 545 0660 20FAB748 		.word	1220016672
+ 546 0664 A0D1B748 		.word	1220006304
+ 547 0668 A02AB848 		.word	1220029088
+ 548 066c A0B4B748 		.word	1219998880
+ 549 0670 C0F6B748 		.word	1220015808
+ 550 0674 80A5B748 		.word	1219995008
+ 551 0678 E034B848 		.word	1220031712
+ 552 067c 6048B748 		.word	1219971168
+ 553 0680 E0B4B748 		.word	1219998944
+ 554 0684 80D6B648 		.word	1219942016
+ 555 0688 202AB748 		.word	1219963424
+ 556 068c 6044B648 		.word	1219904608
+ 557 0690 40C9B648 		.word	1219938624
+ 558 0694 008AB548 		.word	1219856896
+ 559 0698 E0DDB548 		.word	1219878368
+ 560 069c E0ECB448 		.word	1219816672
+ 561 06a0 802DB548 		.word	1219833216
+ 562 06a4 603AB448 		.word	1219770976
+ 563 06a8 A07CB448 		.word	1219787936
+ 564 06ac C0B4B348 		.word	1219736768
+ 565 06b0 20DEB348 		.word	1219747360
+ 566 06b4 205AB348 		.word	1219713568
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 14
+
+
+ 567 06b8 A056B348 		.word	1219712672
+ 568 06bc C0E2B248 		.word	1219683008
+ 569 06c0 80E3B248 		.word	1219683200
+ 570 06c4 80C8B248 		.word	1219676288
+ 571 06c8 A091B248 		.word	1219662240
+ 572 06cc A0C0B248 		.word	1219674272
+ 573 06d0 A045B248 		.word	1219642784
+ 574 06d4 0079B248 		.word	1219655936
+ 575 06d8 202FB248 		.word	1219637024
+ 576 06dc 80D2B248 		.word	1219678848
+ 577 06e0 6012B248 		.word	1219629664
+ 578 06e4 A0B1B248 		.word	1219670432
+ 579 06e8 202AB248 		.word	1219635744
+ 580 06ec 20D0B248 		.word	1219678240
+ 581 06f0 0044B248 		.word	1219642368
+ 582 06f4 A021B348 		.word	1219699104
+ 583 06f8 405AB248 		.word	1219648064
+ 584 06fc 8009B348 		.word	1219692928
+ 585 0700 407DB248 		.word	1219657024
+ 586 0704 4039B348 		.word	1219705152
+ 587 0708 80A1B248 		.word	1219666304
+ 588 070c 0048B348 		.word	1219708928
+ 589 0710 80C4B248 		.word	1219675264
+ 590 0714 C055B348 		.word	1219712448
+ 591 0718 4014B348 		.word	1219695680
+ 592 071c E05DB348 		.word	1219714528
+ 593 0720 0017B348 		.word	1219696384
+ 594 0724 C05CB348 		.word	1219714240
+ 595 0728 806FB348 		.word	1219719040
+ 596 072c 605EB348 		.word	1219714656
+ 597 0730 A0A2B348 		.word	1219732128
+ 598 0734 206AB348 		.word	1219717664
+ 599 0738 00A8B348 		.word	1219733504
+ 600 073c 6073B348 		.word	1219720032
+ 601 0740 8032B448 		.word	1219768960
+ 602 0744 6080B348 		.word	1219723360
+ 603 0748 2017B448 		.word	1219761952
+ 604 074c 00ABB348 		.word	1219734272
+ 605 0750 8067B448 		.word	1219782528
+ 606 0754 20D2B348 		.word	1219744288
+ 607 0758 E0C5B448 		.word	1219806688
+ 608 075c 40F4B348 		.word	1219753024
+ 609 0760 40A4B448 		.word	1219798080
+ 610 0764 802AB448 		.word	1219766912
+ 611 0768 80E1B448 		.word	1219813760
+ 612 076c 802DB448 		.word	1219767680
+ 613 0770 20CCB448 		.word	1219808288
+ 614 0774 A03FB448 		.word	1219772320
+ 615 0778 80BFB448 		.word	1219805056
+ 616 077c 2051B448 		.word	1219776800
+ 617 0780 209BB448 		.word	1219795744
+ 618 0784 2044B448 		.word	1219773472
+ 619 0788 0080B448 		.word	1219788800
+ 620 078c E066B448 		.word	1219782368
+ 621 0790 E050B448 		.word	1219776736
+ 622 0794 E063B448 		.word	1219781600
+ 623 0798 4025B448 		.word	1219765568
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 15
+
+
+ 624 079c 2058B448 		.word	1219778592
+ 625 07a0 800CB448 		.word	1219759232
+ 626 07a4 C0A4B448 		.word	1219798208
+ 627 07a8 A0EDB348 		.word	1219751328
+ 628 07ac 605EB448 		.word	1219780192
+ 629 07b0 60E3B348 		.word	1219748704
+ 630 07b4 608DB448 		.word	1219792224
+ 631 07b8 C0E0B348 		.word	1219748032
+ 632 07bc 80C8B448 		.word	1219807360
+ 633 07c0 20DFB348 		.word	1219747616
+ 634 07c4 C086B448 		.word	1219790528
+ 635 07c8 A0F8B348 		.word	1219754144
+ 636 07cc 20B9B448 		.word	1219803424
+ 637 07d0 E001B448 		.word	1219756512
+ 638 07d4 A0A2B448 		.word	1219797664
+ 639 07d8 201FB448 		.word	1219764000
+ 640 07dc 20ADB448 		.word	1219800352
+ 641 07e0 004DB448 		.word	1219775744
+ 642 07e4 00ADB448 		.word	1219800320
+ 643 07e8 004FB448 		.word	1219776256
+ 644 07ec 20A2B448 		.word	1219797536
+ 645 07f0 A0A3B448 		.word	1219797920
+ 646 07f4 6096B448 		.word	1219794528
+ 647 07f8 60CCB448 		.word	1219808352
+ 648 07fc 80AFB448 		.word	1219800960
+ 649 0800 A0E6B448 		.word	1219815072
+ 650 0804 00B3B448 		.word	1219801856
+ 651 0808 805FB548 		.word	1219846016
+ 652 080c 20B3B448 		.word	1219801888
+ 653 0810 2034B548 		.word	1219834912
+ 654 0814 60DEB448 		.word	1219812960
+ 655 0818 C09FB548 		.word	1219862464
+ 656 081c 60FAB448 		.word	1219820128
+ 657 0820 80E6B548 		.word	1219880576
+ 658 0824 A01DB548 		.word	1219829152
+ 659 0828 80C8B548 		.word	1219872896
+ 660 082c E04FB548 		.word	1219842016
+ 661 0830 6029B648 		.word	1219897696
+ 662 0834 6065B548 		.word	1219847520
+ 663 0838 C021B648 		.word	1219895744
+ 664 083c 20A2B548 		.word	1219863072
+ 665 0840 0036B648 		.word	1219900928
+ 666 0844 60C7B548 		.word	1219872608
+ 667 0848 603AB648 		.word	1219902048
+ 668 084c 40DDB548 		.word	1219878208
+ 669 0850 A04EB648 		.word	1219907232
+ 670 0854 2035B648 		.word	1219900704
+ 671 0858 203DB648 		.word	1219902752
+ 672 085c 2050B648 		.word	1219907616
+ 673 0860 8045B648 		.word	1219904896
+ 674 0864 A071B648 		.word	1219916192
+ 675 0868 8045B648 		.word	1219904896
+ 676 086c 60D4B648 		.word	1219941472
+ 677 0870 003BB648 		.word	1219902208
+ 678 0874 A0AFB648 		.word	1219932064
+ 679 0878 0055B648 		.word	1219908864
+ 680 087c C00CB748 		.word	1219955904
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 16
+
+
+ 681 0880 4064B648 		.word	1219912768
+ 682 0884 C036B748 		.word	1219966656
+ 683 0888 E079B648 		.word	1219918304
+ 684 088c 4011B748 		.word	1219957056
+ 685 0890 2090B648 		.word	1219924000
+ 686 0894 6064B748 		.word	1219978336
+ 687 0898 0090B648 		.word	1219923968
+ 688 089c C040B748 		.word	1219969216
+ 689 08a0 80B3B648 		.word	1219933056
+ 690 08a4 A04CB748 		.word	1219972256
+ 691 08a8 A0C1B648 		.word	1219936672
+ 692 08ac 603AB748 		.word	1219967584
+ 693 08b0 A0D2B648 		.word	1219941024
+ 694 08b4 A031B748 		.word	1219965344
+ 695 08b8 E00CB748 		.word	1219955936
+ 696 08bc 6026B748 		.word	1219962464
+ 697 08c0 2015B748 		.word	1219958048
+ 698 08c4 C015B748 		.word	1219958208
+ 699 08c8 A03AB748 		.word	1219967648
+ 700 08cc C008B748 		.word	1219954880
+ 701 08d0 6084B748 		.word	1219986528
+ 702 08d4 A0FAB648 		.word	1219951264
+ 703 08d8 2070B748 		.word	1219981344
+ 704 08dc 4018B748 		.word	1219958848
+ 705 08e0 A0DCB748 		.word	1220009120
+ 706 08e4 C01BB748 		.word	1219959744
+ 707 08e8 40E4B748 		.word	1220011072
+ 708 08ec 6034B748 		.word	1219966048
+ 709 08f0 C0D8B748 		.word	1220008128
+ 710 08f4 6051B748 		.word	1219973472
+ 711 08f8 C033B848 		.word	1220031424
+ 712 08fc A066B748 		.word	1219978912
+ 713 0900 601CB848 		.word	1220025440
+ 714 0904 008EB748 		.word	1219988992
+ 715 0908 C029B848 		.word	1220028864
+ 716 090c A09DB748 		.word	1219992992
+ 717 0910 A021B848 		.word	1220026784
+ 718 0914 A0ADB748 		.word	1219997088
+ 719 0918 6019B848 		.word	1220024672
+ 720 091c C0F6B748 		.word	1220015808
+ 721 0920 8011B848 		.word	1220022656
+ 722 0924 2000B848 		.word	1220018208
+ 723 0928 6005B848 		.word	1220019552
+ 724 092c E028B848 		.word	1220028640
+ 725 0930 A0FFB748 		.word	1220018080
+ 726 0934 205CB848 		.word	1220041760
+ 727 0938 C0D2B748 		.word	1220006592
+ 728 093c C018B848 		.word	1220024512
+ 729 0940 A0B5B748 		.word	1219999136
+ 730 0944 003DB848 		.word	1220033792
+ 731 0948 C03CB748 		.word	1219968192
+ 732 094c 00A0B748 		.word	1219993600
+ 733 0950 00AEB648 		.word	1219931648
+ 734 0954 A0E6B648 		.word	1219946144
+ 735 0958 A0F1B548 		.word	1219883424
+ 736 095c 206AB648 		.word	1219914272
+ 737 0960 C036B548 		.word	1219835584
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 17
+
+
+ 738 0964 807BB548 		.word	1219853184
+ 739 0968 A08AB448 		.word	1219791520
+ 740 096c A0C0B448 		.word	1219805344
+ 741 0970 C0D0B348 		.word	1219743936
+ 742 0974 E00DB448 		.word	1219759584
+ 743 0978 C03BB348 		.word	1219705792
+ 744 097c A060B348 		.word	1219715232
+ 745 0980 A0F1B248 		.word	1219686816
+ 746 0984 60E4B248 		.word	1219683424
+ 747 0988 4083B248 		.word	1219658560
+ 748 098c 8081B248 		.word	1219658112
+ 749 0990 4073B248 		.word	1219654464
+ 750 0994 A034B248 		.word	1219638432
+ 751 0998 8065B248 		.word	1219650944
+ 752 099c 80ECB148 		.word	1219619968
+ 753 09a0 A033B248 		.word	1219638176
+ 754 09a4 40D1B148 		.word	1219612992
+ 755 09a8 8087B248 		.word	1219659648
+ 756 09ac A0BDB148 		.word	1219607968
+ 757 09b0 6067B248 		.word	1219651424
+ 758 09b4 C0D9B148 		.word	1219615168
+ 759 09b8 207DB248 		.word	1219656992
+ 760 09bc 80EBB148 		.word	1219619712
+ 761 09c0 20DAB248 		.word	1219680800
+ 762 09c4 C006B248 		.word	1219626688
+ 763 09c8 80B4B248 		.word	1219671168
+ 764 09cc E033B248 		.word	1219638240
+ 765 09d0 40D2B248 		.word	1219678784
+ 766 09d4 E041B248 		.word	1219641824
+ 767 09d8 E0D5B248 		.word	1219679712
+ 768 09dc 0050B248 		.word	1219645440
+ 769 09e0 00D8B248 		.word	1219680256
+ 770 09e4 00A0B248 		.word	1219665920
+ 771 09e8 00D2B248 		.word	1219678720
+ 772 09ec 209AB248 		.word	1219664416
+ 773 09f0 80CAB248 		.word	1219676800
+ 774 09f4 00DBB248 		.word	1219681024
+ 775 09f8 E0C1B248 		.word	1219674592
+ 776 09fc 600DB348 		.word	1219693920
+ 777 0a00 C0B8B248 		.word	1219672256
+ 778 0a04 4008B348 		.word	1219692608
+ 779 0a08 A0CFB248 		.word	1219678112
+ 780 0a0c A07CB348 		.word	1219722400
+ 781 0a10 20CBB248 		.word	1219676960
+ 782 0a14 A061B348 		.word	1219715488
+ 783 0a18 00E8B248 		.word	1219684352
+ 784 0a1c C08EB348 		.word	1219727040
+ 785 0a20 4005B348 		.word	1219691840
+ 786 0a24 C0E6B348 		.word	1219749568
+ 787 0a28 4017B348 		.word	1219696448
+ 788 0a2c E0C3B348 		.word	1219740640
+ 789 0a30 2039B348 		.word	1219705120
+ 790 0a34 60F1B348 		.word	1219752288
+ 791 0a38 C03DB348 		.word	1219706304
+ 792 0a3c 60CFB348 		.word	1219743584
+ 793 0a40 2049B348 		.word	1219709216
+ 794 0a44 60BFB348 		.word	1219739488
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 18
+
+
+ 795 0a48 605DB348 		.word	1219714400
+ 796 0a4c 209FB348 		.word	1219731232
+ 797 0a50 204BB348 		.word	1219709728
+ 798 0a54 2078B348 		.word	1219721248
+ 799 0a58 606FB348 		.word	1219719008
+ 800 0a5c 004FB348 		.word	1219710720
+ 801 0a60 A07CB348 		.word	1219722400
+ 802 0a64 002BB348 		.word	1219701504
+ 803 0a68 4060B348 		.word	1219715136
+ 804 0a6c A014B348 		.word	1219695776
+ 805 0a70 00B6B348 		.word	1219737088
+ 806 0a74 00F4B248 		.word	1219687424
+ 807 0a78 207CB348 		.word	1219722272
+ 808 0a7c C0F7B248 		.word	1219688384
+ 809 0a80 C094B348 		.word	1219728576
+ 810 0a84 40F7B248 		.word	1219688256
+ 811 0a88 40DCB348 		.word	1219746880
+ 812 0a8c 4004B348 		.word	1219691584
+ 813 0a90 809EB348 		.word	1219731072
+ 814 0a94 E019B348 		.word	1219697120
+ 815 0a98 E0D3B348 		.word	1219744736
+ 816 0a9c E018B348 		.word	1219696864
+ 817 0aa0 E0B7B348 		.word	1219737568
+ 818 0aa4 603BB348 		.word	1219705696
+ 819 0aa8 40C4B348 		.word	1219740736
+ 820 0aac A061B348 		.word	1219715488
+ 821 0ab0 40BCB348 		.word	1219738688
+ 822 0ab4 6075B348 		.word	1219720544
+ 823 0ab8 80C1B348 		.word	1219740032
+ 824 0abc A0C1B348 		.word	1219740064
+ 825 0ac0 00B0B348 		.word	1219735552
+ 826 0ac4 40EEB348 		.word	1219751488
+ 827 0ac8 C0B5B348 		.word	1219737024
+ 828 0acc 00F9B348 		.word	1219754240
+ 829 0ad0 80BBB348 		.word	1219738496
+ 830 0ad4 C067B448 		.word	1219782592
+ 831 0ad8 60BDB348 		.word	1219738976
+ 832 0adc 4058B448 		.word	1219778624
+ 833 0ae0 40EFB348 		.word	1219751744
+ 834 0ae4 C09BB448 		.word	1219795904
+ 835 0ae8 8001B448 		.word	1219756416
+ 836 0aec E0F3B448 		.word	1219818464
+ 837 0af0 C022B448 		.word	1219764928
+ 838 0af4 80C9B448 		.word	1219807616
+ 839 0af8 E050B448 		.word	1219776736
+ 840 0afc 001EB548 		.word	1219829248
+ 841 0b00 C05EB448 		.word	1219780288
+ 842 0b04 4012B548 		.word	1219826240
+ 843 0b08 2090B448 		.word	1219792928
+ 844 0b0c 0025B548 		.word	1219831040
+ 845 0b10 C0BFB448 		.word	1219805120
+ 846 0b14 C02DB548 		.word	1219833280
+ 847 0b18 20CDB448 		.word	1219808544
+ 848 0b1c C02EB548 		.word	1219833536
+ 849 0b20 602DB548 		.word	1219833184
+ 850 0b24 E035B548 		.word	1219835360
+ 851 0b28 004FB548 		.word	1219841792
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 19
+
+
+ 852 0b2c 4030B548 		.word	1219833920
+ 853 0b30 E070B548 		.word	1219850464
+ 854 0b34 A039B548 		.word	1219836320
+ 855 0b38 60D7B548 		.word	1219876704
+ 856 0b3c 603BB548 		.word	1219836768
+ 857 0b40 A0B8B548 		.word	1219868832
+ 858 0b44 C054B548 		.word	1219843264
+ 859 0b48 6015B648 		.word	1219892576
+ 860 0b4c A069B548 		.word	1219848608
+ 861 0b50 604CB648 		.word	1219906656
+ 862 0b54 207DB548 		.word	1219853600
+ 863 0b58 4027B648 		.word	1219897152
+ 864 0b5c 609DB548 		.word	1219861856
+ 865 0b60 206FB648 		.word	1219915552
+ 866 0b64 00ADB548 		.word	1219865856
+ 867 0b68 2052B648 		.word	1219908128
+ 868 0b6c A0CEB548 		.word	1219874464
+ 869 0b70 E050B648 		.word	1219907808
+ 870 0b74 E0D5B548 		.word	1219876320
+ 871 0b78 604AB648 		.word	1219906144
+ 872 0b7c 80E8B548 		.word	1219881088
+ 873 0b80 6038B648 		.word	1219901536
+ 874 0b84 401DB648 		.word	1219894592
+ 875 0b88 C026B648 		.word	1219897024
+ 876 0b8c 602EB648 		.word	1219898976
+ 877 0b90 6020B648 		.word	1219895392
+ 878 0b94 E049B648 		.word	1219906016
+ 879 0b98 E022B648 		.word	1219896032
+ 880 0b9c 00A8B648 		.word	1219930112
+ 881 0ba0 2014B648 		.word	1219892256
+ 882 0ba4 0082B648 		.word	1219920384
+ 883 0ba8 802EB648 		.word	1219899008
+ 884 0bac 40DEB648 		.word	1219944000
+ 885 0bb0 2031B648 		.word	1219899680
+ 886 0bb4 2007B748 		.word	1219954464
+ 887 0bb8 004AB648 		.word	1219906048
+ 888 0bbc 80F2B648 		.word	1219949184
+ 889 0bc0 606AB648 		.word	1219914336
+ 890 0bc4 804DB748 		.word	1219972480
+ 891 0bc8 A082B648 		.word	1219920544
+ 892 0bcc E02BB748 		.word	1219963872
+ 893 0bd0 80A5B648 		.word	1219929472
+ 894 0bd4 A03AB748 		.word	1219967648
+ 895 0bd8 A0CAB648 		.word	1219938976
+ 896 0bdc 0045B748 		.word	1219970304
+ 897 0be0 20E0B648 		.word	1219944480
+ 898 0be4 0055B748 		.word	1219974400
+ 899 0be8 0031B748 		.word	1219965184
+ 900 0bec E04CB748 		.word	1219972320
+ 901 0bf0 A044B748 		.word	1219970208
+ 902 0bf4 2051B748 		.word	1219973408
+ 903 0bf8 807BB748 		.word	1219984256
+ 904 0bfc C053B748 		.word	1219974080
+ 905 0c00 E0CFB748 		.word	1220005856
+ 906 0c04 C042B748 		.word	1219969728
+ 907 0c08 409CB748 		.word	1219992640
+ 908 0c0c 802DB748 		.word	1219964288
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 20
+
+
+ 909 0c10 60C3B748 		.word	1220002656
+ 910 0c14 00C7B648 		.word	1219938048
+ 911 0c18 6042B748 		.word	1219969632
+ 912 0c1c 8036B648 		.word	1219901056
+ 913 0c20 207BB648 		.word	1219918624
+ 914 0c24 0096B548 		.word	1219859968
+ 915 0c28 0010B648 		.word	1219891200
+ 916 0c2c 40E0B448 		.word	1219813440
+ 917 0c30 A02BB548 		.word	1219832736
+ 918 0c34 0044B448 		.word	1219773440
+ 919 0c38 C07FB448 		.word	1219788736
+ 920 0c3c 00AFB348 		.word	1219735296
+ 921 0c40 80E0B348 		.word	1219747968
+ 922 0c44 001AB348 		.word	1219697152
+ 923 0c48 C04DB348 		.word	1219710400
+ 924 0c4c 40E7B248 		.word	1219684160
+ 925 0c50 00DFB248 		.word	1219682048
+ 926 0c54 008AB248 		.word	1219660288
+ 927 0c58 2074B248 		.word	1219654688
+ 928 0c5c E076B248 		.word	1219655392
+ 929 0c60 2038B248 		.word	1219639328
+ 930 0c64 E088B248 		.word	1219660000
+ 931 0c68 8004B248 		.word	1219626112
+ 932 0c6c 604FB248 		.word	1219645280
+ 933 0c70 E0FEB148 		.word	1219624672
+ 934 0c74 40B1B248 		.word	1219670336
+ 935 0c78 00F7B148 		.word	1219622656
+ 936 0c7c 00B4B248 		.word	1219671040
+ 937 0c80 E017B248 		.word	1219631072
+ 938 0c84 20C8B248 		.word	1219676192
+ 939 0c88 C03FB248 		.word	1219641280
+ 940 0c8c 8020B348 		.word	1219698816
+ 941 0c90 805EB248 		.word	1219649152
+ 942 0c94 2011B348 		.word	1219694880
+ 943 0c98 2091B248 		.word	1219662112
+ 944 0c9c 2035B348 		.word	1219704096
+ 945 0ca0 A0B4B248 		.word	1219671200
+ 946 0ca4 E04DB348 		.word	1219710432
+ 947 0ca8 80DFB248 		.word	1219682176
+ 948 0cac E051B348 		.word	1219711456
+ 949 0cb0 A021B348 		.word	1219699104
+ 950 0cb4 005AB348 		.word	1219713536
+ 951 0cb8 6046B348 		.word	1219708512
+ 952 0cbc 6069B348 		.word	1219717472
+ 953 0cc0 A071B348 		.word	1219719584
+ 954 0cc4 606CB348 		.word	1219718240
+ 955 0cc8 00BDB348 		.word	1219738880
+ 956 0ccc 0065B348 		.word	1219716352
+ 957 0cd0 00C0B348 		.word	1219739648
+ 958 0cd4 4076B348 		.word	1219720768
+ 959 0cd8 6041B448 		.word	1219772768
+ 960 0cdc 608EB348 		.word	1219726944
+ 961 0ce0 0037B448 		.word	1219770112
+ 962 0ce4 E0B4B348 		.word	1219736800
+ 963 0ce8 806BB448 		.word	1219783552
+ 964 0cec C0DBB348 		.word	1219746752
+ 965 0cf0 A0CBB448 		.word	1219808160
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 21
+
+
+ 966 0cf4 2005B448 		.word	1219757344
+ 967 0cf8 E0A2B448 		.word	1219797728
+ 968 0cfc 001FB448 		.word	1219763968
+ 969 0d00 80C7B448 		.word	1219807104
+ 970 0d04 801BB448 		.word	1219763072
+ 971 0d08 C0A9B448 		.word	1219799488
+ 972 0d0c 6022B448 		.word	1219764832
+ 973 0d10 A08FB448 		.word	1219792800
+ 974 0d14 8039B448 		.word	1219770752
+ 975 0d18 A06FB448 		.word	1219784608
+ 976 0d1c 8026B448 		.word	1219765888
+ 977 0d20 203AB448 		.word	1219770912
+ 978 0d24 0036B448 		.word	1219769856
+ 979 0d28 E013B448 		.word	1219761120
+ 980 0d2c C04FB448 		.word	1219776448
+ 981 0d30 E0EEB348 		.word	1219751648
+ 982 0d34 A025B448 		.word	1219765664
+ 983 0d38 C0D2B348 		.word	1219744448
+ 984 0d3c 807CB448 		.word	1219787904
+ 985 0d40 80B0B348 		.word	1219735680
+ 986 0d44 603CB448 		.word	1219771488
+ 987 0d48 40B3B348 		.word	1219736384
+ 988 0d4c E048B448 		.word	1219774688
+ 989 0d50 A0B1B348 		.word	1219735968
+ 990 0d54 A08DB448 		.word	1219792288
+ 991 0d58 40B5B348 		.word	1219736896
+ 992 0d5c A052B448 		.word	1219777184
+ 993 0d60 C0C9B348 		.word	1219742144
+ 994 0d64 2075B448 		.word	1219786016
+ 995 0d68 80C8B348 		.word	1219741824
+ 996 0d6c 8065B448 		.word	1219782016
+ 997 0d70 60D9B348 		.word	1219746144
+ 998 0d74 0069B448 		.word	1219782912
+ 999 0d78 8016B448 		.word	1219761792
+ 1000 0d7c 6064B448 		.word	1219781728
+ 1001 0d80 202AB448 		.word	1219766816
+ 1002 0d84 4069B448 		.word	1219782976
+ 1003 0d88 0074B448 		.word	1219785728
+ 1004 0d8c 0069B448 		.word	1219782912
+ 1005 0d90 C0AAB448 		.word	1219799744
+ 1006 0d94 606EB448 		.word	1219784288
+ 1007 0d98 E0BAB448 		.word	1219803872
+ 1008 0d9c C080B448 		.word	1219788992
+ 1009 0da0 603FB548 		.word	1219837792
+ 1010 0da4 0089B448 		.word	1219791104
+ 1011 0da8 A02DB548 		.word	1219833248
+ 1012 0dac C0B8B448 		.word	1219803328
+ 1013 0db0 806CB548 		.word	1219849344
+ 1014 0db4 80E9B448 		.word	1219815808
+ 1015 0db8 A0DEB548 		.word	1219878560
+ 1016 0dbc E016B548 		.word	1219827424
+ 1017 0dc0 80B9B548 		.word	1219869056
+ 1018 0dc4 C03DB548 		.word	1219837376
+ 1019 0dc8 C009B648 		.word	1219889600
+ 1020 0dcc 805AB548 		.word	1219844736
+ 1021 0dd0 6005B648 		.word	1219888480
+ 1022 0dd4 8086B548 		.word	1219856000
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 22
+
+
+ 1023 0dd8 E012B648 		.word	1219891936
+ 1024 0ddc 60CBB548 		.word	1219873632
+ 1025 0de0 A026B648 		.word	1219896992
+ 1026 0de4 A0DEB548 		.word	1219878560
+ 1027 0de8 4033B648 		.word	1219900224
+ 1028 0dec C03AB648 		.word	1219902144
+ 1029 0df0 603AB648 		.word	1219902048
+ 1030 0df4 406DB648 		.word	1219915072
+ 1031 0df8 A03BB648 		.word	1219902368
+ 1032 0dfc 0078B648 		.word	1219917824
+ 1033 0e00 A044B648 		.word	1219904672
+ 1034 0e04 E0E1B648 		.word	1219944928
+ 1035 0e08 204AB648 		.word	1219906080
+ 1036 0e0c 60C4B648 		.word	1219937376
+ 1037 0e10 6066B648 		.word	1219913312
+ 1038 0e14 201AB748 		.word	1219959328
+ 1039 0e18 A081B648 		.word	1219920288
+ 1040 0e1c E061B748 		.word	1219977696
+ 1041 0e20 209BB648 		.word	1219926816
+ 1042 0e24 E042B748 		.word	1219969760
+ 1043 0e28 20BFB648 		.word	1219936032
+ 1044 0e2c 4085B748 		.word	1219986752
+ 1045 0e30 80BFB648 		.word	1219936128
+ 1046 0e34 6073B748 		.word	1219982176
+ 1047 0e38 E0EAB648 		.word	1219947232
+ 1048 0e3c 207BB748 		.word	1219984160
+ 1049 0e40 A010B748 		.word	1219956896
+ 1050 0e44 4079B748 		.word	1219983680
+ 1051 0e48 C024B748 		.word	1219962048
+ 1052 0e4c A07EB748 		.word	1219985056
+ 1053 0e50 A073B748 		.word	1219982240
+ 1054 0e54 007BB748 		.word	1219984128
+ 1055 0e58 8096B748 		.word	1219991168
+ 1056 0e5c C06EB748 		.word	1219980992
+ 1057 0e60 E0ABB748 		.word	1219996640
+ 1058 0e64 E077B748 		.word	1219983328
+ 1059 0e68 8014B848 		.word	1220023424
+ 1060 0e6c 407BB748 		.word	1219984192
+ 1061 0e70 E0FDB748 		.word	1220017632
+ 1062 0e74 60A2B748 		.word	1219994208
+ 1063 0e78 2063B848 		.word	1220043552
+ 1064 0e7c 20ACB748 		.word	1219996704
+ 1065 0e80 C09BB848 		.word	1220058048
+ 1066 0e84 80D4B748 		.word	1220007040
+ 1067 0e88 8071B848 		.word	1220047232
+ 1068 0e8c C0E6B748 		.word	1220011712
+ 1069 0e90 C0C8B848 		.word	1220069568
+ 1070 0e94 E00EB848 		.word	1220021984
+ 1071 0e98 80C3B848 		.word	1220068224
+ 1072 0e9c 0041B848 		.word	1220034816
+ 1073 0ea0 80D1B848 		.word	1220071808
+ 1074 0ea4 4061B848 		.word	1220043072
+ 1075 0ea8 40DCB848 		.word	1220074560
+ 1076 0eac A084B848 		.word	1220052128
+ 1077 0eb0 C0E5B848 		.word	1220076992
+ 1078 0eb4 E0D5B848 		.word	1220072928
+ 1079 0eb8 C0E9B848 		.word	1220078016
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 23
+
+
+ 1080 0ebc 80F0B848 		.word	1220079744
+ 1081 0ec0 E0F0B848 		.word	1220079840
+ 1082 0ec4 2021B948 		.word	1220092192
+ 1083 0ec8 40F8B848 		.word	1220081728
+ 1084 0ecc C077B948 		.word	1220114368
+ 1085 0ed0 40EFB848 		.word	1220079424
+ 1086 0ed4 605FB948 		.word	1220108128
+ 1087 0ed8 40FDB848 		.word	1220083008
+ 1088 0edc 00A2B948 		.word	1220125184
+ 1089 0ee0 40DAB848 		.word	1220074048
+ 1090 0ee4 2095B948 		.word	1220121888
+ 1091 0ee8 20AAB848 		.word	1220061728
+ 1092 0eec 2010B948 		.word	1220087840
+ 1093 0ef0 E032B848 		.word	1220031200
+ 1094 0ef4 40B1B848 		.word	1220063552
+ 1095 0ef8 6083B748 		.word	1219986272
+ 1096 0efc 20CAB748 		.word	1220004384
+ 1097 0f00 E0DBB648 		.word	1219943392
+ 1098 0f04 200AB748 		.word	1219955232
+ 1099 0f08 2027B648 		.word	1219897120
+ 1100 0f0c A046B648 		.word	1219905184
+ 1101 0f10 4086B548 		.word	1219855936
+ 1102 0f14 E097B548 		.word	1219860448
+ 1103 0f18 8020B548 		.word	1219829888
+ 1104 0f1c 00F8B448 		.word	1219819520
+ 1105 0f20 A0C4B448 		.word	1219806368
+ 1106 0f24 4086B448 		.word	1219790400
+ 1107 0f28 E071B448 		.word	1219785184
+ 1108 0f2c 401FB448 		.word	1219764032
+ 1109 0f30 A06AB448 		.word	1219783328
+ 1110 0f34 60D0B348 		.word	1219743840
+ 1111 0f38 0021B448 		.word	1219764480
+ 1112 0f3c A0B7B348 		.word	1219737504
+ 1113 0f40 C052B448 		.word	1219777216
+ 1114 0f44 A096B348 		.word	1219729056
+ 1115 0f48 604EB448 		.word	1219776096
+ 1116 0f4c A0A6B348 		.word	1219733152
+ 1117 0f50 8045B448 		.word	1219773824
+ 1118 0f54 20C1B348 		.word	1219739936
+ 1119 0f58 4099B448 		.word	1219795264
+ 1120 0f5c 20DCB348 		.word	1219746848
+ 1121 0f60 E090B448 		.word	1219793120
+ 1122 0f64 8010B448 		.word	1219760256
+ 1123 0f68 60B8B448 		.word	1219803232
+ 1124 0f6c 6034B448 		.word	1219769440
+ 1125 0f70 00C9B448 		.word	1219807488
+ 1126 0f74 C06BB448 		.word	1219783616
+ 1127 0f78 E0E1B448 		.word	1219813856
+ 1128 0f7c 20BCB448 		.word	1219804192
+ 1129 0f80 E0F7B448 		.word	1219819488
+ 1130 0f84 40FCB448 		.word	1219820608
+ 1131 0f88 400EB548 		.word	1219825216
+ 1132 0f8c 8035B548 		.word	1219835264
+ 1133 0f90 C030B548 		.word	1219834048
+ 1134 0f94 4097B548 		.word	1219860288
+ 1135 0f98 0040B548 		.word	1219837952
+ 1136 0f9c 209DB548 		.word	1219861792
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 24
+
+
+ 1137              		.type	testIR, %object
+ 1138              		.size	testIR, 4000
+ 1139              	testIR:
+ 1140 0fa0 40CA3F48 		.word	1212140096
+ 1141 0fa4 802A4148 		.word	1212230272
+ 1142 0fa8 80214048 		.word	1212162432
+ 1143 0fac 00584148 		.word	1212241920
+ 1144 0fb0 00454048 		.word	1212171520
+ 1145 0fb4 00524148 		.word	1212240384
+ 1146 0fb8 40584048 		.word	1212176448
+ 1147 0fbc 40304148 		.word	1212231744
+ 1148 0fc0 00D64048 		.word	1212208640
+ 1149 0fc4 80204148 		.word	1212227712
+ 1150 0fc8 C0DF4048 		.word	1212211136
+ 1151 0fcc 00074148 		.word	1212221184
+ 1152 0fd0 404A4148 		.word	1212238400
+ 1153 0fd4 00054148 		.word	1212220672
+ 1154 0fd8 40DB4148 		.word	1212275520
+ 1155 0fdc C0F24048 		.word	1212216000
+ 1156 0fe0 809F4148 		.word	1212260224
+ 1157 0fe4 C00B4148 		.word	1212222400
+ 1158 0fe8 C07D4248 		.word	1212317120
+ 1159 0fec 00FA4048 		.word	1212217856
+ 1160 0ff0 C0654248 		.word	1212310976
+ 1161 0ff4 40324148 		.word	1212232256
+ 1162 0ff8 80704248 		.word	1212313728
+ 1163 0ffc 80454148 		.word	1212237184
+ 1164 1000 C0094348 		.word	1212352960
+ 1165 1004 40564148 		.word	1212241472
+ 1166 1008 00B84248 		.word	1212332032
+ 1167 100c 009C4148 		.word	1212259328
+ 1168 1010 00C04248 		.word	1212334080
+ 1169 1014 40824148 		.word	1212252736
+ 1170 1018 80954248 		.word	1212323200
+ 1171 101c 40834148 		.word	1212252992
+ 1172 1020 40764248 		.word	1212315200
+ 1173 1024 C0F84148 		.word	1212283072
+ 1174 1028 40494248 		.word	1212303680
+ 1175 102c 40F64148 		.word	1212282432
+ 1176 1030 C03A4248 		.word	1212299968
+ 1177 1034 40544248 		.word	1212306496
+ 1178 1038 40094248 		.word	1212287296
+ 1179 103c 80B14248 		.word	1212330368
+ 1180 1040 00DF4148 		.word	1212276480
+ 1181 1044 C07F4248 		.word	1212317632
+ 1182 1048 C0E84148 		.word	1212278976
+ 1183 104c C05D4348 		.word	1212374464
+ 1184 1050 40DE4148 		.word	1212276288
+ 1185 1054 00224348 		.word	1212359168
+ 1186 1058 80034248 		.word	1212285824
+ 1187 105c C04C4348 		.word	1212370112
+ 1188 1060 80184248 		.word	1212291200
+ 1189 1064 40ED4348 		.word	1212411200
+ 1190 1068 C03F4248 		.word	1212301248
+ 1191 106c 00954348 		.word	1212388608
+ 1192 1070 00834248 		.word	1212318464
+ 1193 1074 C0D54348 		.word	1212405184
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 25
+
+
+ 1194 1078 808E4248 		.word	1212321408
+ 1195 107c 40B84348 		.word	1212397632
+ 1196 1080 C0AB4248 		.word	1212328896
+ 1197 1084 40B84348 		.word	1212397632
+ 1198 1088 C0244348 		.word	1212359872
+ 1199 108c 40AA4348 		.word	1212394048
+ 1200 1090 40334348 		.word	1212363584
+ 1201 1094 809B4348 		.word	1212390272
+ 1202 1098 C0A64348 		.word	1212393152
+ 1203 109c C07A4348 		.word	1212381888
+ 1204 10a0 00F64348 		.word	1212413440
+ 1205 10a4 C0284348 		.word	1212360896
+ 1206 10a8 80A64348 		.word	1212393088
+ 1207 10ac 40EB4248 		.word	1212345152
+ 1208 10b0 00024448 		.word	1212416512
+ 1209 10b4 40224248 		.word	1212293696
+ 1210 10b8 00DB4248 		.word	1212340992
+ 1211 10bc 804B4148 		.word	1212238720
+ 1212 10c0 80024248 		.word	1212285568
+ 1213 10c4 C0344048 		.word	1212167360
+ 1214 10c8 C06E4148 		.word	1212247744
+ 1215 10cc C00B3F48 		.word	1212091328
+ 1216 10d0 00CE3F48 		.word	1212141056
+ 1217 10d4 80163E48 		.word	1212028544
+ 1218 10d8 00F03E48 		.word	1212084224
+ 1219 10dc 40073D48 		.word	1211959104
+ 1220 10e0 C0C03D48 		.word	1212006592
+ 1221 10e4 803E3C48 		.word	1211907712
+ 1222 10e8 40E73C48 		.word	1211950912
+ 1223 10ec 40D83B48 		.word	1211881536
+ 1224 10f0 80FB3B48 		.word	1211890560
+ 1225 10f4 003E3B48 		.word	1211842048
+ 1226 10f8 C0753B48 		.word	1211856320
+ 1227 10fc C0473B48 		.word	1211844544
+ 1228 1100 80FC3A48 		.word	1211825280
+ 1229 1104 40393B48 		.word	1211840832
+ 1230 1108 80813A48 		.word	1211793792
+ 1231 110c C0ED3A48 		.word	1211821504
+ 1232 1110 80683A48 		.word	1211787392
+ 1233 1114 80B43B48 		.word	1211872384
+ 1234 1118 00313A48 		.word	1211773184
+ 1235 111c 00543B48 		.word	1211847680
+ 1236 1120 40763A48 		.word	1211790912
+ 1237 1124 40D23B48 		.word	1211880000
+ 1238 1128 80963A48 		.word	1211799168
+ 1239 112c C07D3C48 		.word	1211923904
+ 1240 1130 80C73A48 		.word	1211811712
+ 1241 1134 401F3C48 		.word	1211899712
+ 1242 1138 401C3B48 		.word	1211833408
+ 1243 113c 40BA3C48 		.word	1211939392
+ 1244 1140 40473B48 		.word	1211844416
+ 1245 1144 809E3C48 		.word	1211932288
+ 1246 1148 409E3B48 		.word	1211866688
+ 1247 114c 00B13C48 		.word	1211937024
+ 1248 1150 C0073C48 		.word	1211893696
+ 1249 1154 80C33C48 		.word	1211941760
+ 1250 1158 40113C48 		.word	1211896128
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 26
+
+
+ 1251 115c 00C13C48 		.word	1211941120
+ 1252 1160 C0D13C48 		.word	1211945408
+ 1253 1164 80D43C48 		.word	1211946112
+ 1254 1168 00263D48 		.word	1211966976
+ 1255 116c 00D73C48 		.word	1211946752
+ 1256 1170 805C3D48 		.word	1211980928
+ 1257 1174 00F73C48 		.word	1211954944
+ 1258 1178 40463E48 		.word	1212040768
+ 1259 117c 80073D48 		.word	1211959168
+ 1260 1180 800E3E48 		.word	1212026496
+ 1261 1184 80583D48 		.word	1211979904
+ 1262 1188 C0BC3E48 		.word	1212071104
+ 1263 118c 40763D48 		.word	1211987520
+ 1264 1190 804B3F48 		.word	1212107648
+ 1265 1194 80A23D48 		.word	1211998848
+ 1266 1198 80DF3E48 		.word	1212080000
+ 1267 119c 40C13D48 		.word	1212006720
+ 1268 11a0 C0513F48 		.word	1212109248
+ 1269 11a4 80AD3D48 		.word	1212001664
+ 1270 11a8 80F73E48 		.word	1212086144
+ 1271 11ac 00A93D48 		.word	1212000512
+ 1272 11b0 C0B63E48 		.word	1212069568
+ 1273 11b4 40BC3D48 		.word	1212005440
+ 1274 11b8 80553E48 		.word	1212044672
+ 1275 11bc 006D3D48 		.word	1211985152
+ 1276 11c0 80FB3D48 		.word	1212021632
+ 1277 11c4 C0C53D48 		.word	1212007872
+ 1278 11c8 40B93D48 		.word	1212004672
+ 1279 11cc 40AD3D48 		.word	1212001600
+ 1280 11d0 405A3D48 		.word	1211980352
+ 1281 11d4 C09B3D48 		.word	1211997120
+ 1282 11d8 80233D48 		.word	1211966336
+ 1283 11dc 80203E48 		.word	1212031104
+ 1284 11e0 C0BC3C48 		.word	1211940032
+ 1285 11e4 00923D48 		.word	1211994624
+ 1286 11e8 80BB3C48 		.word	1211939712
+ 1287 11ec 40253E48 		.word	1212032320
+ 1288 11f0 C0B73C48 		.word	1211938752
+ 1289 11f4 00663E48 		.word	1212048896
+ 1290 11f8 00D43C48 		.word	1211945984
+ 1291 11fc 00003E48 		.word	1212022784
+ 1292 1200 40F43C48 		.word	1211954240
+ 1293 1204 00953E48 		.word	1212060928
+ 1294 1208 40FA3C48 		.word	1211955776
+ 1295 120c 804E3E48 		.word	1212042880
+ 1296 1210 803F3D48 		.word	1211973504
+ 1297 1214 40433E48 		.word	1212040000
+ 1298 1218 C0503D48 		.word	1211977920
+ 1299 121c C03F3E48 		.word	1212039104
+ 1300 1220 80753D48 		.word	1211987328
+ 1301 1224 80353E48 		.word	1212036480
+ 1302 1228 40093E48 		.word	1212025152
+ 1303 122c 403F3E48 		.word	1212038976
+ 1304 1230 803A3E48 		.word	1212037760
+ 1305 1234 C02E3E48 		.word	1212034752
+ 1306 1238 C0863E48 		.word	1212057280
+ 1307 123c 002E3E48 		.word	1212034560
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 27
+
+
+ 1308 1240 C0283F48 		.word	1212098752
+ 1309 1244 401F3E48 		.word	1212030784
+ 1310 1248 40E73E48 		.word	1212081984
+ 1311 124c 00513E48 		.word	1212043520
+ 1312 1250 00D43F48 		.word	1212142592
+ 1313 1254 C06F3E48 		.word	1212051392
+ 1314 1258 40FD3F48 		.word	1212153152
+ 1315 125c 00A13E48 		.word	1212064000
+ 1316 1260 40D33F48 		.word	1212142400
+ 1317 1264 00D93E48 		.word	1212078336
+ 1318 1268 C0A24048 		.word	1212195520
+ 1319 126c 80FF3E48 		.word	1212088192
+ 1320 1270 005E4048 		.word	1212177920
+ 1321 1274 404D3F48 		.word	1212108096
+ 1322 1278 00794048 		.word	1212184832
+ 1323 127c 40773F48 		.word	1212118848
+ 1324 1280 407B4048 		.word	1212185408
+ 1325 1284 00983F48 		.word	1212127232
+ 1326 1288 007E4048 		.word	1212186112
+ 1327 128c 801D4048 		.word	1212161408
+ 1328 1290 005C4048 		.word	1212177408
+ 1329 1294 40544048 		.word	1212175424
+ 1330 1298 405D4048 		.word	1212177728
+ 1331 129c C0A14048 		.word	1212195264
+ 1332 12a0 80474048 		.word	1212172160
+ 1333 12a4 C0264148 		.word	1212229312
+ 1334 12a8 40214048 		.word	1212162368
+ 1335 12ac 40EC4048 		.word	1212214336
+ 1336 12b0 404F4048 		.word	1212174144
+ 1337 12b4 00C34148 		.word	1212269312
+ 1338 12b8 003E4048 		.word	1212169728
+ 1339 12bc 00BF4148 		.word	1212268288
+ 1340 12c0 C0754048 		.word	1212184000
+ 1341 12c4 C0A94148 		.word	1212262848
+ 1342 12c8 C08F4048 		.word	1212190656
+ 1343 12cc 404F4248 		.word	1212305216
+ 1344 12d0 409D4048 		.word	1212194112
+ 1345 12d4 00FD4148 		.word	1212284160
+ 1346 12d8 80D74048 		.word	1212209024
+ 1347 12dc 00164248 		.word	1212290560
+ 1348 12e0 40D74048 		.word	1212208960
+ 1349 12e4 C0F34148 		.word	1212281792
+ 1350 12e8 00F04048 		.word	1212215296
+ 1351 12ec 00DA4148 		.word	1212275200
+ 1352 12f0 C0684148 		.word	1212246208
+ 1353 12f4 40BA4148 		.word	1212267072
+ 1354 12f8 00664148 		.word	1212245504
+ 1355 12fc 409F4148 		.word	1212260160
+ 1356 1300 80C44148 		.word	1212269696
+ 1357 1304 C0824148 		.word	1212252864
+ 1358 1308 001F4248 		.word	1212292864
+ 1359 130c 005D4148 		.word	1212243200
+ 1360 1310 40F84148 		.word	1212282944
+ 1361 1314 405E4148 		.word	1212243520
+ 1362 1318 40E04248 		.word	1212342336
+ 1363 131c 805E4148 		.word	1212243584
+ 1364 1320 C0B04248 		.word	1212330176
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 28
+
+
+ 1365 1324 C0924148 		.word	1212256960
+ 1366 1328 00DF4248 		.word	1212342016
+ 1367 132c 40A34148 		.word	1212261184
+ 1368 1330 C0804348 		.word	1212383424
+ 1369 1334 C0D54148 		.word	1212274112
+ 1370 1338 002B4348 		.word	1212361472
+ 1371 133c C0FE4148 		.word	1212284608
+ 1372 1340 C0614348 		.word	1212375488
+ 1373 1344 001B4248 		.word	1212291840
+ 1374 1348 00454348 		.word	1212368128
+ 1375 134c 00384248 		.word	1212299264
+ 1376 1350 80384348 		.word	1212364928
+ 1377 1354 00A24248 		.word	1212326400
+ 1378 1358 400B4348 		.word	1212353344
+ 1379 135c 00914248 		.word	1212322048
+ 1380 1360 00D94248 		.word	1212340480
+ 1381 1364 40C24248 		.word	1212334656
+ 1382 1368 80464248 		.word	1212302976
+ 1383 136c 408D4248 		.word	1212321088
+ 1384 1370 00664148 		.word	1212245504
+ 1385 1374 00744148 		.word	1212249088
+ 1386 1378 405B4048 		.word	1212177216
+ 1387 137c 00304148 		.word	1212231680
+ 1388 1380 40053F48 		.word	1212089664
+ 1389 1384 80B63F48 		.word	1212135040
+ 1390 1388 00033E48 		.word	1212023552
+ 1391 138c 00B73E48 		.word	1212069632
+ 1392 1390 000A3D48 		.word	1211959808
+ 1393 1394 80463E48 		.word	1212040832
+ 1394 1398 C0043C48 		.word	1211892928
+ 1395 139c 00DD3C48 		.word	1211948288
+ 1396 13a0 005F3B48 		.word	1211850496
+ 1397 13a4 80593C48 		.word	1211914624
+ 1398 13a8 409E3A48 		.word	1211801152
+ 1399 13ac 407F3B48 		.word	1211858752
+ 1400 13b0 40263A48 		.word	1211770432
+ 1401 13b4 00DE3A48 		.word	1211817472
+ 1402 13b8 80163A48 		.word	1211766400
+ 1403 13bc 40673A48 		.word	1211787072
+ 1404 13c0 40C23948 		.word	1211744832
+ 1405 13c4 C01B3A48 		.word	1211767744
+ 1406 13c8 00213A48 		.word	1211769088
+ 1407 13cc C0EF3948 		.word	1211756480
+ 1408 13d0 003F3A48 		.word	1211776768
+ 1409 13d4 80A33948 		.word	1211736960
+ 1410 13d8 C0273A48 		.word	1211770816
+ 1411 13dc C0A93948 		.word	1211738560
+ 1412 13e0 80F83A48 		.word	1211824256
+ 1413 13e4 C09E3948 		.word	1211735744
+ 1414 13e8 C0BD3A48 		.word	1211809216
+ 1415 13ec 80D53948 		.word	1211749760
+ 1416 13f0 80293B48 		.word	1211836800
+ 1417 13f4 C0FB3948 		.word	1211759552
+ 1418 13f8 C0DD3B48 		.word	1211882944
+ 1419 13fc 003F3A48 		.word	1211776768
+ 1420 1400 80913B48 		.word	1211863424
+ 1421 1404 C0873A48 		.word	1211795392
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 29
+
+
+ 1422 1408 000F3C48 		.word	1211895552
+ 1423 140c C0BC3A48 		.word	1211808960
+ 1424 1410 80F53B48 		.word	1211889024
+ 1425 1414 80EA3A48 		.word	1211820672
+ 1426 1418 800E3C48 		.word	1211895424
+ 1427 141c 805C3B48 		.word	1211849856
+ 1428 1420 400D3C48 		.word	1211895104
+ 1429 1424 40603B48 		.word	1211850816
+ 1430 1428 00FF3B48 		.word	1211891456
+ 1431 142c 80FB3B48 		.word	1211890560
+ 1432 1430 400B3C48 		.word	1211894592
+ 1433 1434 40653C48 		.word	1211917632
+ 1434 1438 40023C48 		.word	1211892288
+ 1435 143c 40833C48 		.word	1211925312
+ 1436 1440 40183C48 		.word	1211897920
+ 1437 1444 006D3D48 		.word	1211985152
+ 1438 1448 80003C48 		.word	1211891840
+ 1439 144c 00223D48 		.word	1211965952
+ 1440 1450 80403C48 		.word	1211908224
+ 1441 1454 009D3D48 		.word	1211997440
+ 1442 1458 C0523C48 		.word	1211912896
+ 1443 145c 80193E48 		.word	1212029312
+ 1444 1460 005B3C48 		.word	1211915008
+ 1445 1464 40903D48 		.word	1211994176
+ 1446 1468 80643C48 		.word	1211917440
+ 1447 146c 80E63D48 		.word	1212016256
+ 1448 1470 00473C48 		.word	1211909888
+ 1449 1474 C0733D48 		.word	1211986880
+ 1450 1478 C0423C48 		.word	1211908800
+ 1451 147c 00513D48 		.word	1211977984
+ 1452 1480 804F3C48 		.word	1211912064
+ 1453 1484 80F33C48 		.word	1211954048
+ 1454 1488 00163C48 		.word	1211897344
+ 1455 148c 009E3C48 		.word	1211932160
+ 1456 1490 C07B3C48 		.word	1211923392
+ 1457 1494 00673C48 		.word	1211918080
+ 1458 1498 C0843C48 		.word	1211925696
+ 1459 149c C0173C48 		.word	1211897792
+ 1460 14a0 807C3C48 		.word	1211923584
+ 1461 14a4 00F83B48 		.word	1211889664
+ 1462 14a8 80043D48 		.word	1211958400
+ 1463 14ac C0B13B48 		.word	1211871680
+ 1464 14b0 40AC3C48 		.word	1211935808
+ 1465 14b4 C0C73B48 		.word	1211877312
+ 1466 14b8 C02D3D48 		.word	1211968960
+ 1467 14bc 40CC3B48 		.word	1211878464
+ 1468 14c0 00933D48 		.word	1211994880
+ 1469 14c4 80EC3B48 		.word	1211886720
+ 1470 14c8 80283D48 		.word	1211967616
+ 1471 14cc 002C3C48 		.word	1211902976
+ 1472 14d0 C0C73D48 		.word	1212008384
+ 1473 14d4 C0373C48 		.word	1211905984
+ 1474 14d8 C0913D48 		.word	1211994560
+ 1475 14dc 80843C48 		.word	1211925632
+ 1476 14e0 40963D48 		.word	1211995712
+ 1477 14e4 80B93C48 		.word	1211939200
+ 1478 14e8 80A33D48 		.word	1211999104
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 30
+
+
+ 1479 14ec 00D33C48 		.word	1211945728
+ 1480 14f0 C0A33D48 		.word	1211999168
+ 1481 14f4 407D3D48 		.word	1211989312
+ 1482 14f8 80A03D48 		.word	1211998336
+ 1483 14fc C0BD3D48 		.word	1212005824
+ 1484 1500 00AB3D48 		.word	1212001024
+ 1485 1504 80FA3D48 		.word	1212021376
+ 1486 1508 C0A93D48 		.word	1212000704
+ 1487 150c 40C43E48 		.word	1212073024
+ 1488 1510 80A23D48 		.word	1211998848
+ 1489 1514 80823E48 		.word	1212056192
+ 1490 1518 80DC3D48 		.word	1212013696
+ 1491 151c C0603F48 		.word	1212113088
+ 1492 1520 80EF3D48 		.word	1212018560
+ 1493 1524 C0BF3F48 		.word	1212137408
+ 1494 1528 C0403E48 		.word	1212039360
+ 1495 152c 408B3F48 		.word	1212123968
+ 1496 1530 00793E48 		.word	1212053760
+ 1497 1534 C0304048 		.word	1212166336
+ 1498 1538 00B23E48 		.word	1212068352
+ 1499 153c 001D4048 		.word	1212161280
+ 1500 1540 40FD3E48 		.word	1212087616
+ 1501 1544 00214048 		.word	1212162304
+ 1502 1548 80243F48 		.word	1212097664
+ 1503 154c 801D4048 		.word	1212161408
+ 1504 1550 40463F48 		.word	1212106304
+ 1505 1554 C01B4048 		.word	1212160960
+ 1506 1558 40E23F48 		.word	1212146240
+ 1507 155c C0164048 		.word	1212159680
+ 1508 1560 C0FD3F48 		.word	1212153280
+ 1509 1564 40054048 		.word	1212155200
+ 1510 1568 C04B4048 		.word	1212173248
+ 1511 156c 00FD3F48 		.word	1212153088
+ 1512 1570 00D44048 		.word	1212208128
+ 1513 1574 80C53F48 		.word	1212138880
+ 1514 1578 40894048 		.word	1212188992
+ 1515 157c 00E73F48 		.word	1212147456
+ 1516 1580 405A4148 		.word	1212242496
+ 1517 1584 C0E23F48 		.word	1212146368
+ 1518 1588 C06F4148 		.word	1212248000
+ 1519 158c 80024048 		.word	1212154496
+ 1520 1590 404E4148 		.word	1212239424
+ 1521 1594 40324048 		.word	1212166720
+ 1522 1598 40FC4148 		.word	1212283968
+ 1523 159c C04F4048 		.word	1212174272
+ 1524 15a0 C0B64148 		.word	1212266176
+ 1525 15a4 C0914048 		.word	1212191168
+ 1526 15a8 00B44148 		.word	1212265472
+ 1527 15ac C0A54048 		.word	1212196288
+ 1528 15b0 C0A94148 		.word	1212262848
+ 1529 15b4 00AF4048 		.word	1212198656
+ 1530 15b8 80A14148 		.word	1212260736
+ 1531 15bc 40414148 		.word	1212236096
+ 1532 15c0 40804148 		.word	1212252224
+ 1533 15c4 40504148 		.word	1212239936
+ 1534 15c8 80714148 		.word	1212248448
+ 1535 15cc C0AE4148 		.word	1212264128
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 31
+
+
+ 1536 15d0 C0694148 		.word	1212246464
+ 1537 15d4 00264248 		.word	1212294656
+ 1538 15d8 00474148 		.word	1212237568
+ 1539 15dc 40FC4148 		.word	1212283968
+ 1540 15e0 C0554148 		.word	1212241344
+ 1541 15e4 C0EB4248 		.word	1212345280
+ 1542 15e8 80504148 		.word	1212240000
+ 1543 15ec 80D44248 		.word	1212339328
+ 1544 15f0 00964148 		.word	1212257792
+ 1545 15f4 00D44248 		.word	1212339200
+ 1546 15f8 C0B14148 		.word	1212264896
+ 1547 15fc 00854348 		.word	1212384512
+ 1548 1600 80D74148 		.word	1212274560
+ 1549 1604 002C4348 		.word	1212361728
+ 1550 1608 C0094248 		.word	1212287424
+ 1551 160c 40344348 		.word	1212363840
+ 1552 1610 C0EC4148 		.word	1212280000
+ 1553 1614 C0E24248 		.word	1212342976
+ 1554 1618 809B4148 		.word	1212259200
+ 1555 161c 40384248 		.word	1212299328
+ 1556 1620 80514148 		.word	1212240256
+ 1557 1624 003C4148 		.word	1212234752
+ 1558 1628 C04D4048 		.word	1212173760
+ 1559 162c 00FE3F48 		.word	1212153344
+ 1560 1630 C0943F48 		.word	1212126400
+ 1561 1634 00BA3E48 		.word	1212070400
+ 1562 1638 40B93E48 		.word	1212070208
+ 1563 163c 00443D48 		.word	1211974656
+ 1564 1640 40633D48 		.word	1211982656
+ 1565 1644 40483C48 		.word	1211910208
+ 1566 1648 C0273D48 		.word	1211967424
+ 1567 164c C0233B48 		.word	1211835328
+ 1568 1650 C00A3C48 		.word	1211894464
+ 1569 1654 406E3A48 		.word	1211788864
+ 1570 1658 405E3B48 		.word	1211850304
+ 1571 165c C0DC3948 		.word	1211751616
+ 1572 1660 006A3B48 		.word	1211853312
+ 1573 1664 C0713948 		.word	1211724224
+ 1574 1668 80953A48 		.word	1211798912
+ 1575 166c 40443948 		.word	1211712576
+ 1576 1670 C0673A48 		.word	1211787200
+ 1577 1674 40093948 		.word	1211697472
+ 1578 1678 C01E3A48 		.word	1211768512
+ 1579 167c 00013948 		.word	1211695360
+ 1580 1680 80F73948 		.word	1211758464
+ 1581 1684 40553948 		.word	1211716928
+ 1582 1688 C0D23948 		.word	1211749056
+ 1583 168c 40583948 		.word	1211717696
+ 1584 1690 40C23948 		.word	1211744832
+ 1585 1694 40E83948 		.word	1211754560
+ 1586 1698 C0A33948 		.word	1211737024
+ 1587 169c 802F3A48 		.word	1211772800
+ 1588 16a0 C0913948 		.word	1211732416
+ 1589 16a4 00393A48 		.word	1211775232
+ 1590 16a8 80BB3948 		.word	1211743104
+ 1591 16ac 403F3B48 		.word	1211842368
+ 1592 16b0 80DB3948 		.word	1211751296
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 32
+
+
+ 1593 16b4 40143B48 		.word	1211831360
+ 1594 16b8 C00C3A48 		.word	1211763904
+ 1595 16bc 00733B48 		.word	1211855616
+ 1596 16c0 80433A48 		.word	1211777920
+ 1597 16c4 C01A3C48 		.word	1211898560
+ 1598 16c8 407E3A48 		.word	1211792960
+ 1599 16cc 00DB3B48 		.word	1211882240
+ 1600 16d0 00D13A48 		.word	1211814144
+ 1601 16d4 803F3C48 		.word	1211907968
+ 1602 16d8 C0F13A48 		.word	1211822528
+ 1603 16dc 002F3C48 		.word	1211903744
+ 1604 16e0 40383B48 		.word	1211840576
+ 1605 16e4 80453C48 		.word	1211909504
+ 1606 16e8 809D3B48 		.word	1211866496
+ 1607 16ec 80533C48 		.word	1211913088
+ 1608 16f0 C0C33B48 		.word	1211876288
+ 1609 16f4 C0563C48 		.word	1211913920
+ 1610 16f8 00623C48 		.word	1211916800
+ 1611 16fc C0613C48 		.word	1211916736
+ 1612 1700 80BC3C48 		.word	1211939968
+ 1613 1704 C03D3C48 		.word	1211907520
+ 1614 1708 00DB3C48 		.word	1211947776
+ 1615 170c 404D3C48 		.word	1211911488
+ 1616 1710 C08A3D48 		.word	1211992768
+ 1617 1714 801A3C48 		.word	1211898496
+ 1618 1718 401D3D48 		.word	1211964736
+ 1619 171c 40133C48 		.word	1211896640
+ 1620 1720 C0583D48 		.word	1211979968
+ 1621 1724 40133C48 		.word	1211896640
+ 1622 1728 80C83D48 		.word	1212008576
+ 1623 172c 80FD3B48 		.word	1211891072
+ 1624 1730 80353D48 		.word	1211970944
+ 1625 1734 00063C48 		.word	1211893248
+ 1626 1738 80873D48 		.word	1211991936
+ 1627 173c C0F63B48 		.word	1211889344
+ 1628 1740 80163D48 		.word	1211963008
+ 1629 1744 00F13B48 		.word	1211887872
+ 1630 1748 00E33C48 		.word	1211949824
+ 1631 174c 001A3C48 		.word	1211898368
+ 1632 1750 80B53C48 		.word	1211938176
+ 1633 1754 80EB3B48 		.word	1211886464
+ 1634 1758 407A3C48 		.word	1211923008
+ 1635 175c 406D3C48 		.word	1211919680
+ 1636 1760 80453C48 		.word	1211909504
+ 1637 1764 80913C48 		.word	1211928960
+ 1638 1768 40243C48 		.word	1211900992
+ 1639 176c 407C3C48 		.word	1211923520
+ 1640 1770 40183C48 		.word	1211897920
+ 1641 1774 80453D48 		.word	1211975040
+ 1642 1778 40F43B48 		.word	1211888704
+ 1643 177c C0F83C48 		.word	1211955392
+ 1644 1780 C0193C48 		.word	1211898304
+ 1645 1784 C0763D48 		.word	1211987648
+ 1646 1788 80353C48 		.word	1211905408
+ 1647 178c 400B3E48 		.word	1212025664
+ 1648 1790 80693C48 		.word	1211918720
+ 1649 1794 40AD3D48 		.word	1212001600
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 33
+
+
+ 1650 1798 C0B33C48 		.word	1211937728
+ 1651 179c 80523E48 		.word	1212043904
+ 1652 17a0 C0D83C48 		.word	1211947200
+ 1653 17a4 C0233E48 		.word	1212031936
+ 1654 17a8 80253D48 		.word	1211966848
+ 1655 17ac 40413E48 		.word	1212039488
+ 1656 17b0 80723D48 		.word	1211986560
+ 1657 17b4 80433E48 		.word	1212040064
+ 1658 17b8 C08D3D48 		.word	1211993536
+ 1659 17bc 80483E48 		.word	1212041344
+ 1660 17c0 C0383E48 		.word	1212037312
+ 1661 17c4 C0433E48 		.word	1212040128
+ 1662 17c8 40743E48 		.word	1212052544
+ 1663 17cc C02F3E48 		.word	1212035008
+ 1664 17d0 80B53E48 		.word	1212069248
+ 1665 17d4 40513E48 		.word	1212043584
+ 1666 17d8 00703F48 		.word	1212116992
+ 1667 17dc 40353E48 		.word	1212036416
+ 1668 17e0 40453F48 		.word	1212106048
+ 1669 17e4 80853E48 		.word	1212056960
+ 1670 17e8 00044048 		.word	1212154880
+ 1671 17ec C0993E48 		.word	1212062144
+ 1672 17f0 40644048 		.word	1212179520
+ 1673 17f4 00E93E48 		.word	1212082432
+ 1674 17f8 80204048 		.word	1212162176
+ 1675 17fc 401E3F48 		.word	1212096064
+ 1676 1800 C0E24048 		.word	1212211904
+ 1677 1804 C0393F48 		.word	1212103104
+ 1678 1808 009A4048 		.word	1212193280
+ 1679 180c 80853F48 		.word	1212122496
+ 1680 1810 00A84048 		.word	1212196864
+ 1681 1814 80B23F48 		.word	1212134016
+ 1682 1818 409C4048 		.word	1212193856
+ 1683 181c 80C03F48 		.word	1212137600
+ 1684 1820 808B4048 		.word	1212189568
+ 1685 1824 C04F4048 		.word	1212174272
+ 1686 1828 006F4048 		.word	1212182272
+ 1687 182c 00794048 		.word	1212184832
+ 1688 1830 80534048 		.word	1212175232
+ 1689 1834 00994048 		.word	1212193024
+ 1690 1838 00394048 		.word	1212168448
+ 1691 183c 00374148 		.word	1212233472
+ 1692 1840 C00C4048 		.word	1212157120
+ 1693 1844 80E24048 		.word	1212211840
+ 1694 1848 00254048 		.word	1212163328
+ 1695 184c C0974148 		.word	1212258240
+ 1696 1850 C0254048 		.word	1212163520
+ 1697 1854 C0C74148 		.word	1212270528
+ 1698 1858 00424048 		.word	1212170752
+ 1699 185c 408E4148 		.word	1212255808
+ 1700 1860 40814048 		.word	1212186944
+ 1701 1864 00314248 		.word	1212297472
+ 1702 1868 C0884048 		.word	1212188864
+ 1703 186c 80E54148 		.word	1212278144
+ 1704 1870 C0BF4048 		.word	1212202944
+ 1705 1874 40E04148 		.word	1212276800
+ 1706 1878 80DE4048 		.word	1212210816
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 34
+
+
+ 1707 187c 40D44148 		.word	1212273728
+ 1708 1880 40E94048 		.word	1212213568
+ 1709 1884 40CD4148 		.word	1212271936
+ 1710 1888 00824148 		.word	1212252672
+ 1711 188c 00A84148 		.word	1212262400
+ 1712 1890 808E4148 		.word	1212255872
+ 1713 1894 80994148 		.word	1212258688
+ 1714 1898 80E94148 		.word	1212279168
+ 1715 189c 008F4148 		.word	1212256000
+ 1716 18a0 C0674248 		.word	1212311488
+ 1717 18a4 C06F4148 		.word	1212248000
+ 1718 18a8 C0354248 		.word	1212298688
+ 1719 18ac 00934148 		.word	1212257024
+ 1720 18b0 80144348 		.word	1212355712
+ 1721 18b4 809C4148 		.word	1212259456
+ 1722 18b8 40174348 		.word	1212356416
+ 1723 18bc C0CA4148 		.word	1212271296
+ 1724 18c0 40014348 		.word	1212350784
+ 1725 18c4 40ED4148 		.word	1212280128
+ 1726 18c8 00AB4348 		.word	1212394240
+ 1727 18cc C0054248 		.word	1212286400
+ 1728 18d0 C0654348 		.word	1212376512
+ 1729 18d4 002D4248 		.word	1212296448
+ 1730 18d8 00574348 		.word	1212372736
+ 1731 18dc C0084248 		.word	1212287168
+ 1732 18e0 80CE4248 		.word	1212337792
+ 1733 18e4 80984148 		.word	1212258432
+ 1734 18e8 00034248 		.word	1212285696
+ 1735 18ec 401B4148 		.word	1212226368
+ 1736 18f0 00D64048 		.word	1212208640
+ 1737 18f4 40E53F48 		.word	1212147008
+ 1738 18f8 00673F48 		.word	1212114688
+ 1739 18fc C0FE3E48 		.word	1212088000
+ 1740 1900 C00F3E48 		.word	1212026816
+ 1741 1904 801B3E48 		.word	1212029824
+ 1742 1908 00A63C48 		.word	1211934208
+ 1743 190c 00BB3C48 		.word	1211939584
+ 1744 1910 80973B48 		.word	1211864960
+ 1745 1914 408C3C48 		.word	1211927616
+ 1746 1918 C07E3A48 		.word	1211793088
+ 1747 191c 805E3B48 		.word	1211850368
+ 1748 1920 00C43948 		.word	1211745280
+ 1749 1924 40B43A48 		.word	1211806784
+ 1750 1928 80533948 		.word	1211716480
+ 1751 192c C0CD3A48 		.word	1211813312
+ 1752 1930 40E63848 		.word	1211688512
+ 1753 1934 40183A48 		.word	1211766848
+ 1754 1938 40DB3848 		.word	1211685696
+ 1755 193c 00E53948 		.word	1211753728
+ 1756 1940 80923848 		.word	1211667072
+ 1757 1944 80943948 		.word	1211733120
+ 1758 1948 008B3848 		.word	1211665152
+ 1759 194c 80793948 		.word	1211726208
+ 1760 1950 40FE3848 		.word	1211694656
+ 1761 1954 80673948 		.word	1211721600
+ 1762 1958 80F23848 		.word	1211691648
+ 1763 195c 80423948 		.word	1211712128
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 35
+
+
+ 1764 1960 00793948 		.word	1211726080
+ 1765 1964 C0443948 		.word	1211712704
+ 1766 1968 80D73948 		.word	1211750272
+ 1767 196c 80253948 		.word	1211704704
+ 1768 1970 40C93948 		.word	1211746624
+ 1769 1974 805B3948 		.word	1211718528
+ 1770 1978 C0BB3A48 		.word	1211808704
+ 1771 197c C0463948 		.word	1211713216
+ 1772 1980 00933A48 		.word	1211798272
+ 1773 1984 00773948 		.word	1211725568
+ 1774 1988 40DE3A48 		.word	1211817536
+ 1775 198c C0A43948 		.word	1211737280
+ 1776 1990 00783B48 		.word	1211856896
+ 1777 1994 40CB3948 		.word	1211747136
+ 1778 1998 00273B48 		.word	1211836160
+ 1779 199c 00023A48 		.word	1211761152
+ 1780 19a0 406A3B48 		.word	1211853376
+ 1781 19a4 40083A48 		.word	1211762752
+ 1782 19a8 40433B48 		.word	1211843392
+ 1783 19ac 40363A48 		.word	1211774528
+ 1784 19b0 40493B48 		.word	1211844928
+ 1785 19b4 00A93A48 		.word	1211803904
+ 1786 19b8 C03C3B48 		.word	1211841728
+ 1787 19bc 40C43A48 		.word	1211810880
+ 1788 19c0 C02F3B48 		.word	1211838400
+ 1789 19c4 40613B48 		.word	1211851072
+ 1790 19c8 003A3B48 		.word	1211841024
+ 1791 19cc 80B93B48 		.word	1211873664
+ 1792 19d0 80123B48 		.word	1211830912
+ 1793 19d4 C0913B48 		.word	1211863488
+ 1794 19d8 80123B48 		.word	1211830912
+ 1795 19dc 40663C48 		.word	1211917888
+ 1796 19e0 80E33A48 		.word	1211818880
+ 1797 19e4 00F83B48 		.word	1211889664
+ 1798 19e8 80E43A48 		.word	1211819136
+ 1799 19ec C01F3C48 		.word	1211899840
+ 1800 19f0 40DB3A48 		.word	1211816768
+ 1801 19f4 40923C48 		.word	1211929152
+ 1802 19f8 00CE3A48 		.word	1211813376
+ 1803 19fc 40103C48 		.word	1211895872
+ 1804 1a00 40CA3A48 		.word	1211812416
+ 1805 1a04 C0343C48 		.word	1211905216
+ 1806 1a08 40AD3A48 		.word	1211804992
+ 1807 1a0c 40F03B48 		.word	1211887680
+ 1808 1a10 00C43A48 		.word	1211810816
+ 1809 1a14 80AD3B48 		.word	1211870592
+ 1810 1a18 40F73A48 		.word	1211823936
+ 1811 1a1c 407C3B48 		.word	1211857984
+ 1812 1a20 80DE3A48 		.word	1211817600
+ 1813 1a24 40533B48 		.word	1211847488
+ 1814 1a28 C0453B48 		.word	1211844032
+ 1815 1a2c 801D3B48 		.word	1211833728
+ 1816 1a30 C0813B48 		.word	1211859392
+ 1817 1a34 C0F23A48 		.word	1211822784
+ 1818 1a38 C0743B48 		.word	1211856064
+ 1819 1a3c 80ED3A48 		.word	1211821440
+ 1820 1a40 403E3C48 		.word	1211907648
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 36
+
+
+ 1821 1a44 80E23A48 		.word	1211818624
+ 1822 1a48 40F63B48 		.word	1211889216
+ 1823 1a4c 80113B48 		.word	1211830656
+ 1824 1a50 80633C48 		.word	1211917184
+ 1825 1a54 401D3B48 		.word	1211833664
+ 1826 1a58 80013D48 		.word	1211957632
+ 1827 1a5c C0613B48 		.word	1211851200
+ 1828 1a60 809B3C48 		.word	1211931520
+ 1829 1a64 C0A43B48 		.word	1211868352
+ 1830 1a68 40263D48 		.word	1211967040
+ 1831 1a6c 80C23B48 		.word	1211875968
+ 1832 1a70 800A3D48 		.word	1211959936
+ 1833 1a74 80023C48 		.word	1211892352
+ 1834 1a78 C0203D48 		.word	1211965632
+ 1835 1a7c C05F3C48 		.word	1211916224
+ 1836 1a80 C0143D48 		.word	1211962560
+ 1837 1a84 407A3C48 		.word	1211923008
+ 1838 1a88 C0093D48 		.word	1211959744
+ 1839 1a8c C00F3D48 		.word	1211961280
+ 1840 1a90 80153D48 		.word	1211962752
+ 1841 1a94 005A3D48 		.word	1211980288
+ 1842 1a98 80133D48 		.word	1211962240
+ 1843 1a9c 40893D48 		.word	1211992384
+ 1844 1aa0 801C3D48 		.word	1211964544
+ 1845 1aa4 806A3E48 		.word	1212050048
+ 1846 1aa8 800E3D48 		.word	1211960960
+ 1847 1aac 000C3E48 		.word	1212025856
+ 1848 1ab0 80563D48 		.word	1211979392
+ 1849 1ab4 C0B93E48 		.word	1212070336
+ 1850 1ab8 806C3D48 		.word	1211985024
+ 1851 1abc 00443F48 		.word	1212105728
+ 1852 1ac0 00AC3D48 		.word	1212001280
+ 1853 1ac4 C0EA3E48 		.word	1212082880
+ 1854 1ac8 40EB3D48 		.word	1212017472
+ 1855 1acc 008A3F48 		.word	1212123648
+ 1856 1ad0 80053E48 		.word	1212024192
+ 1857 1ad4 80583F48 		.word	1212110976
+ 1858 1ad8 C0573E48 		.word	1212045248
+ 1859 1adc 80663F48 		.word	1212114560
+ 1860 1ae0 40903E48 		.word	1212059712
+ 1861 1ae4 00603F48 		.word	1212112896
+ 1862 1ae8 009C3E48 		.word	1212062720
+ 1863 1aec 40553F48 		.word	1212110144
+ 1864 1af0 80363F48 		.word	1212102272
+ 1865 1af4 40413F48 		.word	1212105024
+ 1866 1af8 00543F48 		.word	1212109824
+ 1867 1afc 40243F48 		.word	1212097600
+ 1868 1b00 00993F48 		.word	1212127488
+ 1869 1b04 40243F48 		.word	1212097600
+ 1870 1b08 80274048 		.word	1212163968
+ 1871 1b0c C0E53E48 		.word	1212081600
+ 1872 1b10 C0D53F48 		.word	1212143040
+ 1873 1b14 C0203F48 		.word	1212096704
+ 1874 1b18 C0894048 		.word	1212189120
+ 1875 1b1c C0163F48 		.word	1212094144
+ 1876 1b20 80E24048 		.word	1212211840
+ 1877 1b24 40413F48 		.word	1212105024
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 37
+
+
+ 1878 1b28 00784048 		.word	1212184576
+ 1879 1b2c 00593F48 		.word	1212111104
+ 1880 1b30 40244148 		.word	1212228672
+ 1881 1b34 C07F3F48 		.word	1212121024
+ 1882 1b38 00DD4048 		.word	1212210432
+ 1883 1b3c 00CA3F48 		.word	1212140032
+ 1884 1b40 00DD4048 		.word	1212210432
+ 1885 1b44 80D13F48 		.word	1212141952
+ 1886 1b48 40CE4048 		.word	1212206656
+ 1887 1b4c 00F03F48 		.word	1212149760
+ 1888 1b50 40B94048 		.word	1212201280
+ 1889 1b54 407B4048 		.word	1212185408
+ 1890 1b58 80994048 		.word	1212193152
+ 1891 1b5c 40974048 		.word	1212192576
+ 1892 1b60 40824048 		.word	1212187200
+ 1893 1b64 00E44048 		.word	1212212224
+ 1894 1b68 80824048 		.word	1212187264
+ 1895 1b6c 00894148 		.word	1212254464
+ 1896 1b70 80634048 		.word	1212179328
+ 1897 1b74 004E4148 		.word	1212239360
+ 1898 1b78 80964048 		.word	1212192384
+ 1899 1b7c 000A4248 		.word	1212287488
+ 1900 1b80 40A14048 		.word	1212195136
+ 1901 1b84 C04A4248 		.word	1212304064
+ 1902 1b88 80ED4048 		.word	1212214656
+ 1903 1b8c 80224248 		.word	1212293760
+ 1904 1b90 80204148 		.word	1212227712
+ 1905 1b94 40EA4248 		.word	1212344896
+ 1906 1b98 00534148 		.word	1212240640
+ 1907 1b9c 80AF4248 		.word	1212329856
+ 1908 1ba0 00864148 		.word	1212253696
+ 1909 1ba4 80A04248 		.word	1212326016
+ 1910 1ba8 C0784148 		.word	1212250304
+ 1911 1bac 002B4248 		.word	1212295936
+ 1912 1bb0 00044148 		.word	1212220416
+ 1913 1bb4 C0784148 		.word	1212250304
+ 1914 1bb8 80A04048 		.word	1212194944
+ 1915 1bbc C0454048 		.word	1212171712
+ 1916 1bc0 C0913F48 		.word	1212125632
+ 1917 1bc4 C0FE3E48 		.word	1212088000
+ 1918 1bc8 40AF3E48 		.word	1212067648
+ 1919 1bcc 40BC3D48 		.word	1212005440
+ 1920 1bd0 00EC3D48 		.word	1212017664
+ 1921 1bd4 00613C48 		.word	1211916544
+ 1922 1bd8 409F3C48 		.word	1211932480
+ 1923 1bdc C07D3B48 		.word	1211858368
+ 1924 1be0 80753C48 		.word	1211921792
+ 1925 1be4 008E3A48 		.word	1211796992
+ 1926 1be8 C0953B48 		.word	1211864512
+ 1927 1bec 80E93948 		.word	1211754880
+ 1928 1bf0 00D43A48 		.word	1211814912
+ 1929 1bf4 00753948 		.word	1211725056
+ 1930 1bf8 C0023B48 		.word	1211826880
+ 1931 1bfc 40333948 		.word	1211708224
+ 1932 1c00 005A3A48 		.word	1211783680
+ 1933 1c04 00213948 		.word	1211703552
+ 1934 1c08 00343A48 		.word	1211773952
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 38
+
+
+ 1935 1c0c C0003948 		.word	1211695296
+ 1936 1c10 C0F73948 		.word	1211758528
+ 1937 1c14 00FB3848 		.word	1211693824
+ 1938 1c18 C0E23948 		.word	1211753152
+ 1939 1c1c C0703948 		.word	1211723968
+ 1940 1c20 C0DA3948 		.word	1211751104
+ 1941 1c24 409D3948 		.word	1211735360
+ 1942 1c28 00CB3948 		.word	1211747072
+ 1943 1c2c 40FF3948 		.word	1211760448
+ 1944 1c30 80D63948 		.word	1211750016
+ 1945 1c34 80983A48 		.word	1211799680
+ 1946 1c38 C0BE3948 		.word	1211743936
+ 1947 1c3c 808D3A48 		.word	1211796864
+ 1948 1c40 C0003A48 		.word	1211760832
+ 1949 1c44 006D3B48 		.word	1211854080
+ 1950 1c48 40173A48 		.word	1211766592
+ 1951 1c4c C07A3B48 		.word	1211857600
+ 1952 1c50 404E3A48 		.word	1211780672
+ 1953 1c54 00B33B48 		.word	1211872000
+ 1954 1c58 808A3A48 		.word	1211796096
+ 1955 1c5c 40563C48 		.word	1211913792
+ 1956 1c60 80C03A48 		.word	1211809920
+ 1957 1c64 C02A3C48 		.word	1211902656
+ 1958 1c68 801C3B48 		.word	1211833472
+ 1959 1c6c 004F3C48 		.word	1211911936
+ 1960 1c70 C02F3B48 		.word	1211838400
+ 1961 1c74 005E3C48 		.word	1211915776
+ 1962 1c78 80723B48 		.word	1211855488
+ 1963 1c7c 00603C48 		.word	1211916288
+ 1964 1c80 40F03B48 		.word	1211887680
+ 1965 1c84 C07B3C48 		.word	1211923392
+ 1966 1c88 401E3C48 		.word	1211899456
+ 1967 1c8c 006C3C48 		.word	1211919360
+ 1968 1c90 C09F3C48 		.word	1211932608
+ 1969 1c94 00783C48 		.word	1211922432
+ 1970 1c98 C0133D48 		.word	1211962304
+ 1971 1c9c 80513C48 		.word	1211912576
+ 1972 1ca0 00E43C48 		.word	1211950080
+ 1973 1ca4 40403C48 		.word	1211908160
+ 1974 1ca8 00AB3D48 		.word	1212001024
+ 1975 1cac 001E3C48 		.word	1211899392
+ 1976 1cb0 80373D48 		.word	1211971456
+ 1977 1cb4 C01C3C48 		.word	1211899072
+ 1978 1cb8 40523D48 		.word	1211978304
+ 1979 1cbc 40FB3B48 		.word	1211890496
+ 1980 1cc0 00AE3D48 		.word	1212001792
+ 1981 1cc4 00EC3B48 		.word	1211886592
+ 1982 1cc8 C02D3D48 		.word	1211968960
+ 1983 1ccc C0F43B48 		.word	1211888832
+ 1984 1cd0 403B3D48 		.word	1211972416
+ 1985 1cd4 40CD3B48 		.word	1211878720
+ 1986 1cd8 80EB3C48 		.word	1211952000
+ 1987 1cdc 40CF3B48 		.word	1211879232
+ 1988 1ce0 C0B53C48 		.word	1211938240
+ 1989 1ce4 C0103C48 		.word	1211896000
+ 1990 1ce8 C0913C48 		.word	1211929024
+ 1991 1cec 40D63B48 		.word	1211881024
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 39
+
+
+ 1992 1cf0 80383C48 		.word	1211906176
+ 1993 1cf4 00563C48 		.word	1211913728
+ 1994 1cf8 C01A3C48 		.word	1211898560
+ 1995 1cfc 40823C48 		.word	1211925056
+ 1996 1d00 C0E23B48 		.word	1211884224
+ 1997 1d04 00693C48 		.word	1211918592
+ 1998 1d08 C0E23B48 		.word	1211884224
+ 1999 1d0c 403F3D48 		.word	1211973440
+ 2000 1d10 C0D33B48 		.word	1211880384
+ 2001 1d14 80F43C48 		.word	1211954304
+ 2002 1d18 00F33B48 		.word	1211888384
+ 2003 1d1c C04F3D48 		.word	1211977664
+ 2004 1d20 C02B3C48 		.word	1211902912
+ 2005 1d24 00FE3D48 		.word	1212022272
+ 2006 1d28 004E3C48 		.word	1211911680
+ 2007 1d2c 80B73D48 		.word	1212004224
+ 2008 1d30 00AD3C48 		.word	1211936000
+ 2009 1d34 001C3E48 		.word	1212029952
+ 2010 1d38 00CB3C48 		.word	1211943680
+ 2011 1d3c 80223E48 		.word	1212031616
+ 2012 1d40 00253D48 		.word	1211966720
+ 2013 1d44 00303E48 		.word	1212035072
+ 2014 1d48 40973D48 		.word	1211995968
+ 2015 1d4c 40423E48 		.word	1212039744
+ 2016 1d50 00BD3D48 		.word	1212005632
+ 2017 1d54 40493E48 		.word	1212041536
+ 2018 1d58 40663E48 		.word	1212048960
+ 2019 1d5c 00483E48 		.word	1212041216
+ 2020 1d60 C0B53E48 		.word	1212069312
+ 2021 1d64 C0513E48 		.word	1212043712
+ 2022 1d68 C0D13E48 		.word	1212076480
+ 2023 1d6c 405B3E48 		.word	1212046144
+ 2024 1d70 C0B63F48 		.word	1212135104
+ 2025 1d74 40653E48 		.word	1212048704
+ 2026 1d78 40873F48 		.word	1212122944
+ 2027 1d7c C0A73E48 		.word	1212065728
+ 2028 1d80 000A4048 		.word	1212156416
+ 2029 1d84 40D43E48 		.word	1212077120
+ 2030 1d88 40B04048 		.word	1212198976
+ 2031 1d8c C00C3F48 		.word	1212091584
+ 2032 1d90 80604048 		.word	1212178560
+ 2033 1d94 80533F48 		.word	1212109696
+ 2034 1d98 00F94048 		.word	1212217600
+ 2035 1d9c 80763F48 		.word	1212118656
+ 2036 1da0 C0CB4048 		.word	1212206016
+ 2037 1da4 40C93F48 		.word	1212139840
+ 2038 1da8 00DC4048 		.word	1212210176
+ 2039 1dac 001B4048 		.word	1212160768
+ 2040 1db0 C0CC4048 		.word	1212206272
+ 2041 1db4 40124048 		.word	1212158528
+ 2042 1db8 80C24048 		.word	1212203648
+ 2043 1dbc 00AF4048 		.word	1212198656
+ 2044 1dc0 00B14048 		.word	1212199168
+ 2045 1dc4 40F94048 		.word	1212217664
+ 2046 1dc8 C0A04048 		.word	1212195008
+ 2047 1dcc 40194148 		.word	1212225856
+ 2048 1dd0 809B4048 		.word	1212193664
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 40
+
+
+ 2049 1dd4 00D54148 		.word	1212273920
+ 2050 1dd8 408C4048 		.word	1212189760
+ 2051 1ddc 80884148 		.word	1212254336
+ 2052 1de0 C0B54048 		.word	1212200384
+ 2053 1de4 00174248 		.word	1212290816
+ 2054 1de8 40CB4048 		.word	1212205888
+ 2055 1dec C0954248 		.word	1212323264
+ 2056 1df0 40EF4048 		.word	1212215104
+ 2057 1df4 00464248 		.word	1212302848
+ 2058 1df8 402B4148 		.word	1212230464
+ 2059 1dfc C0CD4248 		.word	1212337600
+ 2060 1e00 00514148 		.word	1212240128
+ 2061 1e04 80A04248 		.word	1212326016
+ 2062 1e08 80954148 		.word	1212257664
+ 2063 1e0c 80C54248 		.word	1212335488
+ 2064 1e10 00EC4148 		.word	1212279808
+ 2065 1e14 C0AD4248 		.word	1212329408
+ 2066 1e18 C0044248 		.word	1212286144
+ 2067 1e1c 00B14248 		.word	1212330240
+ 2068 1e20 407E4248 		.word	1212317248
+ 2069 1e24 00934248 		.word	1212322560
+ 2070 1e28 40AE4248 		.word	1212329536
+ 2071 1e2c 408E4248 		.word	1212321344
+ 2072 1e30 C0F14248 		.word	1212346816
+ 2073 1e34 408F4248 		.word	1212321600
+ 2074 1e38 80A14348 		.word	1212391808
+ 2075 1e3c 807C4248 		.word	1212316800
+ 2076 1e40 C0874348 		.word	1212385216
+ 2077 1e44 80B94248 		.word	1212332416
+ 2078 1e48 00334448 		.word	1212429056
+ 2079 1e4c 80DE4248 		.word	1212341888
+ 2080 1e50 40A14448 		.word	1212457280
+ 2081 1e54 C0144348 		.word	1212355776
+ 2082 1e58 80704448 		.word	1212444800
+ 2083 1e5c 00564348 		.word	1212372480
+ 2084 1e60 00124548 		.word	1212486144
+ 2085 1e64 40804348 		.word	1212383296
+ 2086 1e68 40DD4448 		.word	1212472640
+ 2087 1e6c C0CF4348 		.word	1212403648
+ 2088 1e70 80E04448 		.word	1212473472
+ 2089 1e74 00E44348 		.word	1212408832
+ 2090 1e78 C0C84448 		.word	1212467392
+ 2091 1e7c C0D64348 		.word	1212405440
+ 2092 1e80 C0754448 		.word	1212446144
+ 2093 1e84 00F74348 		.word	1212413696
+ 2094 1e88 C0DD4348 		.word	1212407232
+ 2095 1e8c 00554348 		.word	1212372224
+ 2096 1e90 80C64248 		.word	1212335744
+ 2097 1e94 407C4248 		.word	1212316736
+ 2098 1e98 80794148 		.word	1212250496
+ 2099 1e9c 40CD4148 		.word	1212271936
+ 2100 1ea0 001F4048 		.word	1212161792
+ 2101 1ea4 80404048 		.word	1212170368
+ 2102 1ea8 80F93E48 		.word	1212086656
+ 2103 1eac 80CF3F48 		.word	1212141440
+ 2104 1eb0 00E03D48 		.word	1212014592
+ 2105 1eb4 40F13E48 		.word	1212084544
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 41
+
+
+ 2106 1eb8 80083D48 		.word	1211959424
+ 2107 1ebc 80D13D48 		.word	1212010880
+ 2108 1ec0 80773C48 		.word	1211922304
+ 2109 1ec4 80C03D48 		.word	1212006528
+ 2110 1ec8 40D83B48 		.word	1211881536
+ 2111 1ecc 80EF3C48 		.word	1211953024
+ 2112 1ed0 40A03B48 		.word	1211867200
+ 2113 1ed4 C08C3C48 		.word	1211927744
+ 2114 1ed8 00613B48 		.word	1211851008
+ 2115 1edc C02C3C48 		.word	1211903168
+ 2116 1ee0 00463B48 		.word	1211844096
+ 2117 1ee4 C0EE3B48 		.word	1211887296
+ 2118 1ee8 40883B48 		.word	1211861056
+ 2119 1eec 40D03B48 		.word	1211879488
+ 2120 1ef0 80A33B48 		.word	1211868032
+ 2121 1ef4 80AA3B48 		.word	1211869824
+ 2122 1ef8 C0FE3B48 		.word	1211891392
+ 2123 1efc 00B33B48 		.word	1211872000
+ 2124 1f00 80833C48 		.word	1211925376
+ 2125 1f04 40A73B48 		.word	1211868992
+ 2126 1f08 00863C48 		.word	1211926016
+ 2127 1f0c 80DF3B48 		.word	1211883392
+ 2128 1f10 40623D48 		.word	1211982400
+ 2129 1f14 C00A3C48 		.word	1211894464
+ 2130 1f18 80953D48 		.word	1211995520
+ 2131 1f1c 00583C48 		.word	1211914240
+ 2132 1f20 80BB3D48 		.word	1212005248
+ 2133 1f24 C0B93C48 		.word	1211939264
+ 2134 1f28 408C3E48 		.word	1212058688
+ 2135 1f2c 400E3D48 		.word	1211960896
+ 2136 1f30 40723E48 		.word	1212052032
+ 2137 1f34 C0763D48 		.word	1211987648
+ 2138 1f38 80BE3E48 		.word	1212071552
+ 2139 1f3c 80B53D48 		.word	1212003712
+ 2140              		.type	firCoeffs32_HighPass, %object
+ 2141              		.size	firCoeffs32_HighPass, 44
+ 2142              	firCoeffs32_HighPass:
+ 2143 1f40 329616BA 		.word	-1172924878
+ 2144 1f44 2A199EBA 		.word	-1164043990
+ 2145 1f48 7A7A3BBB 		.word	-1153729926
+ 2146 1f4c A4CAA0BB 		.word	-1147090268
+ 2147 1f50 8C0FD7BB 		.word	-1143533684
+ 2148 1f54 C5027E3F 		.word	1065222853
+ 2149 1f58 8C0FD7BB 		.word	-1143533684
+ 2150 1f5c A4CAA0BB 		.word	-1147090268
+ 2151 1f60 7A7A3BBB 		.word	-1153729926
+ 2152 1f64 2A199EBA 		.word	-1164043990
+ 2153 1f68 329616BA 		.word	-1172924878
+ 2154              		.type	firCoeffs32_LowPass, %object
+ 2155              		.size	firCoeffs32_LowPass, 44
+ 2156              	firCoeffs32_LowPass:
+ 2157 1f6c 8CBE5C3C 		.word	1012711052
+ 2158 1f70 06E1EF3C 		.word	1022353670
+ 2159 1f74 5B0A923D 		.word	1032981083
+ 2160 1f78 6C3CFF3D 		.word	1040137324
+ 2161 1f7c 159B2C3E 		.word	1043110677
+ 2162 1f80 FBF23D3E 		.word	1044247291
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 42
+
+
+ 2163 1f84 159B2C3E 		.word	1043110677
+ 2164 1f88 6C3CFF3D 		.word	1040137324
+ 2165 1f8c 5B0A923D 		.word	1032981083
+ 2166 1f90 06E1EF3C 		.word	1022353670
+ 2167 1f94 8CBE5C3C 		.word	1012711052
+ 2168              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 2169              		.align	2
+ 2170              	.LC0:
+ 2171 0000 64617461 		.ascii	"data reading done \015\000"
+ 2171      20726561 
+ 2171      64696E67 
+ 2171      20646F6E 
+ 2171      65200D00 
+ 2172              	.LC1:
+ 2173 0014 54726169 		.ascii	"TraitementSignal\000"
+ 2173      74656D65 
+ 2173      6E745369 
+ 2173      676E616C 
+ 2173      00
+ 2174              		.text
+ 2175              	.Letext0:
+ 2176              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 2177              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 2178              		.file 5 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/device/cy_device.h"
+ 2179              		.file 6 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/syslib/cy_syslib.h"
+ 2180              		.file 7 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/scb/cy_scb_uart.h"
+ 2181              		.file 8 ".\\CMSIS\\Core\\Include/core_cm4.h"
+ 2182              		.file 9 "Generated_Source\\PSoC6/UART_1.h"
+ 2183              		.file 10 "Declaration.h"
+ 2184              		.file 11 "TraitementdeSignal.h"
+ 2185              		.file 12 "./system_psoc6.h"
+ 2186              		.file 13 "Generated_Source\\PSoC6\\pdl\\rtos/FreeRTOS/10.0.1/Source/include/task.h"
+ 2187              		.file 14 "<built-in>"
+ 2188              		.section	.debug_info,"",%progbits
+ 2189              	.Ldebug_info0:
+ 2190 0000 83080000 		.4byte	0x883
+ 2191 0004 0400     		.2byte	0x4
+ 2192 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 2193 000a 04       		.byte	0x4
+ 2194 000b 01       		.uleb128 0x1
+ 2195 000c 42050000 		.4byte	.LASF148
+ 2196 0010 0C       		.byte	0xc
+ 2197 0011 41090000 		.4byte	.LASF149
+ 2198 0015 38070000 		.4byte	.LASF150
+ 2199 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 2200 001d 00000000 		.4byte	0
+ 2201 0021 00000000 		.4byte	.Ldebug_line0
+ 2202 0025 02       		.uleb128 0x2
+ 2203 0026 02       		.byte	0x2
+ 2204 0027 05       		.byte	0x5
+ 2205 0028 BA060000 		.4byte	.LASF0
+ 2206 002c 02       		.uleb128 0x2
+ 2207 002d 01       		.byte	0x1
+ 2208 002e 06       		.byte	0x6
+ 2209 002f 94010000 		.4byte	.LASF1
+ 2210 0033 03       		.uleb128 0x3
+ 2211 0034 AA000000 		.4byte	.LASF3
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 43
+
+
+ 2212 0038 03       		.byte	0x3
+ 2213 0039 1D       		.byte	0x1d
+ 2214 003a 3E000000 		.4byte	0x3e
+ 2215 003e 02       		.uleb128 0x2
+ 2216 003f 01       		.byte	0x1
+ 2217 0040 08       		.byte	0x8
+ 2218 0041 6A060000 		.4byte	.LASF2
+ 2219 0045 03       		.uleb128 0x3
+ 2220 0046 E6020000 		.4byte	.LASF4
+ 2221 004a 03       		.byte	0x3
+ 2222 004b 29       		.byte	0x29
+ 2223 004c 25000000 		.4byte	0x25
+ 2224 0050 03       		.uleb128 0x3
+ 2225 0051 89070000 		.4byte	.LASF5
+ 2226 0055 03       		.byte	0x3
+ 2227 0056 2B       		.byte	0x2b
+ 2228 0057 5B000000 		.4byte	0x5b
+ 2229 005b 02       		.uleb128 0x2
+ 2230 005c 02       		.byte	0x2
+ 2231 005d 07       		.byte	0x7
+ 2232 005e F6070000 		.4byte	.LASF6
+ 2233 0062 03       		.uleb128 0x3
+ 2234 0063 A7070000 		.4byte	.LASF7
+ 2235 0067 03       		.byte	0x3
+ 2236 0068 3F       		.byte	0x3f
+ 2237 0069 6D000000 		.4byte	0x6d
+ 2238 006d 02       		.uleb128 0x2
+ 2239 006e 04       		.byte	0x4
+ 2240 006f 05       		.byte	0x5
+ 2241 0070 09020000 		.4byte	.LASF8
+ 2242 0074 03       		.uleb128 0x3
+ 2243 0075 B7020000 		.4byte	.LASF9
+ 2244 0079 03       		.byte	0x3
+ 2245 007a 41       		.byte	0x41
+ 2246 007b 7F000000 		.4byte	0x7f
+ 2247 007f 02       		.uleb128 0x2
+ 2248 0080 04       		.byte	0x4
+ 2249 0081 07       		.byte	0x7
+ 2250 0082 7D030000 		.4byte	.LASF10
+ 2251 0086 02       		.uleb128 0x2
+ 2252 0087 08       		.byte	0x8
+ 2253 0088 05       		.byte	0x5
+ 2254 0089 86010000 		.4byte	.LASF11
+ 2255 008d 02       		.uleb128 0x2
+ 2256 008e 08       		.byte	0x8
+ 2257 008f 07       		.byte	0x7
+ 2258 0090 F5000000 		.4byte	.LASF12
+ 2259 0094 04       		.uleb128 0x4
+ 2260 0095 04       		.byte	0x4
+ 2261 0096 05       		.byte	0x5
+ 2262 0097 696E7400 		.ascii	"int\000"
+ 2263 009b 02       		.uleb128 0x2
+ 2264 009c 04       		.byte	0x4
+ 2265 009d 07       		.byte	0x7
+ 2266 009e 57030000 		.4byte	.LASF13
+ 2267 00a2 03       		.uleb128 0x3
+ 2268 00a3 9A080000 		.4byte	.LASF14
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 44
+
+
+ 2269 00a7 04       		.byte	0x4
+ 2270 00a8 18       		.byte	0x18
+ 2271 00a9 33000000 		.4byte	0x33
+ 2272 00ad 03       		.uleb128 0x3
+ 2273 00ae 68010000 		.4byte	.LASF15
+ 2274 00b2 04       		.byte	0x4
+ 2275 00b3 20       		.byte	0x20
+ 2276 00b4 45000000 		.4byte	0x45
+ 2277 00b8 03       		.uleb128 0x3
+ 2278 00b9 56020000 		.4byte	.LASF16
+ 2279 00bd 04       		.byte	0x4
+ 2280 00be 24       		.byte	0x24
+ 2281 00bf 50000000 		.4byte	0x50
+ 2282 00c3 03       		.uleb128 0x3
+ 2283 00c4 62060000 		.4byte	.LASF17
+ 2284 00c8 04       		.byte	0x4
+ 2285 00c9 2C       		.byte	0x2c
+ 2286 00ca 62000000 		.4byte	0x62
+ 2287 00ce 03       		.uleb128 0x3
+ 2288 00cf 52080000 		.4byte	.LASF18
+ 2289 00d3 04       		.byte	0x4
+ 2290 00d4 30       		.byte	0x30
+ 2291 00d5 74000000 		.4byte	0x74
+ 2292 00d9 02       		.uleb128 0x2
+ 2293 00da 04       		.byte	0x4
+ 2294 00db 07       		.byte	0x7
+ 2295 00dc 96040000 		.4byte	.LASF19
+ 2296 00e0 05       		.uleb128 0x5
+ 2297 00e1 CE000000 		.4byte	0xce
+ 2298 00e5 05       		.uleb128 0x5
+ 2299 00e6 A2000000 		.4byte	0xa2
+ 2300 00ea 02       		.uleb128 0x2
+ 2301 00eb 08       		.byte	0x8
+ 2302 00ec 04       		.byte	0x4
+ 2303 00ed 64070000 		.4byte	.LASF20
+ 2304 00f1 06       		.uleb128 0x6
+ 2305 00f2 B8       		.byte	0xb8
+ 2306 00f3 05       		.byte	0x5
+ 2307 00f4 34       		.byte	0x34
+ 2308 00f5 02050000 		.4byte	0x502
+ 2309 00f9 07       		.uleb128 0x7
+ 2310 00fa DC000000 		.4byte	.LASF21
+ 2311 00fe 05       		.byte	0x5
+ 2312 00ff 37       		.byte	0x37
+ 2313 0100 CE000000 		.4byte	0xce
+ 2314 0104 00       		.byte	0
+ 2315 0105 07       		.uleb128 0x7
+ 2316 0106 AC020000 		.4byte	.LASF22
+ 2317 010a 05       		.byte	0x5
+ 2318 010b 38       		.byte	0x38
+ 2319 010c CE000000 		.4byte	0xce
+ 2320 0110 04       		.byte	0x4
+ 2321 0111 07       		.uleb128 0x7
+ 2322 0112 3C020000 		.4byte	.LASF23
+ 2323 0116 05       		.byte	0x5
+ 2324 0117 39       		.byte	0x39
+ 2325 0118 CE000000 		.4byte	0xce
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 45
+
+
+ 2326 011c 08       		.byte	0x8
+ 2327 011d 07       		.uleb128 0x7
+ 2328 011e 54060000 		.4byte	.LASF24
+ 2329 0122 05       		.byte	0x5
+ 2330 0123 3A       		.byte	0x3a
+ 2331 0124 CE000000 		.4byte	0xce
+ 2332 0128 0C       		.byte	0xc
+ 2333 0129 07       		.uleb128 0x7
+ 2334 012a 3B040000 		.4byte	.LASF25
+ 2335 012e 05       		.byte	0x5
+ 2336 012f 3B       		.byte	0x3b
+ 2337 0130 CE000000 		.4byte	0xce
+ 2338 0134 10       		.byte	0x10
+ 2339 0135 07       		.uleb128 0x7
+ 2340 0136 F9010000 		.4byte	.LASF26
+ 2341 013a 05       		.byte	0x5
+ 2342 013b 3C       		.byte	0x3c
+ 2343 013c CE000000 		.4byte	0xce
+ 2344 0140 14       		.byte	0x14
+ 2345 0141 07       		.uleb128 0x7
+ 2346 0142 37080000 		.4byte	.LASF27
+ 2347 0146 05       		.byte	0x5
+ 2348 0147 3D       		.byte	0x3d
+ 2349 0148 CE000000 		.4byte	0xce
+ 2350 014c 18       		.byte	0x18
+ 2351 014d 07       		.uleb128 0x7
+ 2352 014e 71000000 		.4byte	.LASF28
+ 2353 0152 05       		.byte	0x5
+ 2354 0153 3E       		.byte	0x3e
+ 2355 0154 CE000000 		.4byte	0xce
+ 2356 0158 1C       		.byte	0x1c
+ 2357 0159 07       		.uleb128 0x7
+ 2358 015a 1C090000 		.4byte	.LASF29
+ 2359 015e 05       		.byte	0x5
+ 2360 015f 3F       		.byte	0x3f
+ 2361 0160 CE000000 		.4byte	0xce
+ 2362 0164 20       		.byte	0x20
+ 2363 0165 07       		.uleb128 0x7
+ 2364 0166 71040000 		.4byte	.LASF30
+ 2365 016a 05       		.byte	0x5
+ 2366 016b 40       		.byte	0x40
+ 2367 016c CE000000 		.4byte	0xce
+ 2368 0170 24       		.byte	0x24
+ 2369 0171 07       		.uleb128 0x7
+ 2370 0172 4C090000 		.4byte	.LASF31
+ 2371 0176 05       		.byte	0x5
+ 2372 0177 43       		.byte	0x43
+ 2373 0178 A2000000 		.4byte	0xa2
+ 2374 017c 28       		.byte	0x28
+ 2375 017d 07       		.uleb128 0x7
+ 2376 017e 57000000 		.4byte	.LASF32
+ 2377 0182 05       		.byte	0x5
+ 2378 0183 44       		.byte	0x44
+ 2379 0184 A2000000 		.4byte	0xa2
+ 2380 0188 29       		.byte	0x29
+ 2381 0189 07       		.uleb128 0x7
+ 2382 018a 12090000 		.4byte	.LASF33
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 46
+
+
+ 2383 018e 05       		.byte	0x5
+ 2384 018f 45       		.byte	0x45
+ 2385 0190 A2000000 		.4byte	0xa2
+ 2386 0194 2A       		.byte	0x2a
+ 2387 0195 07       		.uleb128 0x7
+ 2388 0196 1A050000 		.4byte	.LASF34
+ 2389 019a 05       		.byte	0x5
+ 2390 019b 46       		.byte	0x46
+ 2391 019c A2000000 		.4byte	0xa2
+ 2392 01a0 2B       		.byte	0x2b
+ 2393 01a1 07       		.uleb128 0x7
+ 2394 01a2 10040000 		.4byte	.LASF35
+ 2395 01a6 05       		.byte	0x5
+ 2396 01a7 47       		.byte	0x47
+ 2397 01a8 A2000000 		.4byte	0xa2
+ 2398 01ac 2C       		.byte	0x2c
+ 2399 01ad 07       		.uleb128 0x7
+ 2400 01ae B1070000 		.4byte	.LASF36
+ 2401 01b2 05       		.byte	0x5
+ 2402 01b3 48       		.byte	0x48
+ 2403 01b4 A2000000 		.4byte	0xa2
+ 2404 01b8 2D       		.byte	0x2d
+ 2405 01b9 07       		.uleb128 0x7
+ 2406 01ba CA010000 		.4byte	.LASF37
+ 2407 01be 05       		.byte	0x5
+ 2408 01bf 49       		.byte	0x49
+ 2409 01c0 A2000000 		.4byte	0xa2
+ 2410 01c4 2E       		.byte	0x2e
+ 2411 01c5 07       		.uleb128 0x7
+ 2412 01c6 81040000 		.4byte	.LASF38
+ 2413 01ca 05       		.byte	0x5
+ 2414 01cb 4A       		.byte	0x4a
+ 2415 01cc A2000000 		.4byte	0xa2
+ 2416 01d0 2F       		.byte	0x2f
+ 2417 01d1 07       		.uleb128 0x7
+ 2418 01d2 D9040000 		.4byte	.LASF39
+ 2419 01d6 05       		.byte	0x5
+ 2420 01d7 4B       		.byte	0x4b
+ 2421 01d8 A2000000 		.4byte	0xa2
+ 2422 01dc 30       		.byte	0x30
+ 2423 01dd 07       		.uleb128 0x7
+ 2424 01de AE030000 		.4byte	.LASF40
+ 2425 01e2 05       		.byte	0x5
+ 2426 01e3 4E       		.byte	0x4e
+ 2427 01e4 A2000000 		.4byte	0xa2
+ 2428 01e8 31       		.byte	0x31
+ 2429 01e9 07       		.uleb128 0x7
+ 2430 01ea 9C000000 		.4byte	.LASF41
+ 2431 01ee 05       		.byte	0x5
+ 2432 01ef 4F       		.byte	0x4f
+ 2433 01f0 A2000000 		.4byte	0xa2
+ 2434 01f4 32       		.byte	0x32
+ 2435 01f5 07       		.uleb128 0x7
+ 2436 01f6 B9030000 		.4byte	.LASF42
+ 2437 01fa 05       		.byte	0x5
+ 2438 01fb 50       		.byte	0x50
+ 2439 01fc A2000000 		.4byte	0xa2
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 47
+
+
+ 2440 0200 33       		.byte	0x33
+ 2441 0201 07       		.uleb128 0x7
+ 2442 0202 B4000000 		.4byte	.LASF43
+ 2443 0206 05       		.byte	0x5
+ 2444 0207 51       		.byte	0x51
+ 2445 0208 A2000000 		.4byte	0xa2
+ 2446 020c 34       		.byte	0x34
+ 2447 020d 07       		.uleb128 0x7
+ 2448 020e 2A080000 		.4byte	.LASF44
+ 2449 0212 05       		.byte	0x5
+ 2450 0213 52       		.byte	0x52
+ 2451 0214 AD000000 		.4byte	0xad
+ 2452 0218 36       		.byte	0x36
+ 2453 0219 07       		.uleb128 0x7
+ 2454 021a 04070000 		.4byte	.LASF45
+ 2455 021e 05       		.byte	0x5
+ 2456 021f 53       		.byte	0x53
+ 2457 0220 AD000000 		.4byte	0xad
+ 2458 0224 38       		.byte	0x38
+ 2459 0225 07       		.uleb128 0x7
+ 2460 0226 75080000 		.4byte	.LASF46
+ 2461 022a 05       		.byte	0x5
+ 2462 022b 54       		.byte	0x54
+ 2463 022c AD000000 		.4byte	0xad
+ 2464 0230 3A       		.byte	0x3a
+ 2465 0231 07       		.uleb128 0x7
+ 2466 0232 EA010000 		.4byte	.LASF47
+ 2467 0236 05       		.byte	0x5
+ 2468 0237 55       		.byte	0x55
+ 2469 0238 A2000000 		.4byte	0xa2
+ 2470 023c 3C       		.byte	0x3c
+ 2471 023d 07       		.uleb128 0x7
+ 2472 023e 7B020000 		.4byte	.LASF48
+ 2473 0242 05       		.byte	0x5
+ 2474 0243 56       		.byte	0x56
+ 2475 0244 A2000000 		.4byte	0xa2
+ 2476 0248 3D       		.byte	0x3d
+ 2477 0249 07       		.uleb128 0x7
+ 2478 024a E6060000 		.4byte	.LASF49
+ 2479 024e 05       		.byte	0x5
+ 2480 024f 57       		.byte	0x57
+ 2481 0250 A2000000 		.4byte	0xa2
+ 2482 0254 3E       		.byte	0x3e
+ 2483 0255 07       		.uleb128 0x7
+ 2484 0256 65000000 		.4byte	.LASF50
+ 2485 025a 05       		.byte	0x5
+ 2486 025b 58       		.byte	0x58
+ 2487 025c A2000000 		.4byte	0xa2
+ 2488 0260 3F       		.byte	0x3f
+ 2489 0261 07       		.uleb128 0x7
+ 2490 0262 28050000 		.4byte	.LASF51
+ 2491 0266 05       		.byte	0x5
+ 2492 0267 59       		.byte	0x59
+ 2493 0268 A2000000 		.4byte	0xa2
+ 2494 026c 40       		.byte	0x40
+ 2495 026d 07       		.uleb128 0x7
+ 2496 026e C2020000 		.4byte	.LASF52
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 48
+
+
+ 2497 0272 05       		.byte	0x5
+ 2498 0273 5A       		.byte	0x5a
+ 2499 0274 A2000000 		.4byte	0xa2
+ 2500 0278 41       		.byte	0x41
+ 2501 0279 07       		.uleb128 0x7
+ 2502 027a CD040000 		.4byte	.LASF53
+ 2503 027e 05       		.byte	0x5
+ 2504 027f 5B       		.byte	0x5b
+ 2505 0280 A2000000 		.4byte	0xa2
+ 2506 0284 42       		.byte	0x42
+ 2507 0285 07       		.uleb128 0x7
+ 2508 0286 F6040000 		.4byte	.LASF54
+ 2509 028a 05       		.byte	0x5
+ 2510 028b 5C       		.byte	0x5c
+ 2511 028c A2000000 		.4byte	0xa2
+ 2512 0290 43       		.byte	0x43
+ 2513 0291 07       		.uleb128 0x7
+ 2514 0292 45020000 		.4byte	.LASF55
+ 2515 0296 05       		.byte	0x5
+ 2516 0297 5D       		.byte	0x5d
+ 2517 0298 A2000000 		.4byte	0xa2
+ 2518 029c 44       		.byte	0x44
+ 2519 029d 07       		.uleb128 0x7
+ 2520 029e 00000000 		.4byte	.LASF56
+ 2521 02a2 05       		.byte	0x5
+ 2522 02a3 5E       		.byte	0x5e
+ 2523 02a4 CE000000 		.4byte	0xce
+ 2524 02a8 48       		.byte	0x48
+ 2525 02a9 07       		.uleb128 0x7
+ 2526 02aa 21020000 		.4byte	.LASF57
+ 2527 02ae 05       		.byte	0x5
+ 2528 02af 5F       		.byte	0x5f
+ 2529 02b0 CE000000 		.4byte	0xce
+ 2530 02b4 4C       		.byte	0x4c
+ 2531 02b5 07       		.uleb128 0x7
+ 2532 02b6 59090000 		.4byte	.LASF58
+ 2533 02ba 05       		.byte	0x5
+ 2534 02bb 60       		.byte	0x60
+ 2535 02bc A2000000 		.4byte	0xa2
+ 2536 02c0 50       		.byte	0x50
+ 2537 02c1 07       		.uleb128 0x7
+ 2538 02c2 42010000 		.4byte	.LASF59
+ 2539 02c6 05       		.byte	0x5
+ 2540 02c7 61       		.byte	0x61
+ 2541 02c8 A2000000 		.4byte	0xa2
+ 2542 02cc 51       		.byte	0x51
+ 2543 02cd 07       		.uleb128 0x7
+ 2544 02ce 8A080000 		.4byte	.LASF60
+ 2545 02d2 05       		.byte	0x5
+ 2546 02d3 62       		.byte	0x62
+ 2547 02d4 A2000000 		.4byte	0xa2
+ 2548 02d8 52       		.byte	0x52
+ 2549 02d9 07       		.uleb128 0x7
+ 2550 02da C8070000 		.4byte	.LASF61
+ 2551 02de 05       		.byte	0x5
+ 2552 02df 63       		.byte	0x63
+ 2553 02e0 A2000000 		.4byte	0xa2
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 49
+
+
+ 2554 02e4 53       		.byte	0x53
+ 2555 02e5 07       		.uleb128 0x7
+ 2556 02e6 F4060000 		.4byte	.LASF62
+ 2557 02ea 05       		.byte	0x5
+ 2558 02eb 64       		.byte	0x64
+ 2559 02ec A2000000 		.4byte	0xa2
+ 2560 02f0 54       		.byte	0x54
+ 2561 02f1 07       		.uleb128 0x7
+ 2562 02f2 54010000 		.4byte	.LASF63
+ 2563 02f6 05       		.byte	0x5
+ 2564 02f7 65       		.byte	0x65
+ 2565 02f8 A2000000 		.4byte	0xa2
+ 2566 02fc 55       		.byte	0x55
+ 2567 02fd 07       		.uleb128 0x7
+ 2568 02fe 75070000 		.4byte	.LASF64
+ 2569 0302 05       		.byte	0x5
+ 2570 0303 66       		.byte	0x66
+ 2571 0304 A2000000 		.4byte	0xa2
+ 2572 0308 56       		.byte	0x56
+ 2573 0309 07       		.uleb128 0x7
+ 2574 030a C5030000 		.4byte	.LASF65
+ 2575 030e 05       		.byte	0x5
+ 2576 030f 67       		.byte	0x67
+ 2577 0310 A2000000 		.4byte	0xa2
+ 2578 0314 57       		.byte	0x57
+ 2579 0315 07       		.uleb128 0x7
+ 2580 0316 1C000000 		.4byte	.LASF66
+ 2581 031a 05       		.byte	0x5
+ 2582 031b 68       		.byte	0x68
+ 2583 031c A2000000 		.4byte	0xa2
+ 2584 0320 58       		.byte	0x58
+ 2585 0321 07       		.uleb128 0x7
+ 2586 0322 78060000 		.4byte	.LASF67
+ 2587 0326 05       		.byte	0x5
+ 2588 0327 69       		.byte	0x69
+ 2589 0328 A2000000 		.4byte	0xa2
+ 2590 032c 59       		.byte	0x59
+ 2591 032d 07       		.uleb128 0x7
+ 2592 032e 9F040000 		.4byte	.LASF68
+ 2593 0332 05       		.byte	0x5
+ 2594 0333 6E       		.byte	0x6e
+ 2595 0334 B8000000 		.4byte	0xb8
+ 2596 0338 5A       		.byte	0x5a
+ 2597 0339 07       		.uleb128 0x7
+ 2598 033a 09080000 		.4byte	.LASF69
+ 2599 033e 05       		.byte	0x5
+ 2600 033f 6F       		.byte	0x6f
+ 2601 0340 B8000000 		.4byte	0xb8
+ 2602 0344 5C       		.byte	0x5c
+ 2603 0345 07       		.uleb128 0x7
+ 2604 0346 E6000000 		.4byte	.LASF70
+ 2605 034a 05       		.byte	0x5
+ 2606 034b 70       		.byte	0x70
+ 2607 034c A2000000 		.4byte	0xa2
+ 2608 0350 5E       		.byte	0x5e
+ 2609 0351 07       		.uleb128 0x7
+ 2610 0352 22060000 		.4byte	.LASF71
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 50
+
+
+ 2611 0356 05       		.byte	0x5
+ 2612 0357 71       		.byte	0x71
+ 2613 0358 A2000000 		.4byte	0xa2
+ 2614 035c 5F       		.byte	0x5f
+ 2615 035d 07       		.uleb128 0x7
+ 2616 035e E5040000 		.4byte	.LASF72
+ 2617 0362 05       		.byte	0x5
+ 2618 0363 72       		.byte	0x72
+ 2619 0364 A2000000 		.4byte	0xa2
+ 2620 0368 60       		.byte	0x60
+ 2621 0369 07       		.uleb128 0x7
+ 2622 036a FB050000 		.4byte	.LASF73
+ 2623 036e 05       		.byte	0x5
+ 2624 036f 73       		.byte	0x73
+ 2625 0370 CE000000 		.4byte	0xce
+ 2626 0374 64       		.byte	0x64
+ 2627 0375 07       		.uleb128 0x7
+ 2628 0376 0C010000 		.4byte	.LASF74
+ 2629 037a 05       		.byte	0x5
+ 2630 037b 76       		.byte	0x76
+ 2631 037c B8000000 		.4byte	0xb8
+ 2632 0380 68       		.byte	0x68
+ 2633 0381 07       		.uleb128 0x7
+ 2634 0382 6B030000 		.4byte	.LASF75
+ 2635 0386 05       		.byte	0x5
+ 2636 0387 77       		.byte	0x77
+ 2637 0388 B8000000 		.4byte	0xb8
+ 2638 038c 6A       		.byte	0x6a
+ 2639 038d 07       		.uleb128 0x7
+ 2640 038e D9030000 		.4byte	.LASF76
+ 2641 0392 05       		.byte	0x5
+ 2642 0393 78       		.byte	0x78
+ 2643 0394 B8000000 		.4byte	0xb8
+ 2644 0398 6C       		.byte	0x6c
+ 2645 0399 07       		.uleb128 0x7
+ 2646 039a 16070000 		.4byte	.LASF77
+ 2647 039e 05       		.byte	0x5
+ 2648 039f 79       		.byte	0x79
+ 2649 03a0 B8000000 		.4byte	0xb8
+ 2650 03a4 6E       		.byte	0x6e
+ 2651 03a5 07       		.uleb128 0x7
+ 2652 03a6 D2060000 		.4byte	.LASF78
+ 2653 03aa 05       		.byte	0x5
+ 2654 03ab 7B       		.byte	0x7b
+ 2655 03ac A2000000 		.4byte	0xa2
+ 2656 03b0 70       		.byte	0x70
+ 2657 03b1 07       		.uleb128 0x7
+ 2658 03b2 A0010000 		.4byte	.LASF79
+ 2659 03b6 05       		.byte	0x5
+ 2660 03b7 7C       		.byte	0x7c
+ 2661 03b8 A2000000 		.4byte	0xa2
+ 2662 03bc 71       		.byte	0x71
+ 2663 03bd 07       		.uleb128 0x7
+ 2664 03be F9020000 		.4byte	.LASF80
+ 2665 03c2 05       		.byte	0x5
+ 2666 03c3 7D       		.byte	0x7d
+ 2667 03c4 A2000000 		.4byte	0xa2
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 51
+
+
+ 2668 03c8 72       		.byte	0x72
+ 2669 03c9 07       		.uleb128 0x7
+ 2670 03ca B6040000 		.4byte	.LASF81
+ 2671 03ce 05       		.byte	0x5
+ 2672 03cf 7E       		.byte	0x7e
+ 2673 03d0 A2000000 		.4byte	0xa2
+ 2674 03d4 73       		.byte	0x73
+ 2675 03d5 07       		.uleb128 0x7
+ 2676 03d6 86020000 		.4byte	.LASF82
+ 2677 03da 05       		.byte	0x5
+ 2678 03db 80       		.byte	0x80
+ 2679 03dc B8000000 		.4byte	0xb8
+ 2680 03e0 74       		.byte	0x74
+ 2681 03e1 07       		.uleb128 0x7
+ 2682 03e2 94070000 		.4byte	.LASF83
+ 2683 03e6 05       		.byte	0x5
+ 2684 03e7 81       		.byte	0x81
+ 2685 03e8 B8000000 		.4byte	0xb8
+ 2686 03ec 76       		.byte	0x76
+ 2687 03ed 07       		.uleb128 0x7
+ 2688 03ee 66020000 		.4byte	.LASF84
+ 2689 03f2 05       		.byte	0x5
+ 2690 03f3 82       		.byte	0x82
+ 2691 03f4 B8000000 		.4byte	0xb8
+ 2692 03f8 78       		.byte	0x78
+ 2693 03f9 07       		.uleb128 0x7
+ 2694 03fa A5060000 		.4byte	.LASF85
+ 2695 03fe 05       		.byte	0x5
+ 2696 03ff 83       		.byte	0x83
+ 2697 0400 B8000000 		.4byte	0xb8
+ 2698 0404 7A       		.byte	0x7a
+ 2699 0405 07       		.uleb128 0x7
+ 2700 0406 B7080000 		.4byte	.LASF86
+ 2701 040a 05       		.byte	0x5
+ 2702 040b 86       		.byte	0x86
+ 2703 040c A2000000 		.4byte	0xa2
+ 2704 0410 7C       		.byte	0x7c
+ 2705 0411 07       		.uleb128 0x7
+ 2706 0412 FF030000 		.4byte	.LASF87
+ 2707 0416 05       		.byte	0x5
+ 2708 0417 87       		.byte	0x87
+ 2709 0418 A2000000 		.4byte	0xa2
+ 2710 041c 7D       		.byte	0x7d
+ 2711 041d 07       		.uleb128 0x7
+ 2712 041e 30000000 		.4byte	.LASF88
+ 2713 0422 05       		.byte	0x5
+ 2714 0423 88       		.byte	0x88
+ 2715 0424 A2000000 		.4byte	0xa2
+ 2716 0428 7E       		.byte	0x7e
+ 2717 0429 07       		.uleb128 0x7
+ 2718 042a 98020000 		.4byte	.LASF89
+ 2719 042e 05       		.byte	0x5
+ 2720 042f 89       		.byte	0x89
+ 2721 0430 A2000000 		.4byte	0xa2
+ 2722 0434 7F       		.byte	0x7f
+ 2723 0435 07       		.uleb128 0x7
+ 2724 0436 2E030000 		.4byte	.LASF90
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 52
+
+
+ 2725 043a 05       		.byte	0x5
+ 2726 043b 8A       		.byte	0x8a
+ 2727 043c A2000000 		.4byte	0xa2
+ 2728 0440 80       		.byte	0x80
+ 2729 0441 07       		.uleb128 0x7
+ 2730 0442 5A040000 		.4byte	.LASF91
+ 2731 0446 05       		.byte	0x5
+ 2732 0447 8D       		.byte	0x8d
+ 2733 0448 CE000000 		.4byte	0xce
+ 2734 044c 84       		.byte	0x84
+ 2735 044d 07       		.uleb128 0x7
+ 2736 044e C5000000 		.4byte	.LASF92
+ 2737 0452 05       		.byte	0x5
+ 2738 0453 8E       		.byte	0x8e
+ 2739 0454 CE000000 		.4byte	0xce
+ 2740 0458 88       		.byte	0x88
+ 2741 0459 07       		.uleb128 0x7
+ 2742 045a A2080000 		.4byte	.LASF93
+ 2743 045e 05       		.byte	0x5
+ 2744 045f 8F       		.byte	0x8f
+ 2745 0460 CE000000 		.4byte	0xce
+ 2746 0464 8C       		.byte	0x8c
+ 2747 0465 07       		.uleb128 0x7
+ 2748 0466 42030000 		.4byte	.LASF94
+ 2749 046a 05       		.byte	0x5
+ 2750 046b 90       		.byte	0x90
+ 2751 046c CE000000 		.4byte	0xce
+ 2752 0470 90       		.byte	0x90
+ 2753 0471 07       		.uleb128 0x7
+ 2754 0472 0F030000 		.4byte	.LASF95
+ 2755 0476 05       		.byte	0x5
+ 2756 0477 91       		.byte	0x91
+ 2757 0478 CE000000 		.4byte	0xce
+ 2758 047c 94       		.byte	0x94
+ 2759 047d 07       		.uleb128 0x7
+ 2760 047e 44040000 		.4byte	.LASF96
+ 2761 0482 05       		.byte	0x5
+ 2762 0483 92       		.byte	0x92
+ 2763 0484 CE000000 		.4byte	0xce
+ 2764 0488 98       		.byte	0x98
+ 2765 0489 07       		.uleb128 0x7
+ 2766 048a F3080000 		.4byte	.LASF97
+ 2767 048e 05       		.byte	0x5
+ 2768 048f 93       		.byte	0x93
+ 2769 0490 CE000000 		.4byte	0xce
+ 2770 0494 9C       		.byte	0x9c
+ 2771 0495 07       		.uleb128 0x7
+ 2772 0496 26010000 		.4byte	.LASF98
+ 2773 049a 05       		.byte	0x5
+ 2774 049b 94       		.byte	0x94
+ 2775 049c CE000000 		.4byte	0xce
+ 2776 04a0 A0       		.byte	0xa0
+ 2777 04a1 07       		.uleb128 0x7
+ 2778 04a2 D5010000 		.4byte	.LASF99
+ 2779 04a6 05       		.byte	0x5
+ 2780 04a7 95       		.byte	0x95
+ 2781 04a8 B8000000 		.4byte	0xb8
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 53
+
+
+ 2782 04ac A4       		.byte	0xa4
+ 2783 04ad 07       		.uleb128 0x7
+ 2784 04ae 23070000 		.4byte	.LASF100
+ 2785 04b2 05       		.byte	0x5
+ 2786 04b3 96       		.byte	0x96
+ 2787 04b4 B8000000 		.4byte	0xb8
+ 2788 04b8 A6       		.byte	0xa6
+ 2789 04b9 07       		.uleb128 0x7
+ 2790 04ba 16060000 		.4byte	.LASF101
+ 2791 04be 05       		.byte	0x5
+ 2792 04bf 97       		.byte	0x97
+ 2793 04c0 B8000000 		.4byte	0xb8
+ 2794 04c4 A8       		.byte	0xa8
+ 2795 04c5 07       		.uleb128 0x7
+ 2796 04c6 C4060000 		.4byte	.LASF102
+ 2797 04ca 05       		.byte	0x5
+ 2798 04cb 98       		.byte	0x98
+ 2799 04cc B8000000 		.4byte	0xb8
+ 2800 04d0 AA       		.byte	0xaa
+ 2801 04d1 07       		.uleb128 0x7
+ 2802 04d2 E8030000 		.4byte	.LASF103
+ 2803 04d6 05       		.byte	0x5
+ 2804 04d7 99       		.byte	0x99
+ 2805 04d8 B8000000 		.4byte	0xb8
+ 2806 04dc AC       		.byte	0xac
+ 2807 04dd 07       		.uleb128 0x7
+ 2808 04de 7A000000 		.4byte	.LASF104
+ 2809 04e2 05       		.byte	0x5
+ 2810 04e3 9A       		.byte	0x9a
+ 2811 04e4 B8000000 		.4byte	0xb8
+ 2812 04e8 AE       		.byte	0xae
+ 2813 04e9 07       		.uleb128 0x7
+ 2814 04ea 12080000 		.4byte	.LASF105
+ 2815 04ee 05       		.byte	0x5
+ 2816 04ef 9D       		.byte	0x9d
+ 2817 04f0 B8000000 		.4byte	0xb8
+ 2818 04f4 B0       		.byte	0xb0
+ 2819 04f5 07       		.uleb128 0x7
+ 2820 04f6 43000000 		.4byte	.LASF106
+ 2821 04fa 05       		.byte	0x5
+ 2822 04fb 9E       		.byte	0x9e
+ 2823 04fc CE000000 		.4byte	0xce
+ 2824 0500 B4       		.byte	0xb4
+ 2825 0501 00       		.byte	0
+ 2826 0502 03       		.uleb128 0x3
+ 2827 0503 1C040000 		.4byte	.LASF107
+ 2828 0507 05       		.byte	0x5
+ 2829 0508 9F       		.byte	0x9f
+ 2830 0509 F1000000 		.4byte	0xf1
+ 2831 050d 02       		.uleb128 0x2
+ 2832 050e 01       		.byte	0x1
+ 2833 050f 08       		.byte	0x8
+ 2834 0510 70070000 		.4byte	.LASF108
+ 2835 0514 08       		.uleb128 0x8
+ 2836 0515 BE070000 		.4byte	.LASF109
+ 2837 0519 06       		.byte	0x6
+ 2838 051a F701     		.2byte	0x1f7
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 54
+
+
+ 2839 051c 20050000 		.4byte	0x520
+ 2840 0520 02       		.uleb128 0x2
+ 2841 0521 04       		.byte	0x4
+ 2842 0522 04       		.byte	0x4
+ 2843 0523 F5050000 		.4byte	.LASF110
+ 2844 0527 02       		.uleb128 0x2
+ 2845 0528 08       		.byte	0x8
+ 2846 0529 04       		.byte	0x4
+ 2847 052a 5F020000 		.4byte	.LASF111
+ 2848 052e 09       		.uleb128 0x9
+ 2849 052f 04       		.byte	0x4
+ 2850 0530 02       		.uleb128 0x2
+ 2851 0531 01       		.byte	0x1
+ 2852 0532 02       		.byte	0x2
+ 2853 0533 5C060000 		.4byte	.LASF112
+ 2854 0537 0A       		.uleb128 0xa
+ 2855 0538 04       		.byte	0x4
+ 2856 0539 3D050000 		.4byte	0x53d
+ 2857 053d 0B       		.uleb128 0xb
+ 2858 053e 48050000 		.4byte	0x548
+ 2859 0542 0C       		.uleb128 0xc
+ 2860 0543 CE000000 		.4byte	0xce
+ 2861 0547 00       		.byte	0
+ 2862 0548 05       		.uleb128 0x5
+ 2863 0549 30050000 		.4byte	0x530
+ 2864 054d 08       		.uleb128 0x8
+ 2865 054e 8F030000 		.4byte	.LASF113
+ 2866 0552 07       		.byte	0x7
+ 2867 0553 D901     		.2byte	0x1d9
+ 2868 0555 37050000 		.4byte	0x537
+ 2869 0559 0D       		.uleb128 0xd
+ 2870 055a 29090000 		.4byte	.LASF151
+ 2871 055e 38       		.byte	0x38
+ 2872 055f 07       		.byte	0x7
+ 2873 0560 7502     		.2byte	0x275
+ 2874 0562 1D060000 		.4byte	0x61d
+ 2875 0566 0E       		.uleb128 0xe
+ 2876 0567 09090000 		.4byte	.LASF114
+ 2877 056b 07       		.byte	0x7
+ 2878 056c 7802     		.2byte	0x278
+ 2879 056e E0000000 		.4byte	0xe0
+ 2880 0572 00       		.byte	0
+ 2881 0573 0E       		.uleb128 0xe
+ 2882 0574 01050000 		.4byte	.LASF115
+ 2883 0578 07       		.byte	0x7
+ 2884 0579 7902     		.2byte	0x279
+ 2885 057b E0000000 		.4byte	0xe0
+ 2886 057f 04       		.byte	0x4
+ 2887 0580 0E       		.uleb128 0xe
+ 2888 0581 1C010000 		.4byte	.LASF116
+ 2889 0585 07       		.byte	0x7
+ 2890 0586 7B02     		.2byte	0x27b
+ 2891 0588 2E050000 		.4byte	0x52e
+ 2892 058c 08       		.byte	0x8
+ 2893 058d 0E       		.uleb128 0xe
+ 2894 058e E8070000 		.4byte	.LASF117
+ 2895 0592 07       		.byte	0x7
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 55
+
+
+ 2896 0593 7C02     		.2byte	0x27c
+ 2897 0595 CE000000 		.4byte	0xce
+ 2898 0599 0C       		.byte	0xc
+ 2899 059a 0E       		.uleb128 0xe
+ 2900 059b DA070000 		.4byte	.LASF118
+ 2901 059f 07       		.byte	0x7
+ 2902 05a0 7D02     		.2byte	0x27d
+ 2903 05a2 E0000000 		.4byte	0xe0
+ 2904 05a6 10       		.byte	0x10
+ 2905 05a7 0E       		.uleb128 0xe
+ 2906 05a8 D8080000 		.4byte	.LASF119
+ 2907 05ac 07       		.byte	0x7
+ 2908 05ad 7E02     		.2byte	0x27e
+ 2909 05af E0000000 		.4byte	0xe0
+ 2910 05b3 14       		.byte	0x14
+ 2911 05b4 0E       		.uleb128 0xe
+ 2912 05b5 6A090000 		.4byte	.LASF120
+ 2913 05b9 07       		.byte	0x7
+ 2914 05ba 8002     		.2byte	0x280
+ 2915 05bc 2E050000 		.4byte	0x52e
+ 2916 05c0 18       		.byte	0x18
+ 2917 05c1 0E       		.uleb128 0xe
+ 2918 05c2 12000000 		.4byte	.LASF121
+ 2919 05c6 07       		.byte	0x7
+ 2920 05c7 8102     		.2byte	0x281
+ 2921 05c9 CE000000 		.4byte	0xce
+ 2922 05cd 1C       		.byte	0x1c
+ 2923 05ce 0E       		.uleb128 0xe
+ 2924 05cf F0020000 		.4byte	.LASF122
+ 2925 05d3 07       		.byte	0x7
+ 2926 05d4 8202     		.2byte	0x282
+ 2927 05d6 E0000000 		.4byte	0xe0
+ 2928 05da 20       		.byte	0x20
+ 2929 05db 0E       		.uleb128 0xe
+ 2930 05dc 3C010000 		.4byte	.LASF123
+ 2931 05e0 07       		.byte	0x7
+ 2932 05e1 8402     		.2byte	0x284
+ 2933 05e3 2E050000 		.4byte	0x52e
+ 2934 05e7 24       		.byte	0x24
+ 2935 05e8 0E       		.uleb128 0xe
+ 2936 05e9 24030000 		.4byte	.LASF124
+ 2937 05ed 07       		.byte	0x7
+ 2938 05ee 8502     		.2byte	0x285
+ 2939 05f0 CE000000 		.4byte	0xce
+ 2940 05f4 28       		.byte	0x28
+ 2941 05f5 0E       		.uleb128 0xe
+ 2942 05f6 38060000 		.4byte	.LASF125
+ 2943 05fa 07       		.byte	0x7
+ 2944 05fb 8602     		.2byte	0x286
+ 2945 05fd E0000000 		.4byte	0xe0
+ 2946 0601 2C       		.byte	0x2c
+ 2947 0602 0E       		.uleb128 0xe
+ 2948 0603 F6030000 		.4byte	.LASF126
+ 2949 0607 07       		.byte	0x7
+ 2950 0608 8B02     		.2byte	0x28b
+ 2951 060a 4D050000 		.4byte	0x54d
+ 2952 060e 30       		.byte	0x30
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 56
+
+
+ 2953 060f 0E       		.uleb128 0xe
+ 2954 0610 40080000 		.4byte	.LASF127
+ 2955 0614 07       		.byte	0x7
+ 2956 0615 8E02     		.2byte	0x28e
+ 2957 0617 CE000000 		.4byte	0xce
+ 2958 061b 34       		.byte	0x34
+ 2959 061c 00       		.byte	0
+ 2960 061d 08       		.uleb128 0x8
+ 2961 061e 5B080000 		.4byte	.LASF128
+ 2962 0622 07       		.byte	0x7
+ 2963 0623 9102     		.2byte	0x291
+ 2964 0625 59050000 		.4byte	0x559
+ 2965 0629 0F       		.uleb128 0xf
+ 2966 062a 35050000 		.4byte	.LASF152
+ 2967 062e 02       		.byte	0x2
+ 2968 062f 81       		.byte	0x81
+ 2969 0630 03       		.byte	0x3
+ 2970 0631 10       		.uleb128 0x10
+ 2971 0632 24090000 		.4byte	.LASF153
+ 2972 0636 01       		.byte	0x1
+ 2973 0637 1C       		.byte	0x1c
+ 2974 0638 94000000 		.4byte	0x94
+ 2975 063c 00000000 		.4byte	.LFB518
+ 2976 0640 70000000 		.4byte	.LFE518-.LFB518
+ 2977 0644 01       		.uleb128 0x1
+ 2978 0645 9C       		.byte	0x9c
+ 2979 0646 DF060000 		.4byte	0x6df
+ 2980 064a 11       		.uleb128 0x11
+ 2981 064b 29060000 		.4byte	0x629
+ 2982 064f 0C000000 		.4byte	.LBB5
+ 2983 0653 02000000 		.4byte	.LBE5-.LBB5
+ 2984 0657 01       		.byte	0x1
+ 2985 0658 20       		.byte	0x20
+ 2986 0659 12       		.uleb128 0x12
+ 2987 065a 12000000 		.4byte	.LBB7
+ 2988 065e 2C000000 		.4byte	.LBE7-.LBB7
+ 2989 0662 74060000 		.4byte	0x674
+ 2990 0666 13       		.uleb128 0x13
+ 2991 0667 6900     		.ascii	"i\000"
+ 2992 0669 01       		.byte	0x1
+ 2993 066a 23       		.byte	0x23
+ 2994 066b 94000000 		.4byte	0x94
+ 2995 066f 00000000 		.4byte	.LLST0
+ 2996 0673 00       		.byte	0
+ 2997 0674 14       		.uleb128 0x14
+ 2998 0675 08000000 		.4byte	.LVL0
+ 2999 0679 3C080000 		.4byte	0x83c
+ 3000 067d 14       		.uleb128 0x14
+ 3001 067e 0C000000 		.4byte	.LVL1
+ 3002 0682 48080000 		.4byte	0x848
+ 3003 0686 14       		.uleb128 0x14
+ 3004 0687 12000000 		.4byte	.LVL2
+ 3005 068b 54080000 		.4byte	0x854
+ 3006 068f 15       		.uleb128 0x15
+ 3007 0690 44000000 		.4byte	.LVL5
+ 3008 0694 5F080000 		.4byte	0x85f
+ 3009 0698 A6060000 		.4byte	0x6a6
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 57
+
+
+ 3010 069c 16       		.uleb128 0x16
+ 3011 069d 01       		.uleb128 0x1
+ 3012 069e 50       		.byte	0x50
+ 3013 069f 05       		.uleb128 0x5
+ 3014 06a0 03       		.byte	0x3
+ 3015 06a1 00000000 		.4byte	.LC0
+ 3016 06a5 00       		.byte	0
+ 3017 06a6 15       		.uleb128 0x15
+ 3018 06a7 56000000 		.4byte	.LVL6
+ 3019 06ab 6E080000 		.4byte	0x86e
+ 3020 06af D5060000 		.4byte	0x6d5
+ 3021 06b3 16       		.uleb128 0x16
+ 3022 06b4 01       		.uleb128 0x1
+ 3023 06b5 51       		.byte	0x51
+ 3024 06b6 05       		.uleb128 0x5
+ 3025 06b7 03       		.byte	0x3
+ 3026 06b8 14000000 		.4byte	.LC1
+ 3027 06bc 16       		.uleb128 0x16
+ 3028 06bd 01       		.uleb128 0x1
+ 3029 06be 52       		.byte	0x52
+ 3030 06bf 03       		.uleb128 0x3
+ 3031 06c0 0A       		.byte	0xa
+ 3032 06c1 E803     		.2byte	0x3e8
+ 3033 06c3 16       		.uleb128 0x16
+ 3034 06c4 01       		.uleb128 0x1
+ 3035 06c5 53       		.byte	0x53
+ 3036 06c6 01       		.uleb128 0x1
+ 3037 06c7 30       		.byte	0x30
+ 3038 06c8 16       		.uleb128 0x16
+ 3039 06c9 02       		.uleb128 0x2
+ 3040 06ca 7D       		.byte	0x7d
+ 3041 06cb 00       		.sleb128 0
+ 3042 06cc 01       		.uleb128 0x1
+ 3043 06cd 30       		.byte	0x30
+ 3044 06ce 16       		.uleb128 0x16
+ 3045 06cf 02       		.uleb128 0x2
+ 3046 06d0 7D       		.byte	0x7d
+ 3047 06d1 04       		.sleb128 4
+ 3048 06d2 01       		.uleb128 0x1
+ 3049 06d3 30       		.byte	0x30
+ 3050 06d4 00       		.byte	0
+ 3051 06d5 14       		.uleb128 0x14
+ 3052 06d6 5A000000 		.4byte	.LVL7
+ 3053 06da 7A080000 		.4byte	0x87a
+ 3054 06de 00       		.byte	0
+ 3055 06df 17       		.uleb128 0x17
+ 3056 06e0 14050000 		.4byte	0x514
+ 3057 06e4 F0060000 		.4byte	0x6f0
+ 3058 06e8 18       		.uleb128 0x18
+ 3059 06e9 D9000000 		.4byte	0xd9
+ 3060 06ed F103     		.2byte	0x3f1
+ 3061 06ef 00       		.byte	0
+ 3062 06f0 19       		.uleb128 0x19
+ 3063 06f1 CC080000 		.4byte	.LASF154
+ 3064 06f5 0B       		.byte	0xb
+ 3065 06f6 0E       		.byte	0xe
+ 3066 06f7 DF060000 		.4byte	0x6df
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 58
+
+
+ 3067 06fb 1A       		.uleb128 0x1a
+ 3068 06fc 8C060000 		.4byte	.LASF129
+ 3069 0700 08       		.byte	0x8
+ 3070 0701 0108     		.2byte	0x801
+ 3071 0703 07070000 		.4byte	0x707
+ 3072 0707 05       		.uleb128 0x5
+ 3073 0708 C3000000 		.4byte	0xc3
+ 3074 070c 1B       		.uleb128 0x1b
+ 3075 070d 0C060000 		.4byte	.LASF130
+ 3076 0711 05       		.byte	0x5
+ 3077 0712 A7       		.byte	0xa7
+ 3078 0713 17070000 		.4byte	0x717
+ 3079 0717 0A       		.uleb128 0xa
+ 3080 0718 04       		.byte	0x4
+ 3081 0719 1D070000 		.4byte	0x71d
+ 3082 071d 1C       		.uleb128 0x1c
+ 3083 071e 02050000 		.4byte	0x502
+ 3084 0722 1B       		.uleb128 0x1b
+ 3085 0723 12020000 		.4byte	.LASF131
+ 3086 0727 09       		.byte	0x9
+ 3087 0728 87       		.byte	0x87
+ 3088 0729 1D060000 		.4byte	0x61d
+ 3089 072d 1D       		.uleb128 0x1d
+ 3090 072e 99060000 		.4byte	.LASF132
+ 3091 0732 0A       		.byte	0xa
+ 3092 0733 13       		.byte	0x13
+ 3093 0734 94000000 		.4byte	0x94
+ 3094 0738 05       		.uleb128 0x5
+ 3095 0739 03       		.byte	0x3
+ 3096 073a 00000000 		.4byte	indexBuffer
+ 3097 073e 17       		.uleb128 0x17
+ 3098 073f 20050000 		.4byte	0x520
+ 3099 0743 5B070000 		.4byte	0x75b
+ 3100 0747 1E       		.uleb128 0x1e
+ 3101 0748 D9000000 		.4byte	0xd9
+ 3102 074c 01       		.byte	0x1
+ 3103 074d 1E       		.uleb128 0x1e
+ 3104 074e D9000000 		.4byte	0xd9
+ 3105 0752 02       		.byte	0x2
+ 3106 0753 18       		.uleb128 0x18
+ 3107 0754 D9000000 		.4byte	0xd9
+ 3108 0758 E703     		.2byte	0x3e7
+ 3109 075a 00       		.byte	0
+ 3110 075b 1D       		.uleb128 0x1d
+ 3111 075c 8D040000 		.4byte	.LASF133
+ 3112 0760 0A       		.byte	0xa
+ 3113 0761 20       		.byte	0x20
+ 3114 0762 3E070000 		.4byte	0x73e
+ 3115 0766 05       		.uleb128 0x5
+ 3116 0767 03       		.byte	0x3
+ 3117 0768 00000000 		.4byte	dataSpo2
+ 3118 076c 1D       		.uleb128 0x1d
+ 3119 076d 0A050000 		.4byte	.LASF134
+ 3120 0771 0A       		.byte	0xa
+ 3121 0772 21       		.byte	0x21
+ 3122 0773 7D070000 		.4byte	0x77d
+ 3123 0777 05       		.uleb128 0x5
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 59
+
+
+ 3124 0778 03       		.byte	0x3
+ 3125 0779 00000000 		.4byte	pourcentageSpO2
+ 3126 077d 05       		.uleb128 0x5
+ 3127 077e 14050000 		.4byte	0x514
+ 3128 0782 1F       		.uleb128 0x1f
+ 3129 0783 42504D00 		.ascii	"BPM\000"
+ 3130 0787 0A       		.byte	0xa
+ 3131 0788 22       		.byte	0x22
+ 3132 0789 E5000000 		.4byte	0xe5
+ 3133 078d 05       		.uleb128 0x5
+ 3134 078e 03       		.byte	0x3
+ 3135 078f 00000000 		.4byte	BPM
+ 3136 0793 1D       		.uleb128 0x1d
+ 3137 0794 E6080000 		.4byte	.LASF135
+ 3138 0798 0A       		.byte	0xa
+ 3139 0799 23       		.byte	0x23
+ 3140 079a 48050000 		.4byte	0x548
+ 3141 079e 05       		.uleb128 0x5
+ 3142 079f 03       		.byte	0x3
+ 3143 07a0 00000000 		.4byte	AlarmeBMI160
+ 3144 07a4 1D       		.uleb128 0x1d
+ 3145 07a5 64030000 		.4byte	.LASF136
+ 3146 07a9 0A       		.byte	0xa
+ 3147 07aa 24       		.byte	0x24
+ 3148 07ab 30050000 		.4byte	0x530
+ 3149 07af 05       		.uleb128 0x5
+ 3150 07b0 03       		.byte	0x3
+ 3151 07b1 00000000 		.4byte	entree
+ 3152 07b5 17       		.uleb128 0x17
+ 3153 07b6 14050000 		.4byte	0x514
+ 3154 07ba C5070000 		.4byte	0x7c5
+ 3155 07be 1E       		.uleb128 0x1e
+ 3156 07bf D9000000 		.4byte	0xd9
+ 3157 07c3 0A       		.byte	0xa
+ 3158 07c4 00       		.byte	0
+ 3159 07c5 1D       		.uleb128 0x1d
+ 3160 07c6 88000000 		.4byte	.LASF137
+ 3161 07ca 01       		.byte	0x1
+ 3162 07cb 18       		.byte	0x18
+ 3163 07cc B5070000 		.4byte	0x7b5
+ 3164 07d0 05       		.uleb128 0x5
+ 3165 07d1 03       		.byte	0x3
+ 3166 07d2 00000000 		.4byte	firCoeffs32_LowPass
+ 3167 07d6 1D       		.uleb128 0x1d
+ 3168 07d7 B5010000 		.4byte	.LASF138
+ 3169 07db 01       		.byte	0x1
+ 3170 07dc 19       		.byte	0x19
+ 3171 07dd B5070000 		.4byte	0x7b5
+ 3172 07e1 05       		.uleb128 0x5
+ 3173 07e2 03       		.byte	0x3
+ 3174 07e3 00000000 		.4byte	firCoeffs32_HighPass
+ 3175 07e7 1D       		.uleb128 0x1d
+ 3176 07e8 48080000 		.4byte	.LASF139
+ 3177 07ec 0B       		.byte	0xb
+ 3178 07ed 11       		.byte	0x11
+ 3179 07ee CE000000 		.4byte	0xce
+ 3180 07f2 05       		.uleb128 0x5
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 60
+
+
+ 3181 07f3 03       		.byte	0x3
+ 3182 07f4 00000000 		.4byte	blockSize
+ 3183 07f8 1D       		.uleb128 0x1d
+ 3184 07f9 20080000 		.4byte	.LASF140
+ 3185 07fd 0B       		.byte	0xb
+ 3186 07fe 12       		.byte	0x12
+ 3187 07ff CE000000 		.4byte	0xce
+ 3188 0803 05       		.uleb128 0x5
+ 3189 0804 03       		.byte	0x3
+ 3190 0805 00000000 		.4byte	numBlocks
+ 3191 0809 17       		.uleb128 0x17
+ 3192 080a 20050000 		.4byte	0x520
+ 3193 080e 1A080000 		.4byte	0x81a
+ 3194 0812 18       		.uleb128 0x18
+ 3195 0813 D9000000 		.4byte	0xd9
+ 3196 0817 E703     		.2byte	0x3e7
+ 3197 0819 00       		.byte	0
+ 3198 081a 1D       		.uleb128 0x1d
+ 3199 081b 03020000 		.4byte	.LASF141
+ 3200 081f 01       		.byte	0x1
+ 3201 0820 11       		.byte	0x11
+ 3202 0821 09080000 		.4byte	0x809
+ 3203 0825 05       		.uleb128 0x5
+ 3204 0826 03       		.byte	0x3
+ 3205 0827 00000000 		.4byte	testR
+ 3206 082b 1D       		.uleb128 0x1d
+ 3207 082c 0F070000 		.4byte	.LASF142
+ 3208 0830 01       		.byte	0x1
+ 3209 0831 12       		.byte	0x12
+ 3210 0832 09080000 		.4byte	0x809
+ 3211 0836 05       		.uleb128 0x5
+ 3212 0837 03       		.byte	0x3
+ 3213 0838 00000000 		.4byte	testIR
+ 3214 083c 20       		.uleb128 0x20
+ 3215 083d 49060000 		.4byte	.LASF143
+ 3216 0841 49060000 		.4byte	.LASF143
+ 3217 0845 0C       		.byte	0xc
+ 3218 0846 1902     		.2byte	0x219
+ 3219 0848 20       		.uleb128 0x20
+ 3220 0849 70010000 		.4byte	.LASF144
+ 3221 084d 70010000 		.4byte	.LASF144
+ 3222 0851 0C       		.byte	0xc
+ 3223 0852 1C02     		.2byte	0x21c
+ 3224 0854 21       		.uleb128 0x21
+ 3225 0855 2F020000 		.4byte	.LASF145
+ 3226 0859 2F020000 		.4byte	.LASF145
+ 3227 085d 09       		.byte	0x9
+ 3228 085e 31       		.byte	0x31
+ 3229 085f 22       		.uleb128 0x22
+ 3230 0860 7C040000 		.4byte	.LASF155
+ 3231 0864 2C040000 		.4byte	.LASF156
+ 3232 0868 0E       		.byte	0xe
+ 3233 0869 00       		.byte	0
+ 3234 086a 7C040000 		.4byte	.LASF155
+ 3235 086e 20       		.uleb128 0x20
+ 3236 086f AA040000 		.4byte	.LASF146
+ 3237 0873 AA040000 		.4byte	.LASF146
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 61
+
+
+ 3238 0877 0D       		.byte	0xd
+ 3239 0878 4101     		.2byte	0x141
+ 3240 087a 20       		.uleb128 0x20
+ 3241 087b D2020000 		.4byte	.LASF147
+ 3242 087f D2020000 		.4byte	.LASF147
+ 3243 0883 0D       		.byte	0xd
+ 3244 0884 8E04     		.2byte	0x48e
+ 3245 0886 00       		.byte	0
+ 3246              		.section	.debug_abbrev,"",%progbits
+ 3247              	.Ldebug_abbrev0:
+ 3248 0000 01       		.uleb128 0x1
+ 3249 0001 11       		.uleb128 0x11
+ 3250 0002 01       		.byte	0x1
+ 3251 0003 25       		.uleb128 0x25
+ 3252 0004 0E       		.uleb128 0xe
+ 3253 0005 13       		.uleb128 0x13
+ 3254 0006 0B       		.uleb128 0xb
+ 3255 0007 03       		.uleb128 0x3
+ 3256 0008 0E       		.uleb128 0xe
+ 3257 0009 1B       		.uleb128 0x1b
+ 3258 000a 0E       		.uleb128 0xe
+ 3259 000b 55       		.uleb128 0x55
+ 3260 000c 17       		.uleb128 0x17
+ 3261 000d 11       		.uleb128 0x11
+ 3262 000e 01       		.uleb128 0x1
+ 3263 000f 10       		.uleb128 0x10
+ 3264 0010 17       		.uleb128 0x17
+ 3265 0011 00       		.byte	0
+ 3266 0012 00       		.byte	0
+ 3267 0013 02       		.uleb128 0x2
+ 3268 0014 24       		.uleb128 0x24
+ 3269 0015 00       		.byte	0
+ 3270 0016 0B       		.uleb128 0xb
+ 3271 0017 0B       		.uleb128 0xb
+ 3272 0018 3E       		.uleb128 0x3e
+ 3273 0019 0B       		.uleb128 0xb
+ 3274 001a 03       		.uleb128 0x3
+ 3275 001b 0E       		.uleb128 0xe
+ 3276 001c 00       		.byte	0
+ 3277 001d 00       		.byte	0
+ 3278 001e 03       		.uleb128 0x3
+ 3279 001f 16       		.uleb128 0x16
+ 3280 0020 00       		.byte	0
+ 3281 0021 03       		.uleb128 0x3
+ 3282 0022 0E       		.uleb128 0xe
+ 3283 0023 3A       		.uleb128 0x3a
+ 3284 0024 0B       		.uleb128 0xb
+ 3285 0025 3B       		.uleb128 0x3b
+ 3286 0026 0B       		.uleb128 0xb
+ 3287 0027 49       		.uleb128 0x49
+ 3288 0028 13       		.uleb128 0x13
+ 3289 0029 00       		.byte	0
+ 3290 002a 00       		.byte	0
+ 3291 002b 04       		.uleb128 0x4
+ 3292 002c 24       		.uleb128 0x24
+ 3293 002d 00       		.byte	0
+ 3294 002e 0B       		.uleb128 0xb
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 62
+
+
+ 3295 002f 0B       		.uleb128 0xb
+ 3296 0030 3E       		.uleb128 0x3e
+ 3297 0031 0B       		.uleb128 0xb
+ 3298 0032 03       		.uleb128 0x3
+ 3299 0033 08       		.uleb128 0x8
+ 3300 0034 00       		.byte	0
+ 3301 0035 00       		.byte	0
+ 3302 0036 05       		.uleb128 0x5
+ 3303 0037 35       		.uleb128 0x35
+ 3304 0038 00       		.byte	0
+ 3305 0039 49       		.uleb128 0x49
+ 3306 003a 13       		.uleb128 0x13
+ 3307 003b 00       		.byte	0
+ 3308 003c 00       		.byte	0
+ 3309 003d 06       		.uleb128 0x6
+ 3310 003e 13       		.uleb128 0x13
+ 3311 003f 01       		.byte	0x1
+ 3312 0040 0B       		.uleb128 0xb
+ 3313 0041 0B       		.uleb128 0xb
+ 3314 0042 3A       		.uleb128 0x3a
+ 3315 0043 0B       		.uleb128 0xb
+ 3316 0044 3B       		.uleb128 0x3b
+ 3317 0045 0B       		.uleb128 0xb
+ 3318 0046 01       		.uleb128 0x1
+ 3319 0047 13       		.uleb128 0x13
+ 3320 0048 00       		.byte	0
+ 3321 0049 00       		.byte	0
+ 3322 004a 07       		.uleb128 0x7
+ 3323 004b 0D       		.uleb128 0xd
+ 3324 004c 00       		.byte	0
+ 3325 004d 03       		.uleb128 0x3
+ 3326 004e 0E       		.uleb128 0xe
+ 3327 004f 3A       		.uleb128 0x3a
+ 3328 0050 0B       		.uleb128 0xb
+ 3329 0051 3B       		.uleb128 0x3b
+ 3330 0052 0B       		.uleb128 0xb
+ 3331 0053 49       		.uleb128 0x49
+ 3332 0054 13       		.uleb128 0x13
+ 3333 0055 38       		.uleb128 0x38
+ 3334 0056 0B       		.uleb128 0xb
+ 3335 0057 00       		.byte	0
+ 3336 0058 00       		.byte	0
+ 3337 0059 08       		.uleb128 0x8
+ 3338 005a 16       		.uleb128 0x16
+ 3339 005b 00       		.byte	0
+ 3340 005c 03       		.uleb128 0x3
+ 3341 005d 0E       		.uleb128 0xe
+ 3342 005e 3A       		.uleb128 0x3a
+ 3343 005f 0B       		.uleb128 0xb
+ 3344 0060 3B       		.uleb128 0x3b
+ 3345 0061 05       		.uleb128 0x5
+ 3346 0062 49       		.uleb128 0x49
+ 3347 0063 13       		.uleb128 0x13
+ 3348 0064 00       		.byte	0
+ 3349 0065 00       		.byte	0
+ 3350 0066 09       		.uleb128 0x9
+ 3351 0067 0F       		.uleb128 0xf
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 63
+
+
+ 3352 0068 00       		.byte	0
+ 3353 0069 0B       		.uleb128 0xb
+ 3354 006a 0B       		.uleb128 0xb
+ 3355 006b 00       		.byte	0
+ 3356 006c 00       		.byte	0
+ 3357 006d 0A       		.uleb128 0xa
+ 3358 006e 0F       		.uleb128 0xf
+ 3359 006f 00       		.byte	0
+ 3360 0070 0B       		.uleb128 0xb
+ 3361 0071 0B       		.uleb128 0xb
+ 3362 0072 49       		.uleb128 0x49
+ 3363 0073 13       		.uleb128 0x13
+ 3364 0074 00       		.byte	0
+ 3365 0075 00       		.byte	0
+ 3366 0076 0B       		.uleb128 0xb
+ 3367 0077 15       		.uleb128 0x15
+ 3368 0078 01       		.byte	0x1
+ 3369 0079 27       		.uleb128 0x27
+ 3370 007a 19       		.uleb128 0x19
+ 3371 007b 01       		.uleb128 0x1
+ 3372 007c 13       		.uleb128 0x13
+ 3373 007d 00       		.byte	0
+ 3374 007e 00       		.byte	0
+ 3375 007f 0C       		.uleb128 0xc
+ 3376 0080 05       		.uleb128 0x5
+ 3377 0081 00       		.byte	0
+ 3378 0082 49       		.uleb128 0x49
+ 3379 0083 13       		.uleb128 0x13
+ 3380 0084 00       		.byte	0
+ 3381 0085 00       		.byte	0
+ 3382 0086 0D       		.uleb128 0xd
+ 3383 0087 13       		.uleb128 0x13
+ 3384 0088 01       		.byte	0x1
+ 3385 0089 03       		.uleb128 0x3
+ 3386 008a 0E       		.uleb128 0xe
+ 3387 008b 0B       		.uleb128 0xb
+ 3388 008c 0B       		.uleb128 0xb
+ 3389 008d 3A       		.uleb128 0x3a
+ 3390 008e 0B       		.uleb128 0xb
+ 3391 008f 3B       		.uleb128 0x3b
+ 3392 0090 05       		.uleb128 0x5
+ 3393 0091 01       		.uleb128 0x1
+ 3394 0092 13       		.uleb128 0x13
+ 3395 0093 00       		.byte	0
+ 3396 0094 00       		.byte	0
+ 3397 0095 0E       		.uleb128 0xe
+ 3398 0096 0D       		.uleb128 0xd
+ 3399 0097 00       		.byte	0
+ 3400 0098 03       		.uleb128 0x3
+ 3401 0099 0E       		.uleb128 0xe
+ 3402 009a 3A       		.uleb128 0x3a
+ 3403 009b 0B       		.uleb128 0xb
+ 3404 009c 3B       		.uleb128 0x3b
+ 3405 009d 05       		.uleb128 0x5
+ 3406 009e 49       		.uleb128 0x49
+ 3407 009f 13       		.uleb128 0x13
+ 3408 00a0 38       		.uleb128 0x38
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 64
+
+
+ 3409 00a1 0B       		.uleb128 0xb
+ 3410 00a2 00       		.byte	0
+ 3411 00a3 00       		.byte	0
+ 3412 00a4 0F       		.uleb128 0xf
+ 3413 00a5 2E       		.uleb128 0x2e
+ 3414 00a6 00       		.byte	0
+ 3415 00a7 03       		.uleb128 0x3
+ 3416 00a8 0E       		.uleb128 0xe
+ 3417 00a9 3A       		.uleb128 0x3a
+ 3418 00aa 0B       		.uleb128 0xb
+ 3419 00ab 3B       		.uleb128 0x3b
+ 3420 00ac 0B       		.uleb128 0xb
+ 3421 00ad 27       		.uleb128 0x27
+ 3422 00ae 19       		.uleb128 0x19
+ 3423 00af 20       		.uleb128 0x20
+ 3424 00b0 0B       		.uleb128 0xb
+ 3425 00b1 00       		.byte	0
+ 3426 00b2 00       		.byte	0
+ 3427 00b3 10       		.uleb128 0x10
+ 3428 00b4 2E       		.uleb128 0x2e
+ 3429 00b5 01       		.byte	0x1
+ 3430 00b6 3F       		.uleb128 0x3f
+ 3431 00b7 19       		.uleb128 0x19
+ 3432 00b8 03       		.uleb128 0x3
+ 3433 00b9 0E       		.uleb128 0xe
+ 3434 00ba 3A       		.uleb128 0x3a
+ 3435 00bb 0B       		.uleb128 0xb
+ 3436 00bc 3B       		.uleb128 0x3b
+ 3437 00bd 0B       		.uleb128 0xb
+ 3438 00be 27       		.uleb128 0x27
+ 3439 00bf 19       		.uleb128 0x19
+ 3440 00c0 49       		.uleb128 0x49
+ 3441 00c1 13       		.uleb128 0x13
+ 3442 00c2 8701     		.uleb128 0x87
+ 3443 00c4 19       		.uleb128 0x19
+ 3444 00c5 11       		.uleb128 0x11
+ 3445 00c6 01       		.uleb128 0x1
+ 3446 00c7 12       		.uleb128 0x12
+ 3447 00c8 06       		.uleb128 0x6
+ 3448 00c9 40       		.uleb128 0x40
+ 3449 00ca 18       		.uleb128 0x18
+ 3450 00cb 9742     		.uleb128 0x2117
+ 3451 00cd 19       		.uleb128 0x19
+ 3452 00ce 01       		.uleb128 0x1
+ 3453 00cf 13       		.uleb128 0x13
+ 3454 00d0 00       		.byte	0
+ 3455 00d1 00       		.byte	0
+ 3456 00d2 11       		.uleb128 0x11
+ 3457 00d3 1D       		.uleb128 0x1d
+ 3458 00d4 00       		.byte	0
+ 3459 00d5 31       		.uleb128 0x31
+ 3460 00d6 13       		.uleb128 0x13
+ 3461 00d7 11       		.uleb128 0x11
+ 3462 00d8 01       		.uleb128 0x1
+ 3463 00d9 12       		.uleb128 0x12
+ 3464 00da 06       		.uleb128 0x6
+ 3465 00db 58       		.uleb128 0x58
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 65
+
+
+ 3466 00dc 0B       		.uleb128 0xb
+ 3467 00dd 59       		.uleb128 0x59
+ 3468 00de 0B       		.uleb128 0xb
+ 3469 00df 00       		.byte	0
+ 3470 00e0 00       		.byte	0
+ 3471 00e1 12       		.uleb128 0x12
+ 3472 00e2 0B       		.uleb128 0xb
+ 3473 00e3 01       		.byte	0x1
+ 3474 00e4 11       		.uleb128 0x11
+ 3475 00e5 01       		.uleb128 0x1
+ 3476 00e6 12       		.uleb128 0x12
+ 3477 00e7 06       		.uleb128 0x6
+ 3478 00e8 01       		.uleb128 0x1
+ 3479 00e9 13       		.uleb128 0x13
+ 3480 00ea 00       		.byte	0
+ 3481 00eb 00       		.byte	0
+ 3482 00ec 13       		.uleb128 0x13
+ 3483 00ed 34       		.uleb128 0x34
+ 3484 00ee 00       		.byte	0
+ 3485 00ef 03       		.uleb128 0x3
+ 3486 00f0 08       		.uleb128 0x8
+ 3487 00f1 3A       		.uleb128 0x3a
+ 3488 00f2 0B       		.uleb128 0xb
+ 3489 00f3 3B       		.uleb128 0x3b
+ 3490 00f4 0B       		.uleb128 0xb
+ 3491 00f5 49       		.uleb128 0x49
+ 3492 00f6 13       		.uleb128 0x13
+ 3493 00f7 02       		.uleb128 0x2
+ 3494 00f8 17       		.uleb128 0x17
+ 3495 00f9 00       		.byte	0
+ 3496 00fa 00       		.byte	0
+ 3497 00fb 14       		.uleb128 0x14
+ 3498 00fc 898201   		.uleb128 0x4109
+ 3499 00ff 00       		.byte	0
+ 3500 0100 11       		.uleb128 0x11
+ 3501 0101 01       		.uleb128 0x1
+ 3502 0102 31       		.uleb128 0x31
+ 3503 0103 13       		.uleb128 0x13
+ 3504 0104 00       		.byte	0
+ 3505 0105 00       		.byte	0
+ 3506 0106 15       		.uleb128 0x15
+ 3507 0107 898201   		.uleb128 0x4109
+ 3508 010a 01       		.byte	0x1
+ 3509 010b 11       		.uleb128 0x11
+ 3510 010c 01       		.uleb128 0x1
+ 3511 010d 31       		.uleb128 0x31
+ 3512 010e 13       		.uleb128 0x13
+ 3513 010f 01       		.uleb128 0x1
+ 3514 0110 13       		.uleb128 0x13
+ 3515 0111 00       		.byte	0
+ 3516 0112 00       		.byte	0
+ 3517 0113 16       		.uleb128 0x16
+ 3518 0114 8A8201   		.uleb128 0x410a
+ 3519 0117 00       		.byte	0
+ 3520 0118 02       		.uleb128 0x2
+ 3521 0119 18       		.uleb128 0x18
+ 3522 011a 9142     		.uleb128 0x2111
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 66
+
+
+ 3523 011c 18       		.uleb128 0x18
+ 3524 011d 00       		.byte	0
+ 3525 011e 00       		.byte	0
+ 3526 011f 17       		.uleb128 0x17
+ 3527 0120 01       		.uleb128 0x1
+ 3528 0121 01       		.byte	0x1
+ 3529 0122 49       		.uleb128 0x49
+ 3530 0123 13       		.uleb128 0x13
+ 3531 0124 01       		.uleb128 0x1
+ 3532 0125 13       		.uleb128 0x13
+ 3533 0126 00       		.byte	0
+ 3534 0127 00       		.byte	0
+ 3535 0128 18       		.uleb128 0x18
+ 3536 0129 21       		.uleb128 0x21
+ 3537 012a 00       		.byte	0
+ 3538 012b 49       		.uleb128 0x49
+ 3539 012c 13       		.uleb128 0x13
+ 3540 012d 2F       		.uleb128 0x2f
+ 3541 012e 05       		.uleb128 0x5
+ 3542 012f 00       		.byte	0
+ 3543 0130 00       		.byte	0
+ 3544 0131 19       		.uleb128 0x19
+ 3545 0132 34       		.uleb128 0x34
+ 3546 0133 00       		.byte	0
+ 3547 0134 03       		.uleb128 0x3
+ 3548 0135 0E       		.uleb128 0xe
+ 3549 0136 3A       		.uleb128 0x3a
+ 3550 0137 0B       		.uleb128 0xb
+ 3551 0138 3B       		.uleb128 0x3b
+ 3552 0139 0B       		.uleb128 0xb
+ 3553 013a 49       		.uleb128 0x49
+ 3554 013b 13       		.uleb128 0x13
+ 3555 013c 00       		.byte	0
+ 3556 013d 00       		.byte	0
+ 3557 013e 1A       		.uleb128 0x1a
+ 3558 013f 34       		.uleb128 0x34
+ 3559 0140 00       		.byte	0
+ 3560 0141 03       		.uleb128 0x3
+ 3561 0142 0E       		.uleb128 0xe
+ 3562 0143 3A       		.uleb128 0x3a
+ 3563 0144 0B       		.uleb128 0xb
+ 3564 0145 3B       		.uleb128 0x3b
+ 3565 0146 05       		.uleb128 0x5
+ 3566 0147 49       		.uleb128 0x49
+ 3567 0148 13       		.uleb128 0x13
+ 3568 0149 3F       		.uleb128 0x3f
+ 3569 014a 19       		.uleb128 0x19
+ 3570 014b 3C       		.uleb128 0x3c
+ 3571 014c 19       		.uleb128 0x19
+ 3572 014d 00       		.byte	0
+ 3573 014e 00       		.byte	0
+ 3574 014f 1B       		.uleb128 0x1b
+ 3575 0150 34       		.uleb128 0x34
+ 3576 0151 00       		.byte	0
+ 3577 0152 03       		.uleb128 0x3
+ 3578 0153 0E       		.uleb128 0xe
+ 3579 0154 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 67
+
+
+ 3580 0155 0B       		.uleb128 0xb
+ 3581 0156 3B       		.uleb128 0x3b
+ 3582 0157 0B       		.uleb128 0xb
+ 3583 0158 49       		.uleb128 0x49
+ 3584 0159 13       		.uleb128 0x13
+ 3585 015a 3F       		.uleb128 0x3f
+ 3586 015b 19       		.uleb128 0x19
+ 3587 015c 3C       		.uleb128 0x3c
+ 3588 015d 19       		.uleb128 0x19
+ 3589 015e 00       		.byte	0
+ 3590 015f 00       		.byte	0
+ 3591 0160 1C       		.uleb128 0x1c
+ 3592 0161 26       		.uleb128 0x26
+ 3593 0162 00       		.byte	0
+ 3594 0163 49       		.uleb128 0x49
+ 3595 0164 13       		.uleb128 0x13
+ 3596 0165 00       		.byte	0
+ 3597 0166 00       		.byte	0
+ 3598 0167 1D       		.uleb128 0x1d
+ 3599 0168 34       		.uleb128 0x34
+ 3600 0169 00       		.byte	0
+ 3601 016a 03       		.uleb128 0x3
+ 3602 016b 0E       		.uleb128 0xe
+ 3603 016c 3A       		.uleb128 0x3a
+ 3604 016d 0B       		.uleb128 0xb
+ 3605 016e 3B       		.uleb128 0x3b
+ 3606 016f 0B       		.uleb128 0xb
+ 3607 0170 49       		.uleb128 0x49
+ 3608 0171 13       		.uleb128 0x13
+ 3609 0172 3F       		.uleb128 0x3f
+ 3610 0173 19       		.uleb128 0x19
+ 3611 0174 02       		.uleb128 0x2
+ 3612 0175 18       		.uleb128 0x18
+ 3613 0176 00       		.byte	0
+ 3614 0177 00       		.byte	0
+ 3615 0178 1E       		.uleb128 0x1e
+ 3616 0179 21       		.uleb128 0x21
+ 3617 017a 00       		.byte	0
+ 3618 017b 49       		.uleb128 0x49
+ 3619 017c 13       		.uleb128 0x13
+ 3620 017d 2F       		.uleb128 0x2f
+ 3621 017e 0B       		.uleb128 0xb
+ 3622 017f 00       		.byte	0
+ 3623 0180 00       		.byte	0
+ 3624 0181 1F       		.uleb128 0x1f
+ 3625 0182 34       		.uleb128 0x34
+ 3626 0183 00       		.byte	0
+ 3627 0184 03       		.uleb128 0x3
+ 3628 0185 08       		.uleb128 0x8
+ 3629 0186 3A       		.uleb128 0x3a
+ 3630 0187 0B       		.uleb128 0xb
+ 3631 0188 3B       		.uleb128 0x3b
+ 3632 0189 0B       		.uleb128 0xb
+ 3633 018a 49       		.uleb128 0x49
+ 3634 018b 13       		.uleb128 0x13
+ 3635 018c 3F       		.uleb128 0x3f
+ 3636 018d 19       		.uleb128 0x19
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 68
+
+
+ 3637 018e 02       		.uleb128 0x2
+ 3638 018f 18       		.uleb128 0x18
+ 3639 0190 00       		.byte	0
+ 3640 0191 00       		.byte	0
+ 3641 0192 20       		.uleb128 0x20
+ 3642 0193 2E       		.uleb128 0x2e
+ 3643 0194 00       		.byte	0
+ 3644 0195 3F       		.uleb128 0x3f
+ 3645 0196 19       		.uleb128 0x19
+ 3646 0197 3C       		.uleb128 0x3c
+ 3647 0198 19       		.uleb128 0x19
+ 3648 0199 6E       		.uleb128 0x6e
+ 3649 019a 0E       		.uleb128 0xe
+ 3650 019b 03       		.uleb128 0x3
+ 3651 019c 0E       		.uleb128 0xe
+ 3652 019d 3A       		.uleb128 0x3a
+ 3653 019e 0B       		.uleb128 0xb
+ 3654 019f 3B       		.uleb128 0x3b
+ 3655 01a0 05       		.uleb128 0x5
+ 3656 01a1 00       		.byte	0
+ 3657 01a2 00       		.byte	0
+ 3658 01a3 21       		.uleb128 0x21
+ 3659 01a4 2E       		.uleb128 0x2e
+ 3660 01a5 00       		.byte	0
+ 3661 01a6 3F       		.uleb128 0x3f
+ 3662 01a7 19       		.uleb128 0x19
+ 3663 01a8 3C       		.uleb128 0x3c
+ 3664 01a9 19       		.uleb128 0x19
+ 3665 01aa 6E       		.uleb128 0x6e
+ 3666 01ab 0E       		.uleb128 0xe
+ 3667 01ac 03       		.uleb128 0x3
+ 3668 01ad 0E       		.uleb128 0xe
+ 3669 01ae 3A       		.uleb128 0x3a
+ 3670 01af 0B       		.uleb128 0xb
+ 3671 01b0 3B       		.uleb128 0x3b
+ 3672 01b1 0B       		.uleb128 0xb
+ 3673 01b2 00       		.byte	0
+ 3674 01b3 00       		.byte	0
+ 3675 01b4 22       		.uleb128 0x22
+ 3676 01b5 2E       		.uleb128 0x2e
+ 3677 01b6 00       		.byte	0
+ 3678 01b7 3F       		.uleb128 0x3f
+ 3679 01b8 19       		.uleb128 0x19
+ 3680 01b9 3C       		.uleb128 0x3c
+ 3681 01ba 19       		.uleb128 0x19
+ 3682 01bb 6E       		.uleb128 0x6e
+ 3683 01bc 0E       		.uleb128 0xe
+ 3684 01bd 03       		.uleb128 0x3
+ 3685 01be 0E       		.uleb128 0xe
+ 3686 01bf 3A       		.uleb128 0x3a
+ 3687 01c0 0B       		.uleb128 0xb
+ 3688 01c1 3B       		.uleb128 0x3b
+ 3689 01c2 0B       		.uleb128 0xb
+ 3690 01c3 6E       		.uleb128 0x6e
+ 3691 01c4 0E       		.uleb128 0xe
+ 3692 01c5 00       		.byte	0
+ 3693 01c6 00       		.byte	0
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 69
+
+
+ 3694 01c7 00       		.byte	0
+ 3695              		.section	.debug_loc,"",%progbits
+ 3696              	.Ldebug_loc0:
+ 3697              	.LLST0:
+ 3698 0000 12000000 		.4byte	.LVL2
+ 3699 0004 16000000 		.4byte	.LVL3
+ 3700 0008 0200     		.2byte	0x2
+ 3701 000a 30       		.byte	0x30
+ 3702 000b 9F       		.byte	0x9f
+ 3703 000c 16000000 		.4byte	.LVL3
+ 3704 0010 43000000 		.4byte	.LVL5-1
+ 3705 0014 0100     		.2byte	0x1
+ 3706 0016 52       		.byte	0x52
+ 3707 0017 00000000 		.4byte	0
+ 3708 001b 00000000 		.4byte	0
+ 3709              		.section	.debug_aranges,"",%progbits
+ 3710 0000 1C000000 		.4byte	0x1c
+ 3711 0004 0200     		.2byte	0x2
+ 3712 0006 00000000 		.4byte	.Ldebug_info0
+ 3713 000a 04       		.byte	0x4
+ 3714 000b 00       		.byte	0
+ 3715 000c 0000     		.2byte	0
+ 3716 000e 0000     		.2byte	0
+ 3717 0010 00000000 		.4byte	.LFB518
+ 3718 0014 70000000 		.4byte	.LFE518-.LFB518
+ 3719 0018 00000000 		.4byte	0
+ 3720 001c 00000000 		.4byte	0
+ 3721              		.section	.debug_ranges,"",%progbits
+ 3722              	.Ldebug_ranges0:
+ 3723 0000 00000000 		.4byte	.LFB518
+ 3724 0004 70000000 		.4byte	.LFE518
+ 3725 0008 00000000 		.4byte	0
+ 3726 000c 00000000 		.4byte	0
+ 3727              		.section	.debug_line,"",%progbits
+ 3728              	.Ldebug_line0:
+ 3729 0000 0F030000 		.section	.debug_str,"MS",%progbits,1
+ 3729      0200D202 
+ 3729      00000201 
+ 3729      FB0E0D00 
+ 3729      01010101 
+ 3730              	.LASF56:
+ 3731 0000 70726F74 		.ascii	"protBusMasterMask\000"
+ 3731      4275734D 
+ 3731      61737465 
+ 3731      724D6173 
+ 3731      6B00
+ 3732              	.LASF121:
+ 3733 0012 72784275 		.ascii	"rxBufSize\000"
+ 3733      6653697A 
+ 3733      6500
+ 3734              	.LASF66:
+ 3735 001c 666C6173 		.ascii	"flashCtlMainWs3Freq\000"
+ 3735      6843746C 
+ 3735      4D61696E 
+ 3735      57733346 
+ 3735      72657100 
+ 3736              	.LASF88:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 70
+
+
+ 3737 0030 6770696F 		.ascii	"gpioPrtCfgInOffset\000"
+ 3737      50727443 
+ 3737      6667496E 
+ 3737      4F666673 
+ 3737      657400
+ 3738              	.LASF106:
+ 3739 0043 6970634C 		.ascii	"ipcLockStatusOffset\000"
+ 3739      6F636B53 
+ 3739      74617475 
+ 3739      734F6666 
+ 3739      73657400 
+ 3740              	.LASF32:
+ 3741 0057 63727970 		.ascii	"cryptoVersion\000"
+ 3741      746F5665 
+ 3741      7273696F 
+ 3741      6E00
+ 3742              	.LASF50:
+ 3743 0065 70657269 		.ascii	"periClockNr\000"
+ 3743      436C6F63 
+ 3743      6B4E7200 
+ 3744              	.LASF28:
+ 3745 0071 70617373 		.ascii	"passBase\000"
+ 3745      42617365 
+ 3745      00
+ 3746              	.LASF104:
+ 3747 007a 63707573 		.ascii	"cpussRam2Ctl0\000"
+ 3747      7352616D 
+ 3747      3243746C 
+ 3747      3000
+ 3748              	.LASF137:
+ 3749 0088 66697243 		.ascii	"firCoeffs32_LowPass\000"
+ 3749      6F656666 
+ 3749      7333325F 
+ 3749      4C6F7750 
+ 3749      61737300 
+ 3750              	.LASF41:
+ 3751 009c 63707573 		.ascii	"cpussIpcIrqNr\000"
+ 3751      73497063 
+ 3751      4972714E 
+ 3751      7200
+ 3752              	.LASF3:
+ 3753 00aa 5F5F7569 		.ascii	"__uint8_t\000"
+ 3753      6E74385F 
+ 3753      7400
+ 3754              	.LASF43:
+ 3755 00b4 63707573 		.ascii	"cpussFlashPaSize\000"
+ 3755      73466C61 
+ 3755      73685061 
+ 3755      53697A65 
+ 3755      00
+ 3756              	.LASF92:
+ 3757 00c5 63707573 		.ascii	"cpussCm4ClockCtlOffset\000"
+ 3757      73436D34 
+ 3757      436C6F63 
+ 3757      6B43746C 
+ 3757      4F666673 
+ 3758              	.LASF21:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 71
+
+
+ 3759 00dc 63707573 		.ascii	"cpussBase\000"
+ 3759      73426173 
+ 3759      6500
+ 3760              	.LASF70:
+ 3761 00e6 64774368 		.ascii	"dwChCtlPrioPos\000"
+ 3761      43746C50 
+ 3761      72696F50 
+ 3761      6F7300
+ 3762              	.LASF12:
+ 3763 00f5 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 3763      206C6F6E 
+ 3763      6720756E 
+ 3763      7369676E 
+ 3763      65642069 
+ 3764              	.LASF74:
+ 3765 010c 70657269 		.ascii	"periTrCmdOffset\000"
+ 3765      5472436D 
+ 3765      644F6666 
+ 3765      73657400 
+ 3766              	.LASF116:
+ 3767 011c 72785269 		.ascii	"rxRingBuf\000"
+ 3767      6E674275 
+ 3767      6600
+ 3768              	.LASF98:
+ 3769 0126 63707573 		.ascii	"cpussSysTickCtlOffset\000"
+ 3769      73537973 
+ 3769      5469636B 
+ 3769      43746C4F 
+ 3769      66667365 
+ 3770              	.LASF123:
+ 3771 013c 74784275 		.ascii	"txBuf\000"
+ 3771      6600
+ 3772              	.LASF59:
+ 3773 0142 666C6173 		.ascii	"flashPipeRequired\000"
+ 3773      68506970 
+ 3773      65526571 
+ 3773      75697265 
+ 3773      6400
+ 3774              	.LASF63:
+ 3775 0154 666C6173 		.ascii	"flashCtlMainWs0Freq\000"
+ 3775      6843746C 
+ 3775      4D61696E 
+ 3775      57733046 
+ 3775      72657100 
+ 3776              	.LASF15:
+ 3777 0168 696E7431 		.ascii	"int16_t\000"
+ 3777      365F7400 
+ 3778              	.LASF144:
+ 3779 0170 53797374 		.ascii	"SystemCoreClockUpdate\000"
+ 3779      656D436F 
+ 3779      7265436C 
+ 3779      6F636B55 
+ 3779      70646174 
+ 3780              	.LASF11:
+ 3781 0186 6C6F6E67 		.ascii	"long long int\000"
+ 3781      206C6F6E 
+ 3781      6720696E 
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 72
+
+
+ 3781      7400
+ 3782              	.LASF1:
+ 3783 0194 7369676E 		.ascii	"signed char\000"
+ 3783      65642063 
+ 3783      68617200 
+ 3784              	.LASF79:
+ 3785 01a0 70657269 		.ascii	"periDivCmdTypeSelPos\000"
+ 3785      44697643 
+ 3785      6D645479 
+ 3785      70655365 
+ 3785      6C506F73 
+ 3786              	.LASF138:
+ 3787 01b5 66697243 		.ascii	"firCoeffs32_HighPass\000"
+ 3787      6F656666 
+ 3787      7333325F 
+ 3787      48696768 
+ 3787      50617373 
+ 3788              	.LASF37:
+ 3789 01ca 69706356 		.ascii	"ipcVersion\000"
+ 3789      65727369 
+ 3789      6F6E00
+ 3790              	.LASF99:
+ 3791 01d5 63707573 		.ascii	"cpussCm0NmiCtlOffset\000"
+ 3791      73436D30 
+ 3791      4E6D6943 
+ 3791      746C4F66 
+ 3791      66736574 
+ 3792              	.LASF47:
+ 3793 01ea 73727373 		.ascii	"srssNumClkpath\000"
+ 3793      4E756D43 
+ 3793      6C6B7061 
+ 3793      746800
+ 3794              	.LASF26:
+ 3795 01f9 6873696F 		.ascii	"hsiomBase\000"
+ 3795      6D426173 
+ 3795      6500
+ 3796              	.LASF141:
+ 3797 0203 74657374 		.ascii	"testR\000"
+ 3797      5200
+ 3798              	.LASF8:
+ 3799 0209 6C6F6E67 		.ascii	"long int\000"
+ 3799      20696E74 
+ 3799      00
+ 3800              	.LASF131:
+ 3801 0212 55415254 		.ascii	"UART_1_context\000"
+ 3801      5F315F63 
+ 3801      6F6E7465 
+ 3801      787400
+ 3802              	.LASF57:
+ 3803 0221 63727970 		.ascii	"cryptoMemSize\000"
+ 3803      746F4D65 
+ 3803      6D53697A 
+ 3803      6500
+ 3804              	.LASF145:
+ 3805 022f 55415254 		.ascii	"UART_1_Start\000"
+ 3805      5F315F53 
+ 3805      74617274 
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 73
+
+
+ 3805      00
+ 3806              	.LASF23:
+ 3807 023c 70657269 		.ascii	"periBase\000"
+ 3807      42617365 
+ 3807      00
+ 3808              	.LASF55:
+ 3809 0245 73797350 		.ascii	"sysPmSimoPresent\000"
+ 3809      6D53696D 
+ 3809      6F507265 
+ 3809      73656E74 
+ 3809      00
+ 3810              	.LASF16:
+ 3811 0256 75696E74 		.ascii	"uint16_t\000"
+ 3811      31365F74 
+ 3811      00
+ 3812              	.LASF111:
+ 3813 025f 646F7562 		.ascii	"double\000"
+ 3813      6C6500
+ 3814              	.LASF84:
+ 3815 0266 70657269 		.ascii	"periDiv16_5CtlOffset\000"
+ 3815      44697631 
+ 3815      365F3543 
+ 3815      746C4F66 
+ 3815      66736574 
+ 3816              	.LASF48:
+ 3817 027b 73727373 		.ascii	"srssNumPll\000"
+ 3817      4E756D50 
+ 3817      6C6C00
+ 3818              	.LASF82:
+ 3819 0286 70657269 		.ascii	"periDiv8CtlOffset\000"
+ 3819      44697638 
+ 3819      43746C4F 
+ 3819      66667365 
+ 3819      7400
+ 3820              	.LASF89:
+ 3821 0298 6770696F 		.ascii	"gpioPrtCfgOutOffset\000"
+ 3821      50727443 
+ 3821      66674F75 
+ 3821      744F6666 
+ 3821      73657400 
+ 3822              	.LASF22:
+ 3823 02ac 666C6173 		.ascii	"flashcBase\000"
+ 3823      68634261 
+ 3823      736500
+ 3824              	.LASF9:
+ 3825 02b7 5F5F7569 		.ascii	"__uint32_t\000"
+ 3825      6E743332 
+ 3825      5F7400
+ 3826              	.LASF52:
+ 3827 02c2 70617373 		.ascii	"passSarChannels\000"
+ 3827      53617243 
+ 3827      68616E6E 
+ 3827      656C7300 
+ 3828              	.LASF147:
+ 3829 02d2 76546173 		.ascii	"vTaskStartScheduler\000"
+ 3829      6B537461 
+ 3829      72745363 
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 74
+
+
+ 3829      68656475 
+ 3829      6C657200 
+ 3830              	.LASF4:
+ 3831 02e6 5F5F696E 		.ascii	"__int16_t\000"
+ 3831      7431365F 
+ 3831      7400
+ 3832              	.LASF122:
+ 3833 02f0 72784275 		.ascii	"rxBufIdx\000"
+ 3833      66496478 
+ 3833      00
+ 3834              	.LASF80:
+ 3835 02f9 70657269 		.ascii	"periDivCmdPaDivSelPos\000"
+ 3835      44697643 
+ 3835      6D645061 
+ 3835      44697653 
+ 3835      656C506F 
+ 3836              	.LASF95:
+ 3837 030f 63707573 		.ascii	"cpussCm4PwrCtlOffset\000"
+ 3837      73436D34 
+ 3837      50777243 
+ 3837      746C4F66 
+ 3837      66736574 
+ 3838              	.LASF124:
+ 3839 0324 74784275 		.ascii	"txBufSize\000"
+ 3839      6653697A 
+ 3839      6500
+ 3840              	.LASF90:
+ 3841 032e 6770696F 		.ascii	"gpioPrtCfgSioOffset\000"
+ 3841      50727443 
+ 3841      66675369 
+ 3841      6F4F6666 
+ 3841      73657400 
+ 3842              	.LASF94:
+ 3843 0342 63707573 		.ascii	"cpussCm0StatusOffset\000"
+ 3843      73436D30 
+ 3843      53746174 
+ 3843      75734F66 
+ 3843      66736574 
+ 3844              	.LASF13:
+ 3845 0357 756E7369 		.ascii	"unsigned int\000"
+ 3845      676E6564 
+ 3845      20696E74 
+ 3845      00
+ 3846              	.LASF136:
+ 3847 0364 656E7472 		.ascii	"entree\000"
+ 3847      656500
+ 3848              	.LASF75:
+ 3849 036b 70657269 		.ascii	"periTrCmdGrSelMsk\000"
+ 3849      5472436D 
+ 3849      64477253 
+ 3849      656C4D73 
+ 3849      6B00
+ 3850              	.LASF10:
+ 3851 037d 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3851      20756E73 
+ 3851      69676E65 
+ 3851      6420696E 
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 75
+
+
+ 3851      7400
+ 3852              	.LASF113:
+ 3853 038f 63795F63 		.ascii	"cy_cb_scb_uart_handle_events_t\000"
+ 3853      625F7363 
+ 3853      625F7561 
+ 3853      72745F68 
+ 3853      616E646C 
+ 3854              	.LASF40:
+ 3855 03ae 63707573 		.ascii	"cpussIpcNr\000"
+ 3855      73497063 
+ 3855      4E7200
+ 3856              	.LASF42:
+ 3857 03b9 63707573 		.ascii	"cpussDwChNr\000"
+ 3857      73447743 
+ 3857      684E7200 
+ 3858              	.LASF65:
+ 3859 03c5 666C6173 		.ascii	"flashCtlMainWs2Freq\000"
+ 3859      6843746C 
+ 3859      4D61696E 
+ 3859      57733246 
+ 3859      72657100 
+ 3860              	.LASF76:
+ 3861 03d9 70657269 		.ascii	"periTrGrOffset\000"
+ 3861      54724772 
+ 3861      4F666673 
+ 3861      657400
+ 3862              	.LASF103:
+ 3863 03e8 63707573 		.ascii	"cpussRam1Ctl0\000"
+ 3863      7352616D 
+ 3863      3143746C 
+ 3863      3000
+ 3864              	.LASF126:
+ 3865 03f6 63624576 		.ascii	"cbEvents\000"
+ 3865      656E7473 
+ 3865      00
+ 3866              	.LASF87:
+ 3867 03ff 6770696F 		.ascii	"gpioPrtCfgOffset\000"
+ 3867      50727443 
+ 3867      66674F66 
+ 3867      66736574 
+ 3867      00
+ 3868              	.LASF35:
+ 3869 0410 6770696F 		.ascii	"gpioVersion\000"
+ 3869      56657273 
+ 3869      696F6E00 
+ 3870              	.LASF107:
+ 3871 041c 63795F73 		.ascii	"cy_stc_device_t\000"
+ 3871      74635F64 
+ 3871      65766963 
+ 3871      655F7400 
+ 3872              	.LASF156:
+ 3873 042c 5F5F6275 		.ascii	"__builtin_puts\000"
+ 3873      696C7469 
+ 3873      6E5F7075 
+ 3873      747300
+ 3874              	.LASF25:
+ 3875 043b 70726F74 		.ascii	"protBase\000"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 76
+
+
+ 3875      42617365 
+ 3875      00
+ 3876              	.LASF96:
+ 3877 0444 63707573 		.ascii	"cpussTrimRamCtlOffset\000"
+ 3877      73547269 
+ 3877      6D52616D 
+ 3877      43746C4F 
+ 3877      66667365 
+ 3878              	.LASF91:
+ 3879 045a 63707573 		.ascii	"cpussCm0ClockCtlOffset\000"
+ 3879      73436D30 
+ 3879      436C6F63 
+ 3879      6B43746C 
+ 3879      4F666673 
+ 3880              	.LASF30:
+ 3881 0471 63727970 		.ascii	"cryptoBase\000"
+ 3881      746F4261 
+ 3881      736500
+ 3882              	.LASF155:
+ 3883 047c 70757473 		.ascii	"puts\000"
+ 3883      00
+ 3884              	.LASF38:
+ 3885 0481 70657269 		.ascii	"periVersion\000"
+ 3885      56657273 
+ 3885      696F6E00 
+ 3886              	.LASF133:
+ 3887 048d 64617461 		.ascii	"dataSpo2\000"
+ 3887      53706F32 
+ 3887      00
+ 3888              	.LASF19:
+ 3889 0496 73697A65 		.ascii	"sizetype\000"
+ 3889      74797065 
+ 3889      00
+ 3890              	.LASF68:
+ 3891 049f 64774368 		.ascii	"dwChOffset\000"
+ 3891      4F666673 
+ 3891      657400
+ 3892              	.LASF146:
+ 3893 04aa 78546173 		.ascii	"xTaskCreate\000"
+ 3893      6B437265 
+ 3893      61746500 
+ 3894              	.LASF81:
+ 3895 04b6 70657269 		.ascii	"periDivCmdPaTypeSelPos\000"
+ 3895      44697643 
+ 3895      6D645061 
+ 3895      54797065 
+ 3895      53656C50 
+ 3896              	.LASF53:
+ 3897 04cd 65704D6F 		.ascii	"epMonitorNr\000"
+ 3897      6E69746F 
+ 3897      724E7200 
+ 3898              	.LASF39:
+ 3899 04d9 70726F74 		.ascii	"protVersion\000"
+ 3899      56657273 
+ 3899      696F6E00 
+ 3900              	.LASF72:
+ 3901 04e5 64775374 		.ascii	"dwStatusChIdxPos\000"
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 77
+
+
+ 3901      61747573 
+ 3901      43684964 
+ 3901      78506F73 
+ 3901      00
+ 3902              	.LASF54:
+ 3903 04f6 75646250 		.ascii	"udbPresent\000"
+ 3903      72657365 
+ 3903      6E7400
+ 3904              	.LASF115:
+ 3905 0501 72785374 		.ascii	"rxStatus\000"
+ 3905      61747573 
+ 3905      00
+ 3906              	.LASF134:
+ 3907 050a 706F7572 		.ascii	"pourcentageSpO2\000"
+ 3907      63656E74 
+ 3907      61676553 
+ 3907      704F3200 
+ 3908              	.LASF34:
+ 3909 051a 666C6173 		.ascii	"flashcVersion\000"
+ 3909      68635665 
+ 3909      7273696F 
+ 3909      6E00
+ 3910              	.LASF51:
+ 3911 0528 736D6966 		.ascii	"smifDeviceNr\000"
+ 3911      44657669 
+ 3911      63654E72 
+ 3911      00
+ 3912              	.LASF152:
+ 3913 0535 5F5F656E 		.ascii	"__enable_irq\000"
+ 3913      61626C65 
+ 3913      5F697271 
+ 3913      00
+ 3914              	.LASF148:
+ 3915 0542 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 3915      43313120 
+ 3915      352E342E 
+ 3915      31203230 
+ 3915      31363036 
+ 3916 0575 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m4 -mfloat-abi=s"
+ 3916      20726576 
+ 3916      6973696F 
+ 3916      6E203233 
+ 3916      37373135 
+ 3917 05a8 6F667466 		.ascii	"oftfp -mfpu=fpv4-sp-d16 -mthumb -g -Og -ffunction-s"
+ 3917      70202D6D 
+ 3917      6670753D 
+ 3917      66707634 
+ 3917      2D73702D 
+ 3918 05db 65637469 		.ascii	"ections -ffat-lto-objects\000"
+ 3918      6F6E7320 
+ 3918      2D666661 
+ 3918      742D6C74 
+ 3918      6F2D6F62 
+ 3919              	.LASF110:
+ 3920 05f5 666C6F61 		.ascii	"float\000"
+ 3920      7400
+ 3921              	.LASF73:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 78
+
+
+ 3922 05fb 64775374 		.ascii	"dwStatusChIdxMsk\000"
+ 3922      61747573 
+ 3922      43684964 
+ 3922      784D736B 
+ 3922      00
+ 3923              	.LASF130:
+ 3924 060c 63795F64 		.ascii	"cy_device\000"
+ 3924      65766963 
+ 3924      6500
+ 3925              	.LASF101:
+ 3926 0616 63707573 		.ascii	"cpussRomCtl\000"
+ 3926      73526F6D 
+ 3926      43746C00 
+ 3927              	.LASF71:
+ 3928 0622 64774368 		.ascii	"dwChCtlPreemptablePos\000"
+ 3928      43746C50 
+ 3928      7265656D 
+ 3928      70746162 
+ 3928      6C65506F 
+ 3929              	.LASF125:
+ 3930 0638 74784C65 		.ascii	"txLeftToTransmit\000"
+ 3930      6674546F 
+ 3930      5472616E 
+ 3930      736D6974 
+ 3930      00
+ 3931              	.LASF143:
+ 3932 0649 53797374 		.ascii	"SystemInit\000"
+ 3932      656D496E 
+ 3932      697400
+ 3933              	.LASF24:
+ 3934 0654 75646242 		.ascii	"udbBase\000"
+ 3934      61736500 
+ 3935              	.LASF112:
+ 3936 065c 5F426F6F 		.ascii	"_Bool\000"
+ 3936      6C00
+ 3937              	.LASF17:
+ 3938 0662 696E7433 		.ascii	"int32_t\000"
+ 3938      325F7400 
+ 3939              	.LASF2:
+ 3940 066a 756E7369 		.ascii	"unsigned char\000"
+ 3940      676E6564 
+ 3940      20636861 
+ 3940      7200
+ 3941              	.LASF67:
+ 3942 0678 666C6173 		.ascii	"flashCtlMainWs4Freq\000"
+ 3942      6843746C 
+ 3942      4D61696E 
+ 3942      57733446 
+ 3942      72657100 
+ 3943              	.LASF129:
+ 3944 068c 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 3944      52784275 
+ 3944      66666572 
+ 3944      00
+ 3945              	.LASF132:
+ 3946 0699 696E6465 		.ascii	"indexBuffer\000"
+ 3946      78427566 
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 79
+
+
+ 3946      66657200 
+ 3947              	.LASF85:
+ 3948 06a5 70657269 		.ascii	"periDiv24_5CtlOffset\000"
+ 3948      44697632 
+ 3948      345F3543 
+ 3948      746C4F66 
+ 3948      66736574 
+ 3949              	.LASF0:
+ 3950 06ba 73686F72 		.ascii	"short int\000"
+ 3950      7420696E 
+ 3950      7400
+ 3951              	.LASF102:
+ 3952 06c4 63707573 		.ascii	"cpussRam0Ctl0\000"
+ 3952      7352616D 
+ 3952      3043746C 
+ 3952      3000
+ 3953              	.LASF78:
+ 3954 06d2 70657269 		.ascii	"periDivCmdDivSelMsk\000"
+ 3954      44697643 
+ 3954      6D644469 
+ 3954      7653656C 
+ 3954      4D736B00 
+ 3955              	.LASF49:
+ 3956 06e6 73727373 		.ascii	"srssNumHfroot\000"
+ 3956      4E756D48 
+ 3956      66726F6F 
+ 3956      7400
+ 3957              	.LASF62:
+ 3958 06f4 666C6173 		.ascii	"flashEraseDelay\000"
+ 3958      68457261 
+ 3958      73654465 
+ 3958      6C617900 
+ 3959              	.LASF45:
+ 3960 0704 63707573 		.ascii	"cpussFmIrq\000"
+ 3960      73466D49 
+ 3960      727100
+ 3961              	.LASF142:
+ 3962 070f 74657374 		.ascii	"testIR\000"
+ 3962      495200
+ 3963              	.LASF77:
+ 3964 0716 70657269 		.ascii	"periTrGrSize\000"
+ 3964      54724772 
+ 3964      53697A65 
+ 3964      00
+ 3965              	.LASF100:
+ 3966 0723 63707573 		.ascii	"cpussCm4NmiCtlOffset\000"
+ 3966      73436D34 
+ 3966      4E6D6943 
+ 3966      746C4F66 
+ 3966      66736574 
+ 3967              	.LASF150:
+ 3968 0738 433A5C55 		.ascii	"C:\\Users\\user\\Desktop\\ANDREE\\Design01.cydsn\000"
+ 3968      73657273 
+ 3968      5C757365 
+ 3968      725C4465 
+ 3968      736B746F 
+ 3969              	.LASF20:
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 80
+
+
+ 3970 0764 6C6F6E67 		.ascii	"long double\000"
+ 3970      20646F75 
+ 3970      626C6500 
+ 3971              	.LASF108:
+ 3972 0770 63686172 		.ascii	"char\000"
+ 3972      00
+ 3973              	.LASF64:
+ 3974 0775 666C6173 		.ascii	"flashCtlMainWs1Freq\000"
+ 3974      6843746C 
+ 3974      4D61696E 
+ 3974      57733146 
+ 3974      72657100 
+ 3975              	.LASF5:
+ 3976 0789 5F5F7569 		.ascii	"__uint16_t\000"
+ 3976      6E743136 
+ 3976      5F7400
+ 3977              	.LASF83:
+ 3978 0794 70657269 		.ascii	"periDiv16CtlOffset\000"
+ 3978      44697631 
+ 3978      3643746C 
+ 3978      4F666673 
+ 3978      657400
+ 3979              	.LASF7:
+ 3980 07a7 5F5F696E 		.ascii	"__int32_t\000"
+ 3980      7433325F 
+ 3980      7400
+ 3981              	.LASF36:
+ 3982 07b1 6873696F 		.ascii	"hsiomVersion\000"
+ 3982      6D566572 
+ 3982      73696F6E 
+ 3982      00
+ 3983              	.LASF109:
+ 3984 07be 666C6F61 		.ascii	"float32_t\000"
+ 3984      7433325F 
+ 3984      7400
+ 3985              	.LASF61:
+ 3986 07c8 666C6173 		.ascii	"flashProgramDelay\000"
+ 3986      6850726F 
+ 3986      6772616D 
+ 3986      44656C61 
+ 3986      7900
+ 3987              	.LASF118:
+ 3988 07da 72785269 		.ascii	"rxRingBufHead\000"
+ 3988      6E674275 
+ 3988      66486561 
+ 3988      6400
+ 3989              	.LASF117:
+ 3990 07e8 72785269 		.ascii	"rxRingBufSize\000"
+ 3990      6E674275 
+ 3990      6653697A 
+ 3990      6500
+ 3991              	.LASF6:
+ 3992 07f6 73686F72 		.ascii	"short unsigned int\000"
+ 3992      7420756E 
+ 3992      7369676E 
+ 3992      65642069 
+ 3992      6E7400
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 81
+
+
+ 3993              	.LASF69:
+ 3994 0809 64774368 		.ascii	"dwChSize\000"
+ 3994      53697A65 
+ 3994      00
+ 3995              	.LASF105:
+ 3996 0812 69706353 		.ascii	"ipcStructSize\000"
+ 3996      74727563 
+ 3996      7453697A 
+ 3996      6500
+ 3997              	.LASF140:
+ 3998 0820 6E756D42 		.ascii	"numBlocks\000"
+ 3998      6C6F636B 
+ 3998      7300
+ 3999              	.LASF44:
+ 4000 082a 63707573 		.ascii	"cpussIpc0Irq\000"
+ 4000      73497063 
+ 4000      30497271 
+ 4000      00
+ 4001              	.LASF27:
+ 4002 0837 6770696F 		.ascii	"gpioBase\000"
+ 4002      42617365 
+ 4002      00
+ 4003              	.LASF127:
+ 4004 0840 696E6974 		.ascii	"initKey\000"
+ 4004      4B657900 
+ 4005              	.LASF139:
+ 4006 0848 626C6F63 		.ascii	"blockSize\000"
+ 4006      6B53697A 
+ 4006      6500
+ 4007              	.LASF18:
+ 4008 0852 75696E74 		.ascii	"uint32_t\000"
+ 4008      33325F74 
+ 4008      00
+ 4009              	.LASF128:
+ 4010 085b 63795F73 		.ascii	"cy_stc_scb_uart_context_t\000"
+ 4010      74635F73 
+ 4010      63625F75 
+ 4010      6172745F 
+ 4010      636F6E74 
+ 4011              	.LASF46:
+ 4012 0875 63707573 		.ascii	"cpussNotConnectedIrq\000"
+ 4012      734E6F74 
+ 4012      436F6E6E 
+ 4012      65637465 
+ 4012      64497271 
+ 4013              	.LASF60:
+ 4014 088a 666C6173 		.ascii	"flashWriteDelay\000"
+ 4014      68577269 
+ 4014      74654465 
+ 4014      6C617900 
+ 4015              	.LASF14:
+ 4016 089a 75696E74 		.ascii	"uint8_t\000"
+ 4016      385F7400 
+ 4017              	.LASF93:
+ 4018 08a2 63707573 		.ascii	"cpussCm4StatusOffset\000"
+ 4018      73436D34 
+ 4018      53746174 
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 82
+
+
+ 4018      75734F66 
+ 4018      66736574 
+ 4019              	.LASF86:
+ 4020 08b7 6770696F 		.ascii	"gpioPrtIntrCfgOffset\000"
+ 4020      50727449 
+ 4020      6E747243 
+ 4020      66674F66 
+ 4020      66736574 
+ 4021              	.LASF154:
+ 4022 08cc 66697253 		.ascii	"firStateF32\000"
+ 4022      74617465 
+ 4022      46333200 
+ 4023              	.LASF119:
+ 4024 08d8 72785269 		.ascii	"rxRingBufTail\000"
+ 4024      6E674275 
+ 4024      66546169 
+ 4024      6C00
+ 4025              	.LASF135:
+ 4026 08e6 416C6172 		.ascii	"AlarmeBMI160\000"
+ 4026      6D65424D 
+ 4026      49313630 
+ 4026      00
+ 4027              	.LASF97:
+ 4028 08f3 63707573 		.ascii	"cpussTrimRomCtlOffset\000"
+ 4028      73547269 
+ 4028      6D526F6D 
+ 4028      43746C4F 
+ 4028      66667365 
+ 4029              	.LASF114:
+ 4030 0909 74785374 		.ascii	"txStatus\000"
+ 4030      61747573 
+ 4030      00
+ 4031              	.LASF33:
+ 4032 0912 64775665 		.ascii	"dwVersion\000"
+ 4032      7273696F 
+ 4032      6E00
+ 4033              	.LASF29:
+ 4034 091c 69706342 		.ascii	"ipcBase\000"
+ 4034      61736500 
+ 4035              	.LASF153:
+ 4036 0924 6D61696E 		.ascii	"main\000"
+ 4036      00
+ 4037              	.LASF151:
+ 4038 0929 63795F73 		.ascii	"cy_stc_scb_uart_context\000"
+ 4038      74635F73 
+ 4038      63625F75 
+ 4038      6172745F 
+ 4038      636F6E74 
+ 4039              	.LASF149:
+ 4040 0941 6D61696E 		.ascii	"main_cm4.c\000"
+ 4040      5F636D34 
+ 4040      2E6300
+ 4041              	.LASF31:
+ 4042 094c 63707573 		.ascii	"cpussVersion\000"
+ 4042      73566572 
+ 4042      73696F6E 
+ 4042      00
+ARM GAS  C:\Users\user\AppData\Local\Temp\ccKhhjP2.s 			page 83
+
+
+ 4043              	.LASF58:
+ 4044 0959 666C6173 		.ascii	"flashRwwRequired\000"
+ 4044      68527777 
+ 4044      52657175 
+ 4044      69726564 
+ 4044      00
+ 4045              	.LASF120:
+ 4046 096a 72784275 		.ascii	"rxBuf\000"
+ 4046      6600
+ 4047              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

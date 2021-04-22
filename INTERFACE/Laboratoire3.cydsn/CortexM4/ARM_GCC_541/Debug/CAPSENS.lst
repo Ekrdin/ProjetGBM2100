@@ -1,0 +1,3352 @@
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 1
+   4              		.fpu fpv4-sp-d16
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.thumb
+  15              		.syntax unified
+  16              		.file	"CAPSENS.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.section	.text.capSense_task,"ax",%progbits
+  21              		.align	2
+  22              		.global	capSense_task
+  23              		.thumb
+  24              		.thumb_func
+  25              		.type	capSense_task, %function
+  26              	capSense_task:
+  27              	.LFB604:
+  28              		.file 1 "CAPSENS.c"
+   1:CAPSENS.c     **** /* ========================================
+   2:CAPSENS.c     ****  *
+   3:CAPSENS.c     ****  * Copyright YOUR COMPANY, THE YEAR
+   4:CAPSENS.c     ****  * All Rights Reserved
+   5:CAPSENS.c     ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:CAPSENS.c     ****  *
+   7:CAPSENS.c     ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:CAPSENS.c     ****  * WHICH IS THE PROPERTY OF your company.
+   9:CAPSENS.c     ****  *
+  10:CAPSENS.c     ****  * ========================================
+  11:CAPSENS.c     **** */
+  12:CAPSENS.c     **** #include "CAPSENS.h"
+  13:CAPSENS.c     **** #include "DISPLAY.h"
+  14:CAPSENS.c     **** 
+  15:CAPSENS.c     **** 
+  16:CAPSENS.c     **** 
+  17:CAPSENS.c     **** void capSense_task()
+  18:CAPSENS.c     **** {
+  29              		.loc 1 18 0
+  30              		.cfi_startproc
+  31              		@ Volatile: function does not return.
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+  38              	.L19:
+  19:CAPSENS.c     ****     
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 2
+
+
+  20:CAPSENS.c     ****     for(;;)
+  21:CAPSENS.c     ****     {
+  22:CAPSENS.c     ****         // initialisation de la lecture du CAPSENS 
+  23:CAPSENS.c     ****         CapSense_ProcessAllWidgets();
+  39              		.loc 1 23 0
+  40 0002 FFF7FEFF 		bl	CapSense_ProcessAllWidgets
+  41              	.LVL0:
+  24:CAPSENS.c     ****         
+  25:CAPSENS.c     ****        if(CapSense_IsWidgetActive(CapSense_BUTTON0_WDGT_ID)){
+  42              		.loc 1 25 0
+  43 0006 0020     		movs	r0, #0
+  44 0008 FFF7FEFF 		bl	CapSense_IsWidgetActive
+  45              	.LVL1:
+  46 000c 0028     		cmp	r0, #0
+  47 000e 44D0     		beq	.L2
+  26:CAPSENS.c     ****   
+  27:CAPSENS.c     ****             if ( currentScreen.screen ==  PRINCIPAL_PAGE)  
+  48              		.loc 1 27 0
+  49 0010 534B     		ldr	r3, .L21
+  50 0012 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  51 0014 13F0FF0F 		tst	r3, #255
+  52 0018 02D1     		bne	.L3
+  28:CAPSENS.c     ****             {currentScreen.FLAG1=1;} 
+  53              		.loc 1 28 0
+  54 001a 0122     		movs	r2, #1
+  55 001c 504B     		ldr	r3, .L21
+  56 001e 5A70     		strb	r2, [r3, #1]
+  57              	.L3:
+  29:CAPSENS.c     ****             if ( currentScreen.screen == MAIN_MENU)       //VA VERS LE BAS 
+  58              		.loc 1 29 0
+  59 0020 4F4B     		ldr	r3, .L21
+  60 0022 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  61 0024 DBB2     		uxtb	r3, r3
+  62 0026 012B     		cmp	r3, #1
+  63 0028 02D1     		bne	.L4
+  30:CAPSENS.c     ****             {currentScreen.FLAG1=2; }
+  64              		.loc 1 30 0
+  65 002a 0222     		movs	r2, #2
+  66 002c 4C4B     		ldr	r3, .L21
+  67 002e 5A70     		strb	r2, [r3, #1]
+  68              	.L4:
+  31:CAPSENS.c     ****             if ( currentScreen.screen == OPTION_1)  
+  69              		.loc 1 31 0
+  70 0030 4B4B     		ldr	r3, .L21
+  71 0032 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  72 0034 DBB2     		uxtb	r3, r3
+  73 0036 022B     		cmp	r3, #2
+  74 0038 02D1     		bne	.L5
+  32:CAPSENS.c     ****             {currentScreen.FLAG1=3;}
+  75              		.loc 1 32 0
+  76 003a 0322     		movs	r2, #3
+  77 003c 484B     		ldr	r3, .L21
+  78 003e 5A70     		strb	r2, [r3, #1]
+  79              	.L5:
+  33:CAPSENS.c     ****             if ( currentScreen.screen == OPTION_2) 
+  80              		.loc 1 33 0
+  81 0040 474B     		ldr	r3, .L21
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 3
+
+
+  82 0042 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  83 0044 DBB2     		uxtb	r3, r3
+  84 0046 032B     		cmp	r3, #3
+  85 0048 07D1     		bne	.L6
+  34:CAPSENS.c     ****             {courant= courant+3; 
+  86              		.loc 1 34 0
+  87 004a 464A     		ldr	r2, .L21+4
+  88 004c 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  89 004e 0333     		adds	r3, r3, #3
+  90 0050 DBB2     		uxtb	r3, r3
+  91 0052 1370     		strb	r3, [r2]
+  35:CAPSENS.c     ****              currentScreen.FLAG1=4;}        
+  92              		.loc 1 35 0
+  93 0054 0422     		movs	r2, #4
+  94 0056 424B     		ldr	r3, .L21
+  95 0058 5A70     		strb	r2, [r3, #1]
+  96              	.L6:
+  36:CAPSENS.c     ****             if ( currentScreen.screen == OPTION_3_superieur) 
+  97              		.loc 1 36 0
+  98 005a 414B     		ldr	r3, .L21
+  99 005c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 100 005e DBB2     		uxtb	r3, r3
+ 101 0060 042B     		cmp	r3, #4
+ 102 0062 06D1     		bne	.L7
+  37:CAPSENS.c     ****             { borne_superieur= borne_superieur+2; 
+ 103              		.loc 1 37 0
+ 104 0064 404A     		ldr	r2, .L21+8
+ 105 0066 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 106 0068 0233     		adds	r3, r3, #2
+ 107 006a 1370     		strb	r3, [r2]
+  38:CAPSENS.c     ****                 currentScreen.FLAG1=5;}        
+ 108              		.loc 1 38 0
+ 109 006c 0522     		movs	r2, #5
+ 110 006e 3C4B     		ldr	r3, .L21
+ 111 0070 5A70     		strb	r2, [r3, #1]
+ 112              	.L7:
+  39:CAPSENS.c     ****             if ( currentScreen.screen == OPTION_3_inferieur) 
+ 113              		.loc 1 39 0
+ 114 0072 3B4B     		ldr	r3, .L21
+ 115 0074 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 116 0076 DBB2     		uxtb	r3, r3
+ 117 0078 052B     		cmp	r3, #5
+ 118 007a 06D1     		bne	.L8
+  40:CAPSENS.c     ****             {borne_inferieur=borne_inferieur+2; 
+ 119              		.loc 1 40 0
+ 120 007c 3B4A     		ldr	r2, .L21+12
+ 121 007e 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 122 0080 0233     		adds	r3, r3, #2
+ 123 0082 1370     		strb	r3, [r2]
+  41:CAPSENS.c     ****                 currentScreen.FLAG1=6;}           
+ 124              		.loc 1 41 0
+ 125 0084 0622     		movs	r2, #6
+ 126 0086 364B     		ldr	r3, .L21
+ 127 0088 5A70     		strb	r2, [r3, #1]
+ 128              	.L8:
+  42:CAPSENS.c     ****             if ( currentScreen.screen == OPTION_3_ETAT) //PERMET D'ACTIVER L'ALARME
+ 129              		.loc 1 42 0
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 4
+
+
+ 130 008a 354B     		ldr	r3, .L21
+ 131 008c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 132 008e DBB2     		uxtb	r3, r3
+ 133 0090 062B     		cmp	r3, #6
+ 134 0092 02D1     		bne	.L2
+  43:CAPSENS.c     ****             {currentScreen.FLAG1=7;}          
+ 135              		.loc 1 43 0
+ 136 0094 0722     		movs	r2, #7
+ 137 0096 324B     		ldr	r3, .L21
+ 138 0098 5A70     		strb	r2, [r3, #1]
+ 139              	.L2:
+  44:CAPSENS.c     ****           
+  45:CAPSENS.c     ****     }
+  46:CAPSENS.c     **** 
+  47:CAPSENS.c     ****        if (CapSense_IsWidgetActive(CapSense_BUTTON1_WDGT_ID))
+ 140              		.loc 1 47 0
+ 141 009a 0120     		movs	r0, #1
+ 142 009c FFF7FEFF 		bl	CapSense_IsWidgetActive
+ 143              	.LVL2:
+ 144 00a0 0028     		cmp	r0, #0
+ 145 00a2 54D0     		beq	.L9
+  48:CAPSENS.c     ****         {
+  49:CAPSENS.c     **** 
+  50:CAPSENS.c     ****         if (currentScreen.screen == MAIN_MENU) {            
+ 146              		.loc 1 50 0
+ 147 00a4 2E4B     		ldr	r3, .L21
+ 148 00a6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 149 00a8 DBB2     		uxtb	r3, r3
+ 150 00aa 012B     		cmp	r3, #1
+ 151 00ac 1AD1     		bne	.L10
+  51:CAPSENS.c     **** 
+  52:CAPSENS.c     ****                 
+  53:CAPSENS.c     ****                 if (postion_MENU==40) 
+ 152              		.loc 1 53 0
+ 153 00ae 304B     		ldr	r3, .L21+16
+ 154 00b0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 155 00b2 282B     		cmp	r3, #40
+ 156 00b4 02D1     		bne	.L11
+  54:CAPSENS.c     ****                             { selection_MENU=1;}
+ 157              		.loc 1 54 0
+ 158 00b6 0121     		movs	r1, #1
+ 159 00b8 2E4A     		ldr	r2, .L21+20
+ 160 00ba 1170     		strb	r1, [r2]
+ 161              	.L11:
+  55:CAPSENS.c     **** 
+  56:CAPSENS.c     ****                 if (postion_MENU==70) 
+ 162              		.loc 1 56 0
+ 163 00bc 462B     		cmp	r3, #70
+ 164 00be 02D1     		bne	.L12
+  57:CAPSENS.c     ****                             { selection_MENU=2;}
+ 165              		.loc 1 57 0
+ 166 00c0 0221     		movs	r1, #2
+ 167 00c2 2C4A     		ldr	r2, .L21+20
+ 168 00c4 1170     		strb	r1, [r2]
+ 169              	.L12:
+  58:CAPSENS.c     ****                 if (postion_MENU==100)
+ 170              		.loc 1 58 0
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 5
+
+
+ 171 00c6 642B     		cmp	r3, #100
+ 172 00c8 02D1     		bne	.L13
+  59:CAPSENS.c     ****                              { selection_MENU=3;} 
+ 173              		.loc 1 59 0
+ 174 00ca 0321     		movs	r1, #3
+ 175 00cc 294A     		ldr	r2, .L21+20
+ 176 00ce 1170     		strb	r1, [r2]
+ 177              	.L13:
+  60:CAPSENS.c     ****                 if (postion_MENU==130)
+ 178              		.loc 1 60 0
+ 179 00d0 822B     		cmp	r3, #130
+ 180 00d2 02D1     		bne	.L14
+  61:CAPSENS.c     ****                              {  selection_MENU=4;} 
+ 181              		.loc 1 61 0
+ 182 00d4 0421     		movs	r1, #4
+ 183 00d6 274A     		ldr	r2, .L21+20
+ 184 00d8 1170     		strb	r1, [r2]
+ 185              	.L14:
+  62:CAPSENS.c     ****                 if (postion_MENU==160)
+ 186              		.loc 1 62 0
+ 187 00da A02B     		cmp	r3, #160
+ 188 00dc 02D1     		bne	.L10
+  63:CAPSENS.c     ****                              {  selection_MENU=5;} 
+ 189              		.loc 1 63 0
+ 190 00de 0522     		movs	r2, #5
+ 191 00e0 244B     		ldr	r3, .L21+20
+ 192 00e2 1A70     		strb	r2, [r3]
+ 193              	.L10:
+  64:CAPSENS.c     ****             }
+  65:CAPSENS.c     ****          if ( currentScreen.screen == OPTION_1) 
+ 194              		.loc 1 65 0
+ 195 00e4 1E4B     		ldr	r3, .L21
+ 196 00e6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 197 00e8 DBB2     		uxtb	r3, r3
+ 198 00ea 022B     		cmp	r3, #2
+ 199 00ec 02D1     		bne	.L15
+  66:CAPSENS.c     ****                     {currentScreen.FLAG2=3;} 
+ 200              		.loc 1 66 0
+ 201 00ee 0322     		movs	r2, #3
+ 202 00f0 1B4B     		ldr	r3, .L21
+ 203 00f2 9A70     		strb	r2, [r3, #2]
+ 204              	.L15:
+  67:CAPSENS.c     ****             
+  68:CAPSENS.c     ****          if ( currentScreen.screen == OPTION_2)
+ 205              		.loc 1 68 0
+ 206 00f4 1A4B     		ldr	r3, .L21
+ 207 00f6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 208 00f8 DBB2     		uxtb	r3, r3
+ 209 00fa 032B     		cmp	r3, #3
+ 210 00fc 07D1     		bne	.L16
+  69:CAPSENS.c     ****                     {courant=courant-3; 
+ 211              		.loc 1 69 0
+ 212 00fe 194A     		ldr	r2, .L21+4
+ 213 0100 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 214 0102 033B     		subs	r3, r3, #3
+ 215 0104 DBB2     		uxtb	r3, r3
+ 216 0106 1370     		strb	r3, [r2]
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 6
+
+
+  70:CAPSENS.c     ****                      currentScreen.FLAG2= 4; }
+ 217              		.loc 1 70 0
+ 218 0108 0422     		movs	r2, #4
+ 219 010a 154B     		ldr	r3, .L21
+ 220 010c 9A70     		strb	r2, [r3, #2]
+ 221              	.L16:
+  71:CAPSENS.c     ****          if ( currentScreen.screen == OPTION_3_superieur) {
+ 222              		.loc 1 71 0
+ 223 010e 144B     		ldr	r3, .L21
+ 224 0110 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 225 0112 DBB2     		uxtb	r3, r3
+ 226 0114 042B     		cmp	r3, #4
+ 227 0116 06D1     		bne	.L17
+  72:CAPSENS.c     ****                 borne_superieur=borne_superieur-2; 
+ 228              		.loc 1 72 0
+ 229 0118 134A     		ldr	r2, .L21+8
+ 230 011a 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 231 011c 023B     		subs	r3, r3, #2
+ 232 011e 1370     		strb	r3, [r2]
+  73:CAPSENS.c     ****                 currentScreen.FLAG2=5;}          
+ 233              		.loc 1 73 0
+ 234 0120 0522     		movs	r2, #5
+ 235 0122 0F4B     		ldr	r3, .L21
+ 236 0124 9A70     		strb	r2, [r3, #2]
+ 237              	.L17:
+  74:CAPSENS.c     ****          if ( currentScreen.screen == OPTION_3_inferieur) {
+ 238              		.loc 1 74 0
+ 239 0126 0E4B     		ldr	r3, .L21
+ 240 0128 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 241 012a DBB2     		uxtb	r3, r3
+ 242 012c 052B     		cmp	r3, #5
+ 243 012e 06D1     		bne	.L18
+  75:CAPSENS.c     ****                 borne_inferieur=borne_inferieur-2; 
+ 244              		.loc 1 75 0
+ 245 0130 0E4A     		ldr	r2, .L21+12
+ 246 0132 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 247 0134 023B     		subs	r3, r3, #2
+ 248 0136 1370     		strb	r3, [r2]
+  76:CAPSENS.c     ****                 currentScreen.FLAG2=6;}
+ 249              		.loc 1 76 0
+ 250 0138 0622     		movs	r2, #6
+ 251 013a 094B     		ldr	r3, .L21
+ 252 013c 9A70     		strb	r2, [r3, #2]
+ 253              	.L18:
+  77:CAPSENS.c     ****          if ( currentScreen.screen == OPTION_3_ETAT)
+ 254              		.loc 1 77 0
+ 255 013e 084B     		ldr	r3, .L21
+ 256 0140 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 257 0142 DBB2     		uxtb	r3, r3
+ 258 0144 062B     		cmp	r3, #6
+ 259 0146 02D1     		bne	.L9
+  78:CAPSENS.c     ****                     {currentScreen.FLAG2=7;}         
+ 260              		.loc 1 78 0
+ 261 0148 0722     		movs	r2, #7
+ 262 014a 054B     		ldr	r3, .L21
+ 263 014c 9A70     		strb	r2, [r3, #2]
+ 264              	.L9:
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 7
+
+
+  79:CAPSENS.c     ****             
+  80:CAPSENS.c     ****         }
+  81:CAPSENS.c     ****         CapSense_UpdateAllBaselines();
+ 265              		.loc 1 81 0
+ 266 014e FFF7FEFF 		bl	CapSense_UpdateAllBaselines
+ 267              	.LVL3:
+  82:CAPSENS.c     ****         CapSense_ScanAllWidgets();
+ 268              		.loc 1 82 0
+ 269 0152 FFF7FEFF 		bl	CapSense_ScanAllWidgets
+ 270              	.LVL4:
+  83:CAPSENS.c     ****         vTaskDelay(pdMS_TO_TICKS(400));  
+ 271              		.loc 1 83 0
+ 272 0156 4FF4C870 		mov	r0, #400
+ 273 015a FFF7FEFF 		bl	vTaskDelay
+ 274              	.LVL5:
+  84:CAPSENS.c     ****     }
+ 275              		.loc 1 84 0
+ 276 015e 50E7     		b	.L19
+ 277              	.L22:
+ 278              		.align	2
+ 279              	.L21:
+ 280 0160 00000000 		.word	currentScreen
+ 281 0164 00000000 		.word	courant
+ 282 0168 00000000 		.word	borne_superieur
+ 283 016c 00000000 		.word	borne_inferieur
+ 284 0170 00000000 		.word	postion_MENU
+ 285 0174 00000000 		.word	selection_MENU
+ 286              		.cfi_endproc
+ 287              	.LFE604:
+ 288              		.size	capSense_task, .-capSense_task
+ 289              		.comm	ROUGE,4,4
+ 290              		.comm	INFRAROUGE,4,4
+ 291              		.comm	andree,1,1
+ 292              		.comm	yassine,1,1
+ 293              		.comm	vecteurespacee,500,4
+ 294              		.comm	data,672,4
+ 295              		.comm	selection_MENU,1,1
+ 296              		.comm	postion_MENU,1,1
+ 297              		.comm	currentScreen,6,4
+ 298              		.comm	bouton,4,4
+ 299              		.comm	etat,4,4
+ 300              		.comm	imageBufferCache,5808,4
+ 301              		.comm	buffer_1,100,4
+ 302              		.comm	buffer_0,100,4
+ 303              		.comm	buffer,100,4
+ 304              		.comm	borne_superieur,1,1
+ 305              		.comm	borne_inferieur,1,1
+ 306              		.comm	alarme_FC,1,1
+ 307              		.comm	alarme_acc,1,1
+ 308              		.comm	courant,1,1
+ 309              		.text
+ 310              	.Letext0:
+ 311              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 312              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 313              		.file 4 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/device/cy_device.h"
+ 314              		.file 5 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/syslib/cy_syslib.h"
+ 315              		.file 6 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/scb/cy_scb_spi.h"
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 8
+
+
+ 316              		.file 7 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/scb/cy_scb_uart.h"
+ 317              		.file 8 "Generated_Source\\PSoC6\\pdl\\drivers/peripheral/tcpwm/cy_tcpwm_counter.h"
+ 318              		.file 9 "Generated_Source\\PSoC6\\pdl\\rtos/FreeRTOS/10.0.1/Source/portable/GCC/CM4F/portmacro.h"
+ 319              		.file 10 "DISPLAY.h"
+ 320              		.file 11 ".\\CMSIS\\Core\\Include/core_cm4.h"
+ 321              		.file 12 "Generated_Source\\PSoC6/CY_EINK_SPIM.h"
+ 322              		.file 13 "Generated_Source\\PSoC6/CY_EINK_Timer.h"
+ 323              		.file 14 "Generated_Source\\PSoC6/UART_1.h"
+ 324              		.file 15 "CAPSENS.h"
+ 325              		.file 16 "Generated_Source\\PSoC6/CapSense_Control.h"
+ 326              		.file 17 "Generated_Source\\PSoC6/CapSense_Structure.h"
+ 327              		.file 18 "Generated_Source\\PSoC6/CapSense_Filter.h"
+ 328              		.file 19 "Generated_Source\\PSoC6/CapSense_Sensing.h"
+ 329              		.file 20 "Generated_Source\\PSoC6\\pdl\\rtos/FreeRTOS/10.0.1/Source/include/task.h"
+ 330              		.section	.debug_info,"",%progbits
+ 331              	.Ldebug_info0:
+ 332 0000 FF0A0000 		.4byte	0xaff
+ 333 0004 0400     		.2byte	0x4
+ 334 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 335 000a 04       		.byte	0x4
+ 336 000b 01       		.uleb128 0x1
+ 337 000c 9F060000 		.4byte	.LASF201
+ 338 0010 0C       		.byte	0xc
+ 339 0011 5F040000 		.4byte	.LASF202
+ 340 0015 C90B0000 		.4byte	.LASF203
+ 341 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 342 001d 00000000 		.4byte	0
+ 343 0021 00000000 		.4byte	.Ldebug_line0
+ 344 0025 02       		.uleb128 0x2
+ 345 0026 02       		.byte	0x2
+ 346 0027 05       		.byte	0x5
+ 347 0028 80050000 		.4byte	.LASF0
+ 348 002c 02       		.uleb128 0x2
+ 349 002d 01       		.byte	0x1
+ 350 002e 06       		.byte	0x6
+ 351 002f 700B0000 		.4byte	.LASF1
+ 352 0033 03       		.uleb128 0x3
+ 353 0034 A6000000 		.4byte	.LASF3
+ 354 0038 02       		.byte	0x2
+ 355 0039 1D       		.byte	0x1d
+ 356 003a 3E000000 		.4byte	0x3e
+ 357 003e 02       		.uleb128 0x2
+ 358 003f 01       		.byte	0x1
+ 359 0040 08       		.byte	0x8
+ 360 0041 E4070000 		.4byte	.LASF2
+ 361 0045 03       		.uleb128 0x3
+ 362 0046 E9030000 		.4byte	.LASF4
+ 363 004a 02       		.byte	0x2
+ 364 004b 29       		.byte	0x29
+ 365 004c 25000000 		.4byte	0x25
+ 366 0050 03       		.uleb128 0x3
+ 367 0051 86090000 		.4byte	.LASF5
+ 368 0055 02       		.byte	0x2
+ 369 0056 2B       		.byte	0x2b
+ 370 0057 5B000000 		.4byte	0x5b
+ 371 005b 02       		.uleb128 0x2
+ 372 005c 02       		.byte	0x2
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 9
+
+
+ 373 005d 07       		.byte	0x7
+ 374 005e 170A0000 		.4byte	.LASF6
+ 375 0062 03       		.uleb128 0x3
+ 376 0063 B9090000 		.4byte	.LASF7
+ 377 0067 02       		.byte	0x2
+ 378 0068 3F       		.byte	0x3f
+ 379 0069 6D000000 		.4byte	0x6d
+ 380 006d 02       		.uleb128 0x2
+ 381 006e 04       		.byte	0x4
+ 382 006f 05       		.byte	0x5
+ 383 0070 E3020000 		.4byte	.LASF8
+ 384 0074 03       		.uleb128 0x3
+ 385 0075 C0030000 		.4byte	.LASF9
+ 386 0079 02       		.byte	0x2
+ 387 007a 41       		.byte	0x41
+ 388 007b 7F000000 		.4byte	0x7f
+ 389 007f 02       		.uleb128 0x2
+ 390 0080 04       		.byte	0x4
+ 391 0081 07       		.byte	0x7
+ 392 0082 84040000 		.4byte	.LASF10
+ 393 0086 02       		.uleb128 0x2
+ 394 0087 08       		.byte	0x8
+ 395 0088 05       		.byte	0x5
+ 396 0089 EB010000 		.4byte	.LASF11
+ 397 008d 02       		.uleb128 0x2
+ 398 008e 08       		.byte	0x8
+ 399 008f 07       		.byte	0x7
+ 400 0090 25010000 		.4byte	.LASF12
+ 401 0094 04       		.uleb128 0x4
+ 402 0095 04       		.byte	0x4
+ 403 0096 05       		.byte	0x5
+ 404 0097 696E7400 		.ascii	"int\000"
+ 405 009b 02       		.uleb128 0x2
+ 406 009c 04       		.byte	0x4
+ 407 009d 07       		.byte	0x7
+ 408 009e 44040000 		.4byte	.LASF13
+ 409 00a2 03       		.uleb128 0x3
+ 410 00a3 D90A0000 		.4byte	.LASF14
+ 411 00a7 03       		.byte	0x3
+ 412 00a8 18       		.byte	0x18
+ 413 00a9 33000000 		.4byte	0x33
+ 414 00ad 03       		.uleb128 0x3
+ 415 00ae E3010000 		.4byte	.LASF15
+ 416 00b2 03       		.byte	0x3
+ 417 00b3 20       		.byte	0x20
+ 418 00b4 45000000 		.4byte	0x45
+ 419 00b8 03       		.uleb128 0x3
+ 420 00b9 29030000 		.4byte	.LASF16
+ 421 00bd 03       		.byte	0x3
+ 422 00be 24       		.byte	0x24
+ 423 00bf 50000000 		.4byte	0x50
+ 424 00c3 03       		.uleb128 0x3
+ 425 00c4 DC070000 		.4byte	.LASF17
+ 426 00c8 03       		.byte	0x3
+ 427 00c9 2C       		.byte	0x2c
+ 428 00ca 62000000 		.4byte	0x62
+ 429 00ce 03       		.uleb128 0x3
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 10
+
+
+ 430 00cf 7C0A0000 		.4byte	.LASF18
+ 431 00d3 03       		.byte	0x3
+ 432 00d4 30       		.byte	0x30
+ 433 00d5 74000000 		.4byte	0x74
+ 434 00d9 02       		.uleb128 0x2
+ 435 00da 04       		.byte	0x4
+ 436 00db 07       		.byte	0x7
+ 437 00dc DD050000 		.4byte	.LASF19
+ 438 00e0 05       		.uleb128 0x5
+ 439 00e1 CE000000 		.4byte	0xce
+ 440 00e5 05       		.uleb128 0x5
+ 441 00e6 A2000000 		.4byte	0xa2
+ 442 00ea 06       		.uleb128 0x6
+ 443 00eb CE000000 		.4byte	0xce
+ 444 00ef FA000000 		.4byte	0xfa
+ 445 00f3 07       		.uleb128 0x7
+ 446 00f4 D9000000 		.4byte	0xd9
+ 447 00f8 00       		.byte	0
+ 448 00f9 00       		.byte	0
+ 449 00fa 02       		.uleb128 0x2
+ 450 00fb 08       		.byte	0x8
+ 451 00fc 04       		.byte	0x4
+ 452 00fd F1050000 		.4byte	.LASF20
+ 453 0101 08       		.uleb128 0x8
+ 454 0102 B8       		.byte	0xb8
+ 455 0103 04       		.byte	0x4
+ 456 0104 34       		.byte	0x34
+ 457 0105 12050000 		.4byte	0x512
+ 458 0109 09       		.uleb128 0x9
+ 459 010a F5000000 		.4byte	.LASF21
+ 460 010e 04       		.byte	0x4
+ 461 010f 37       		.byte	0x37
+ 462 0110 CE000000 		.4byte	0xce
+ 463 0114 00       		.byte	0
+ 464 0115 09       		.uleb128 0x9
+ 465 0116 B5030000 		.4byte	.LASF22
+ 466 011a 04       		.byte	0x4
+ 467 011b 38       		.byte	0x38
+ 468 011c CE000000 		.4byte	0xce
+ 469 0120 04       		.byte	0x4
+ 470 0121 09       		.uleb128 0x9
+ 471 0122 09030000 		.4byte	.LASF23
+ 472 0126 04       		.byte	0x4
+ 473 0127 39       		.byte	0x39
+ 474 0128 CE000000 		.4byte	0xce
+ 475 012c 08       		.byte	0x8
+ 476 012d 09       		.uleb128 0x9
+ 477 012e C5070000 		.4byte	.LASF24
+ 478 0132 04       		.byte	0x4
+ 479 0133 3A       		.byte	0x3a
+ 480 0134 CE000000 		.4byte	0xce
+ 481 0138 0C       		.byte	0xc
+ 482 0139 09       		.uleb128 0x9
+ 483 013a 8A050000 		.4byte	.LASF25
+ 484 013e 04       		.byte	0x4
+ 485 013f 3B       		.byte	0x3b
+ 486 0140 CE000000 		.4byte	0xce
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 11
+
+
+ 487 0144 10       		.byte	0x10
+ 488 0145 09       		.uleb128 0x9
+ 489 0146 CF020000 		.4byte	.LASF26
+ 490 014a 04       		.byte	0x4
+ 491 014b 3C       		.byte	0x3c
+ 492 014c CE000000 		.4byte	0xce
+ 493 0150 14       		.byte	0x14
+ 494 0151 09       		.uleb128 0x9
+ 495 0152 69040000 		.4byte	.LASF27
+ 496 0156 04       		.byte	0x4
+ 497 0157 3D       		.byte	0x3d
+ 498 0158 CE000000 		.4byte	0xce
+ 499 015c 18       		.byte	0x18
+ 500 015d 09       		.uleb128 0x9
+ 501 015e 81000000 		.4byte	.LASF28
+ 502 0162 04       		.byte	0x4
+ 503 0163 3E       		.byte	0x3e
+ 504 0164 CE000000 		.4byte	0xce
+ 505 0168 1C       		.byte	0x1c
+ 506 0169 09       		.uleb128 0x9
+ 507 016a 7C0B0000 		.4byte	.LASF29
+ 508 016e 04       		.byte	0x4
+ 509 016f 3F       		.byte	0x3f
+ 510 0170 CE000000 		.4byte	0xce
+ 511 0174 20       		.byte	0x20
+ 512 0175 09       		.uleb128 0x9
+ 513 0176 B9050000 		.4byte	.LASF30
+ 514 017a 04       		.byte	0x4
+ 515 017b 40       		.byte	0x40
+ 516 017c CE000000 		.4byte	0xce
+ 517 0180 24       		.byte	0x24
+ 518 0181 09       		.uleb128 0x9
+ 519 0182 D0050000 		.4byte	.LASF31
+ 520 0186 04       		.byte	0x4
+ 521 0187 43       		.byte	0x43
+ 522 0188 A2000000 		.4byte	0xa2
+ 523 018c 28       		.byte	0x28
+ 524 018d 09       		.uleb128 0x9
+ 525 018e 55000000 		.4byte	.LASF32
+ 526 0192 04       		.byte	0x4
+ 527 0193 44       		.byte	0x44
+ 528 0194 A2000000 		.4byte	0xa2
+ 529 0198 29       		.byte	0x29
+ 530 0199 09       		.uleb128 0x9
+ 531 019a C3090000 		.4byte	.LASF33
+ 532 019e 04       		.byte	0x4
+ 533 019f 45       		.byte	0x45
+ 534 01a0 A2000000 		.4byte	0xa2
+ 535 01a4 2A       		.byte	0x2a
+ 536 01a5 09       		.uleb128 0x9
+ 537 01a6 84060000 		.4byte	.LASF34
+ 538 01aa 04       		.byte	0x4
+ 539 01ab 46       		.byte	0x46
+ 540 01ac A2000000 		.4byte	0xa2
+ 541 01b0 2B       		.byte	0x2b
+ 542 01b1 09       		.uleb128 0x9
+ 543 01b2 4B050000 		.4byte	.LASF35
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 12
+
+
+ 544 01b6 04       		.byte	0x4
+ 545 01b7 47       		.byte	0x47
+ 546 01b8 A2000000 		.4byte	0xa2
+ 547 01bc 2C       		.byte	0x2c
+ 548 01bd 09       		.uleb128 0x9
+ 549 01be CD090000 		.4byte	.LASF36
+ 550 01c2 04       		.byte	0x4
+ 551 01c3 48       		.byte	0x48
+ 552 01c4 A2000000 		.4byte	0xa2
+ 553 01c8 2D       		.byte	0x2d
+ 554 01c9 09       		.uleb128 0x9
+ 555 01ca 6B020000 		.4byte	.LASF37
+ 556 01ce 04       		.byte	0x4
+ 557 01cf 49       		.byte	0x49
+ 558 01d0 A2000000 		.4byte	0xa2
+ 559 01d4 2E       		.byte	0x2e
+ 560 01d5 09       		.uleb128 0x9
+ 561 01d6 C4050000 		.4byte	.LASF38
+ 562 01da 04       		.byte	0x4
+ 563 01db 4A       		.byte	0x4a
+ 564 01dc A2000000 		.4byte	0xa2
+ 565 01e0 2F       		.byte	0x2f
+ 566 01e1 09       		.uleb128 0x9
+ 567 01e2 B1010000 		.4byte	.LASF39
+ 568 01e6 04       		.byte	0x4
+ 569 01e7 4B       		.byte	0x4b
+ 570 01e8 A2000000 		.4byte	0xa2
+ 571 01ec 30       		.byte	0x30
+ 572 01ed 09       		.uleb128 0x9
+ 573 01ee BE040000 		.4byte	.LASF40
+ 574 01f2 04       		.byte	0x4
+ 575 01f3 4E       		.byte	0x4e
+ 576 01f4 A2000000 		.4byte	0xa2
+ 577 01f8 31       		.byte	0x31
+ 578 01f9 09       		.uleb128 0x9
+ 579 01fa 98000000 		.4byte	.LASF41
+ 580 01fe 04       		.byte	0x4
+ 581 01ff 4F       		.byte	0x4f
+ 582 0200 A2000000 		.4byte	0xa2
+ 583 0204 32       		.byte	0x32
+ 584 0205 09       		.uleb128 0x9
+ 585 0206 C9040000 		.4byte	.LASF42
+ 586 020a 04       		.byte	0x4
+ 587 020b 50       		.byte	0x50
+ 588 020c A2000000 		.4byte	0xa2
+ 589 0210 33       		.byte	0x33
+ 590 0211 09       		.uleb128 0x9
+ 591 0212 B0000000 		.4byte	.LASF43
+ 592 0216 04       		.byte	0x4
+ 593 0217 51       		.byte	0x51
+ 594 0218 A2000000 		.4byte	0xa2
+ 595 021c 34       		.byte	0x34
+ 596 021d 09       		.uleb128 0x9
+ 597 021e 4B0A0000 		.4byte	.LASF44
+ 598 0222 04       		.byte	0x4
+ 599 0223 52       		.byte	0x52
+ 600 0224 AD000000 		.4byte	0xad
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 13
+
+
+ 601 0228 36       		.byte	0x36
+ 602 0229 09       		.uleb128 0x9
+ 603 022a C8080000 		.4byte	.LASF45
+ 604 022e 04       		.byte	0x4
+ 605 022f 53       		.byte	0x53
+ 606 0230 AD000000 		.4byte	0xad
+ 607 0234 38       		.byte	0x38
+ 608 0235 09       		.uleb128 0x9
+ 609 0236 B40A0000 		.4byte	.LASF46
+ 610 023a 04       		.byte	0x4
+ 611 023b 54       		.byte	0x54
+ 612 023c AD000000 		.4byte	0xad
+ 613 0240 3A       		.byte	0x3a
+ 614 0241 09       		.uleb128 0x9
+ 615 0242 C0020000 		.4byte	.LASF47
+ 616 0246 04       		.byte	0x4
+ 617 0247 55       		.byte	0x55
+ 618 0248 A2000000 		.4byte	0xa2
+ 619 024c 3C       		.byte	0x3c
+ 620 024d 09       		.uleb128 0x9
+ 621 024e 5F030000 		.4byte	.LASF48
+ 622 0252 04       		.byte	0x4
+ 623 0253 56       		.byte	0x56
+ 624 0254 A2000000 		.4byte	0xa2
+ 625 0258 3D       		.byte	0x3d
+ 626 0259 09       		.uleb128 0x9
+ 627 025a AA080000 		.4byte	.LASF49
+ 628 025e 04       		.byte	0x4
+ 629 025f 57       		.byte	0x57
+ 630 0260 A2000000 		.4byte	0xa2
+ 631 0264 3E       		.byte	0x3e
+ 632 0265 09       		.uleb128 0x9
+ 633 0266 06010000 		.4byte	.LASF50
+ 634 026a 04       		.byte	0x4
+ 635 026b 58       		.byte	0x58
+ 636 026c A2000000 		.4byte	0xa2
+ 637 0270 3F       		.byte	0x3f
+ 638 0271 09       		.uleb128 0x9
+ 639 0272 92060000 		.4byte	.LASF51
+ 640 0276 04       		.byte	0x4
+ 641 0277 59       		.byte	0x59
+ 642 0278 A2000000 		.4byte	0xa2
+ 643 027c 40       		.byte	0x40
+ 644 027d 09       		.uleb128 0x9
+ 645 027e CB030000 		.4byte	.LASF52
+ 646 0282 04       		.byte	0x4
+ 647 0283 5A       		.byte	0x5a
+ 648 0284 A2000000 		.4byte	0xa2
+ 649 0288 41       		.byte	0x41
+ 650 0289 09       		.uleb128 0x9
+ 651 028a 34060000 		.4byte	.LASF53
+ 652 028e 04       		.byte	0x4
+ 653 028f 5B       		.byte	0x5b
+ 654 0290 A2000000 		.4byte	0xa2
+ 655 0294 42       		.byte	0x42
+ 656 0295 09       		.uleb128 0x9
+ 657 0296 61060000 		.4byte	.LASF54
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 14
+
+
+ 658 029a 04       		.byte	0x4
+ 659 029b 5C       		.byte	0x5c
+ 660 029c A2000000 		.4byte	0xa2
+ 661 02a0 43       		.byte	0x43
+ 662 02a1 09       		.uleb128 0x9
+ 663 02a2 18030000 		.4byte	.LASF55
+ 664 02a6 04       		.byte	0x4
+ 665 02a7 5D       		.byte	0x5d
+ 666 02a8 A2000000 		.4byte	0xa2
+ 667 02ac 44       		.byte	0x44
+ 668 02ad 09       		.uleb128 0x9
+ 669 02ae FC080000 		.4byte	.LASF56
+ 670 02b2 04       		.byte	0x4
+ 671 02b3 5E       		.byte	0x5e
+ 672 02b4 CE000000 		.4byte	0xce
+ 673 02b8 48       		.byte	0x48
+ 674 02b9 09       		.uleb128 0x9
+ 675 02ba FB020000 		.4byte	.LASF57
+ 676 02be 04       		.byte	0x4
+ 677 02bf 5F       		.byte	0x5f
+ 678 02c0 CE000000 		.4byte	0xce
+ 679 02c4 4C       		.byte	0x4c
+ 680 02c5 09       		.uleb128 0x9
+ 681 02c6 080C0000 		.4byte	.LASF58
+ 682 02ca 04       		.byte	0x4
+ 683 02cb 60       		.byte	0x60
+ 684 02cc A2000000 		.4byte	0xa2
+ 685 02d0 50       		.byte	0x50
+ 686 02d1 09       		.uleb128 0x9
+ 687 02d2 BD010000 		.4byte	.LASF59
+ 688 02d6 04       		.byte	0x4
+ 689 02d7 61       		.byte	0x61
+ 690 02d8 A2000000 		.4byte	0xa2
+ 691 02dc 51       		.byte	0x51
+ 692 02dd 09       		.uleb128 0x9
+ 693 02de C90A0000 		.4byte	.LASF60
+ 694 02e2 04       		.byte	0x4
+ 695 02e3 62       		.byte	0x62
+ 696 02e4 A2000000 		.4byte	0xa2
+ 697 02e8 52       		.byte	0x52
+ 698 02e9 09       		.uleb128 0x9
+ 699 02ea DA090000 		.4byte	.LASF61
+ 700 02ee 04       		.byte	0x4
+ 701 02ef 63       		.byte	0x63
+ 702 02f0 A2000000 		.4byte	0xa2
+ 703 02f4 53       		.byte	0x53
+ 704 02f5 09       		.uleb128 0x9
+ 705 02f6 B8080000 		.4byte	.LASF62
+ 706 02fa 04       		.byte	0x4
+ 707 02fb 64       		.byte	0x64
+ 708 02fc A2000000 		.4byte	0xa2
+ 709 0300 54       		.byte	0x54
+ 710 0301 09       		.uleb128 0x9
+ 711 0302 CF010000 		.4byte	.LASF63
+ 712 0306 04       		.byte	0x4
+ 713 0307 65       		.byte	0x65
+ 714 0308 A2000000 		.4byte	0xa2
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 15
+
+
+ 715 030c 55       		.byte	0x55
+ 716 030d 09       		.uleb128 0x9
+ 717 030e 54090000 		.4byte	.LASF64
+ 718 0312 04       		.byte	0x4
+ 719 0313 66       		.byte	0x66
+ 720 0314 A2000000 		.4byte	0xa2
+ 721 0318 56       		.byte	0x56
+ 722 0319 09       		.uleb128 0x9
+ 723 031a DA040000 		.4byte	.LASF65
+ 724 031e 04       		.byte	0x4
+ 725 031f 67       		.byte	0x67
+ 726 0320 A2000000 		.4byte	0xa2
+ 727 0324 57       		.byte	0x57
+ 728 0325 09       		.uleb128 0x9
+ 729 0326 1A000000 		.4byte	.LASF66
+ 730 032a 04       		.byte	0x4
+ 731 032b 68       		.byte	0x68
+ 732 032c A2000000 		.4byte	0xa2
+ 733 0330 58       		.byte	0x58
+ 734 0331 09       		.uleb128 0x9
+ 735 0332 F2070000 		.4byte	.LASF67
+ 736 0336 04       		.byte	0x4
+ 737 0337 69       		.byte	0x69
+ 738 0338 A2000000 		.4byte	0xa2
+ 739 033c 59       		.byte	0x59
+ 740 033d 09       		.uleb128 0x9
+ 741 033e E6050000 		.4byte	.LASF68
+ 742 0342 04       		.byte	0x4
+ 743 0343 6E       		.byte	0x6e
+ 744 0344 B8000000 		.4byte	0xb8
+ 745 0348 5A       		.byte	0x5a
+ 746 0349 09       		.uleb128 0x9
+ 747 034a 2A0A0000 		.4byte	.LASF69
+ 748 034e 04       		.byte	0x4
+ 749 034f 6F       		.byte	0x6f
+ 750 0350 B8000000 		.4byte	0xb8
+ 751 0354 5C       		.byte	0x5c
+ 752 0355 09       		.uleb128 0x9
+ 753 0356 63000000 		.4byte	.LASF70
+ 754 035a 04       		.byte	0x4
+ 755 035b 70       		.byte	0x70
+ 756 035c A2000000 		.4byte	0xa2
+ 757 0360 5E       		.byte	0x5e
+ 758 0361 09       		.uleb128 0x9
+ 759 0362 9E070000 		.4byte	.LASF71
+ 760 0366 04       		.byte	0x4
+ 761 0367 71       		.byte	0x71
+ 762 0368 A2000000 		.4byte	0xa2
+ 763 036c 5F       		.byte	0x5f
+ 764 036d 09       		.uleb128 0x9
+ 765 036e 50060000 		.4byte	.LASF72
+ 766 0372 04       		.byte	0x4
+ 767 0373 72       		.byte	0x72
+ 768 0374 A2000000 		.4byte	0xa2
+ 769 0378 60       		.byte	0x60
+ 770 0379 09       		.uleb128 0x9
+ 771 037a B20B0000 		.4byte	.LASF73
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 16
+
+
+ 772 037e 04       		.byte	0x4
+ 773 037f 73       		.byte	0x73
+ 774 0380 CE000000 		.4byte	0xce
+ 775 0384 64       		.byte	0x64
+ 776 0385 09       		.uleb128 0x9
+ 777 0386 63010000 		.4byte	.LASF74
+ 778 038a 04       		.byte	0x4
+ 779 038b 76       		.byte	0x76
+ 780 038c B8000000 		.4byte	0xb8
+ 781 0390 68       		.byte	0x68
+ 782 0391 09       		.uleb128 0x9
+ 783 0392 72040000 		.4byte	.LASF75
+ 784 0396 04       		.byte	0x4
+ 785 0397 77       		.byte	0x77
+ 786 0398 B8000000 		.4byte	0xb8
+ 787 039c 6A       		.byte	0x6a
+ 788 039d 09       		.uleb128 0x9
+ 789 039e 05050000 		.4byte	.LASF76
+ 790 03a2 04       		.byte	0x4
+ 791 03a3 78       		.byte	0x78
+ 792 03a4 B8000000 		.4byte	0xb8
+ 793 03a8 6C       		.byte	0x6c
+ 794 03a9 09       		.uleb128 0x9
+ 795 03aa D3080000 		.4byte	.LASF77
+ 796 03ae 04       		.byte	0x4
+ 797 03af 79       		.byte	0x79
+ 798 03b0 B8000000 		.4byte	0xb8
+ 799 03b4 6E       		.byte	0x6e
+ 800 03b5 09       		.uleb128 0x9
+ 801 03b6 6B080000 		.4byte	.LASF78
+ 802 03ba 04       		.byte	0x4
+ 803 03bb 7B       		.byte	0x7b
+ 804 03bc A2000000 		.4byte	0xa2
+ 805 03c0 70       		.byte	0x70
+ 806 03c1 09       		.uleb128 0x9
+ 807 03c2 2E020000 		.4byte	.LASF79
+ 808 03c6 04       		.byte	0x4
+ 809 03c7 7C       		.byte	0x7c
+ 810 03c8 A2000000 		.4byte	0xa2
+ 811 03cc 71       		.byte	0x71
+ 812 03cd 09       		.uleb128 0x9
+ 813 03ce 840B0000 		.4byte	.LASF80
+ 814 03d2 04       		.byte	0x4
+ 815 03d3 7D       		.byte	0x7d
+ 816 03d4 A2000000 		.4byte	0xa2
+ 817 03d8 72       		.byte	0x72
+ 818 03d9 09       		.uleb128 0x9
+ 819 03da 8B020000 		.4byte	.LASF81
+ 820 03de 04       		.byte	0x4
+ 821 03df 7E       		.byte	0x7e
+ 822 03e0 A2000000 		.4byte	0xa2
+ 823 03e4 73       		.byte	0x73
+ 824 03e5 09       		.uleb128 0x9
+ 825 03e6 8F030000 		.4byte	.LASF82
+ 826 03ea 04       		.byte	0x4
+ 827 03eb 80       		.byte	0x80
+ 828 03ec B8000000 		.4byte	0xb8
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 17
+
+
+ 829 03f0 74       		.byte	0x74
+ 830 03f1 09       		.uleb128 0x9
+ 831 03f2 91090000 		.4byte	.LASF83
+ 832 03f6 04       		.byte	0x4
+ 833 03f7 81       		.byte	0x81
+ 834 03f8 B8000000 		.4byte	0xb8
+ 835 03fc 76       		.byte	0x76
+ 836 03fd 09       		.uleb128 0x9
+ 837 03fe 4A030000 		.4byte	.LASF84
+ 838 0402 04       		.byte	0x4
+ 839 0403 82       		.byte	0x82
+ 840 0404 B8000000 		.4byte	0xb8
+ 841 0408 78       		.byte	0x78
+ 842 0409 09       		.uleb128 0x9
+ 843 040a 13080000 		.4byte	.LASF85
+ 844 040e 04       		.byte	0x4
+ 845 040f 83       		.byte	0x83
+ 846 0410 B8000000 		.4byte	0xb8
+ 847 0414 7A       		.byte	0x7a
+ 848 0415 09       		.uleb128 0x9
+ 849 0416 1E0B0000 		.4byte	.LASF86
+ 850 041a 04       		.byte	0x4
+ 851 041b 86       		.byte	0x86
+ 852 041c A2000000 		.4byte	0xa2
+ 853 0420 7C       		.byte	0x7c
+ 854 0421 09       		.uleb128 0x9
+ 855 0422 31050000 		.4byte	.LASF87
+ 856 0426 04       		.byte	0x4
+ 857 0427 87       		.byte	0x87
+ 858 0428 A2000000 		.4byte	0xa2
+ 859 042c 7D       		.byte	0x7d
+ 860 042d 09       		.uleb128 0x9
+ 861 042e 2E000000 		.4byte	.LASF88
+ 862 0432 04       		.byte	0x4
+ 863 0433 88       		.byte	0x88
+ 864 0434 A2000000 		.4byte	0xa2
+ 865 0438 7E       		.byte	0x7e
+ 866 0439 09       		.uleb128 0x9
+ 867 043a A1030000 		.4byte	.LASF89
+ 868 043e 04       		.byte	0x4
+ 869 043f 89       		.byte	0x89
+ 870 0440 A2000000 		.4byte	0xa2
+ 871 0444 7F       		.byte	0x7f
+ 872 0445 09       		.uleb128 0x9
+ 873 0446 1B040000 		.4byte	.LASF90
+ 874 044a 04       		.byte	0x4
+ 875 044b 8A       		.byte	0x8a
+ 876 044c A2000000 		.4byte	0xa2
+ 877 0450 80       		.byte	0x80
+ 878 0451 09       		.uleb128 0x9
+ 879 0452 A2050000 		.4byte	.LASF91
+ 880 0456 04       		.byte	0x4
+ 881 0457 8D       		.byte	0x8d
+ 882 0458 CE000000 		.4byte	0xce
+ 883 045c 84       		.byte	0x84
+ 884 045d 09       		.uleb128 0x9
+ 885 045e C1000000 		.4byte	.LASF92
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 18
+
+
+ 886 0462 04       		.byte	0x4
+ 887 0463 8E       		.byte	0x8e
+ 888 0464 CE000000 		.4byte	0xce
+ 889 0468 88       		.byte	0x88
+ 890 0469 09       		.uleb128 0x9
+ 891 046a A4090000 		.4byte	.LASF93
+ 892 046e 04       		.byte	0x4
+ 893 046f 8F       		.byte	0x8f
+ 894 0470 CE000000 		.4byte	0xce
+ 895 0474 8C       		.byte	0x8c
+ 896 0475 09       		.uleb128 0x9
+ 897 0476 2F040000 		.4byte	.LASF94
+ 898 047a 04       		.byte	0x4
+ 899 047b 90       		.byte	0x90
+ 900 047c CE000000 		.4byte	0xce
+ 901 0480 90       		.byte	0x90
+ 902 0481 09       		.uleb128 0x9
+ 903 0482 FC030000 		.4byte	.LASF95
+ 904 0486 04       		.byte	0x4
+ 905 0487 91       		.byte	0x91
+ 906 0488 CE000000 		.4byte	0xce
+ 907 048c 94       		.byte	0x94
+ 908 048d 09       		.uleb128 0x9
+ 909 048e 55020000 		.4byte	.LASF96
+ 910 0492 04       		.byte	0x4
+ 911 0493 92       		.byte	0x92
+ 912 0494 CE000000 		.4byte	0xce
+ 913 0498 98       		.byte	0x98
+ 914 0499 09       		.uleb128 0x9
+ 915 049a 510B0000 		.4byte	.LASF97
+ 916 049e 04       		.byte	0x4
+ 917 049f 93       		.byte	0x93
+ 918 04a0 CE000000 		.4byte	0xce
+ 919 04a4 9C       		.byte	0x9c
+ 920 04a5 09       		.uleb128 0x9
+ 921 04a6 7D010000 		.4byte	.LASF98
+ 922 04aa 04       		.byte	0x4
+ 923 04ab 94       		.byte	0x94
+ 924 04ac CE000000 		.4byte	0xce
+ 925 04b0 A0       		.byte	0xa0
+ 926 04b1 09       		.uleb128 0x9
+ 927 04b2 76020000 		.4byte	.LASF99
+ 928 04b6 04       		.byte	0x4
+ 929 04b7 95       		.byte	0x95
+ 930 04b8 B8000000 		.4byte	0xb8
+ 931 04bc A4       		.byte	0xa4
+ 932 04bd 09       		.uleb128 0x9
+ 933 04be 0E090000 		.4byte	.LASF100
+ 934 04c2 04       		.byte	0x4
+ 935 04c3 96       		.byte	0x96
+ 936 04c4 B8000000 		.4byte	0xb8
+ 937 04c8 A6       		.byte	0xa6
+ 938 04c9 09       		.uleb128 0x9
+ 939 04ca 92070000 		.4byte	.LASF101
+ 940 04ce 04       		.byte	0x4
+ 941 04cf 97       		.byte	0x97
+ 942 04d0 B8000000 		.4byte	0xb8
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 19
+
+
+ 943 04d4 A8       		.byte	0xa8
+ 944 04d5 09       		.uleb128 0x9
+ 945 04d6 3A080000 		.4byte	.LASF102
+ 946 04da 04       		.byte	0x4
+ 947 04db 98       		.byte	0x98
+ 948 04dc B8000000 		.4byte	0xb8
+ 949 04e0 AA       		.byte	0xaa
+ 950 04e1 09       		.uleb128 0x9
+ 951 04e2 14050000 		.4byte	.LASF103
+ 952 04e6 04       		.byte	0x4
+ 953 04e7 99       		.byte	0x99
+ 954 04e8 B8000000 		.4byte	0xb8
+ 955 04ec AC       		.byte	0xac
+ 956 04ed 09       		.uleb128 0x9
+ 957 04ee 8A000000 		.4byte	.LASF104
+ 958 04f2 04       		.byte	0x4
+ 959 04f3 9A       		.byte	0x9a
+ 960 04f4 B8000000 		.4byte	0xb8
+ 961 04f8 AE       		.byte	0xae
+ 962 04f9 09       		.uleb128 0x9
+ 963 04fa 3D0A0000 		.4byte	.LASF105
+ 964 04fe 04       		.byte	0x4
+ 965 04ff 9D       		.byte	0x9d
+ 966 0500 B8000000 		.4byte	0xb8
+ 967 0504 B0       		.byte	0xb0
+ 968 0505 09       		.uleb128 0x9
+ 969 0506 41000000 		.4byte	.LASF106
+ 970 050a 04       		.byte	0x4
+ 971 050b 9E       		.byte	0x9e
+ 972 050c CE000000 		.4byte	0xce
+ 973 0510 B4       		.byte	0xb4
+ 974 0511 00       		.byte	0
+ 975 0512 03       		.uleb128 0x3
+ 976 0513 57050000 		.4byte	.LASF107
+ 977 0517 04       		.byte	0x4
+ 978 0518 9F       		.byte	0x9f
+ 979 0519 01010000 		.4byte	0x101
+ 980 051d 02       		.uleb128 0x2
+ 981 051e 01       		.byte	0x1
+ 982 051f 08       		.byte	0x8
+ 983 0520 4F090000 		.4byte	.LASF108
+ 984 0524 02       		.uleb128 0x2
+ 985 0525 04       		.byte	0x4
+ 986 0526 04       		.byte	0x4
+ 987 0527 52070000 		.4byte	.LASF109
+ 988 052b 02       		.uleb128 0x2
+ 989 052c 08       		.byte	0x8
+ 990 052d 04       		.byte	0x4
+ 991 052e 43030000 		.4byte	.LASF110
+ 992 0532 0A       		.uleb128 0xa
+ 993 0533 12030000 		.4byte	.LASF111
+ 994 0537 05       		.byte	0x5
+ 995 0538 EA03     		.2byte	0x3ea
+ 996 053a A2000000 		.4byte	0xa2
+ 997 053e 0B       		.uleb128 0xb
+ 998 053f 04       		.byte	0x4
+ 999 0540 02       		.uleb128 0x2
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 20
+
+
+ 1000 0541 01       		.byte	0x1
+ 1001 0542 02       		.byte	0x2
+ 1002 0543 1F010000 		.4byte	.LASF112
+ 1003 0547 0C       		.uleb128 0xc
+ 1004 0548 04       		.byte	0x4
+ 1005 0549 4D050000 		.4byte	0x54d
+ 1006 054d 0D       		.uleb128 0xd
+ 1007 054e 58050000 		.4byte	0x558
+ 1008 0552 0E       		.uleb128 0xe
+ 1009 0553 CE000000 		.4byte	0xce
+ 1010 0557 00       		.byte	0
+ 1011 0558 0A       		.uleb128 0xa
+ 1012 0559 A2020000 		.4byte	.LASF113
+ 1013 055d 06       		.byte	0x6
+ 1014 055e F201     		.2byte	0x1f2
+ 1015 0560 47050000 		.4byte	0x547
+ 1016 0564 0F       		.uleb128 0xf
+ 1017 0565 17020000 		.4byte	.LASF125
+ 1018 0569 24       		.byte	0x24
+ 1019 056a 06       		.byte	0x6
+ 1020 056b 7402     		.2byte	0x274
+ 1021 056d E7050000 		.4byte	0x5e7
+ 1022 0571 10       		.uleb128 0x10
+ 1023 0572 48080000 		.4byte	.LASF114
+ 1024 0576 06       		.byte	0x6
+ 1025 0577 7702     		.2byte	0x277
+ 1026 0579 E0000000 		.4byte	0xe0
+ 1027 057d 00       		.byte	0
+ 1028 057e 10       		.uleb128 0x10
+ 1029 057f 760A0000 		.4byte	.LASF115
+ 1030 0583 06       		.byte	0x6
+ 1031 0584 7902     		.2byte	0x279
+ 1032 0586 3E050000 		.4byte	0x53e
+ 1033 058a 04       		.byte	0x4
+ 1034 058b 10       		.uleb128 0x10
+ 1035 058c 10000000 		.4byte	.LASF116
+ 1036 0590 06       		.byte	0x6
+ 1037 0591 7A02     		.2byte	0x27a
+ 1038 0593 CE000000 		.4byte	0xce
+ 1039 0597 08       		.byte	0x8
+ 1040 0598 10       		.uleb128 0x10
+ 1041 0599 F3030000 		.4byte	.LASF117
+ 1042 059d 06       		.byte	0x6
+ 1043 059e 7B02     		.2byte	0x27b
+ 1044 05a0 E0000000 		.4byte	0xe0
+ 1045 05a4 0C       		.byte	0xc
+ 1046 05a5 10       		.uleb128 0x10
+ 1047 05a6 AB010000 		.4byte	.LASF118
+ 1048 05aa 06       		.byte	0x6
+ 1049 05ab 7D02     		.2byte	0x27d
+ 1050 05ad 3E050000 		.4byte	0x53e
+ 1051 05b1 10       		.byte	0x10
+ 1052 05b2 10       		.uleb128 0x10
+ 1053 05b3 11040000 		.4byte	.LASF119
+ 1054 05b7 06       		.byte	0x6
+ 1055 05b8 7E02     		.2byte	0x27e
+ 1056 05ba CE000000 		.4byte	0xce
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 21
+
+
+ 1057 05be 14       		.byte	0x14
+ 1058 05bf 10       		.uleb128 0x10
+ 1059 05c0 190C0000 		.4byte	.LASF120
+ 1060 05c4 06       		.byte	0x6
+ 1061 05c5 7F02     		.2byte	0x27f
+ 1062 05c7 E0000000 		.4byte	0xe0
+ 1063 05cb 18       		.byte	0x18
+ 1064 05cc 10       		.uleb128 0x10
+ 1065 05cd 28050000 		.4byte	.LASF121
+ 1066 05d1 06       		.byte	0x6
+ 1067 05d2 8502     		.2byte	0x285
+ 1068 05d4 58050000 		.4byte	0x558
+ 1069 05d8 1C       		.byte	0x1c
+ 1070 05d9 10       		.uleb128 0x10
+ 1071 05da 6E0A0000 		.4byte	.LASF122
+ 1072 05de 06       		.byte	0x6
+ 1073 05df 8802     		.2byte	0x288
+ 1074 05e1 CE000000 		.4byte	0xce
+ 1075 05e5 20       		.byte	0x20
+ 1076 05e6 00       		.byte	0
+ 1077 05e7 0A       		.uleb128 0xa
+ 1078 05e8 67050000 		.4byte	.LASF123
+ 1079 05ec 06       		.byte	0x6
+ 1080 05ed 8B02     		.2byte	0x28b
+ 1081 05ef 64050000 		.4byte	0x564
+ 1082 05f3 0A       		.uleb128 0xa
+ 1083 05f4 9F040000 		.4byte	.LASF124
+ 1084 05f8 07       		.byte	0x7
+ 1085 05f9 D901     		.2byte	0x1d9
+ 1086 05fb 47050000 		.4byte	0x547
+ 1087 05ff 0F       		.uleb128 0xf
+ 1088 0600 9A0B0000 		.4byte	.LASF126
+ 1089 0604 38       		.byte	0x38
+ 1090 0605 07       		.byte	0x7
+ 1091 0606 7502     		.2byte	0x275
+ 1092 0608 C3060000 		.4byte	0x6c3
+ 1093 060c 10       		.uleb128 0x10
+ 1094 060d 670B0000 		.4byte	.LASF127
+ 1095 0611 07       		.byte	0x7
+ 1096 0612 7802     		.2byte	0x278
+ 1097 0614 E0000000 		.4byte	0xe0
+ 1098 0618 00       		.byte	0
+ 1099 0619 10       		.uleb128 0x10
+ 1100 061a 6C060000 		.4byte	.LASF128
+ 1101 061e 07       		.byte	0x7
+ 1102 061f 7902     		.2byte	0x279
+ 1103 0621 E0000000 		.4byte	0xe0
+ 1104 0625 04       		.byte	0x4
+ 1105 0626 10       		.uleb128 0x10
+ 1106 0627 73010000 		.4byte	.LASF129
+ 1107 062b 07       		.byte	0x7
+ 1108 062c 7B02     		.2byte	0x27b
+ 1109 062e 3E050000 		.4byte	0x53e
+ 1110 0632 08       		.byte	0x8
+ 1111 0633 10       		.uleb128 0x10
+ 1112 0634 51040000 		.4byte	.LASF130
+ 1113 0638 07       		.byte	0x7
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 22
+
+
+ 1114 0639 7C02     		.2byte	0x27c
+ 1115 063b CE000000 		.4byte	0xce
+ 1116 063f 0C       		.byte	0xc
+ 1117 0640 10       		.uleb128 0x10
+ 1118 0641 EC090000 		.4byte	.LASF131
+ 1119 0645 07       		.byte	0x7
+ 1120 0646 7D02     		.2byte	0x27d
+ 1121 0648 E0000000 		.4byte	0xe0
+ 1122 064c 10       		.byte	0x10
+ 1123 064d 10       		.uleb128 0x10
+ 1124 064e 430B0000 		.4byte	.LASF132
+ 1125 0652 07       		.byte	0x7
+ 1126 0653 7E02     		.2byte	0x27e
+ 1127 0655 E0000000 		.4byte	0xe0
+ 1128 0659 14       		.byte	0x14
+ 1129 065a 10       		.uleb128 0x10
+ 1130 065b 760A0000 		.4byte	.LASF115
+ 1131 065f 07       		.byte	0x7
+ 1132 0660 8002     		.2byte	0x280
+ 1133 0662 3E050000 		.4byte	0x53e
+ 1134 0666 18       		.byte	0x18
+ 1135 0667 10       		.uleb128 0x10
+ 1136 0668 10000000 		.4byte	.LASF116
+ 1137 066c 07       		.byte	0x7
+ 1138 066d 8102     		.2byte	0x281
+ 1139 066f CE000000 		.4byte	0xce
+ 1140 0673 1C       		.byte	0x1c
+ 1141 0674 10       		.uleb128 0x10
+ 1142 0675 F3030000 		.4byte	.LASF117
+ 1143 0679 07       		.byte	0x7
+ 1144 067a 8202     		.2byte	0x282
+ 1145 067c E0000000 		.4byte	0xe0
+ 1146 0680 20       		.byte	0x20
+ 1147 0681 10       		.uleb128 0x10
+ 1148 0682 AB010000 		.4byte	.LASF118
+ 1149 0686 07       		.byte	0x7
+ 1150 0687 8402     		.2byte	0x284
+ 1151 0689 3E050000 		.4byte	0x53e
+ 1152 068d 24       		.byte	0x24
+ 1153 068e 10       		.uleb128 0x10
+ 1154 068f 11040000 		.4byte	.LASF119
+ 1155 0693 07       		.byte	0x7
+ 1156 0694 8502     		.2byte	0x285
+ 1157 0696 CE000000 		.4byte	0xce
+ 1158 069a 28       		.byte	0x28
+ 1159 069b 10       		.uleb128 0x10
+ 1160 069c B4070000 		.4byte	.LASF133
+ 1161 06a0 07       		.byte	0x7
+ 1162 06a1 8602     		.2byte	0x286
+ 1163 06a3 E0000000 		.4byte	0xe0
+ 1164 06a7 2C       		.byte	0x2c
+ 1165 06a8 10       		.uleb128 0x10
+ 1166 06a9 28050000 		.4byte	.LASF121
+ 1167 06ad 07       		.byte	0x7
+ 1168 06ae 8B02     		.2byte	0x28b
+ 1169 06b0 F3050000 		.4byte	0x5f3
+ 1170 06b4 30       		.byte	0x30
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 23
+
+
+ 1171 06b5 10       		.uleb128 0x10
+ 1172 06b6 6E0A0000 		.4byte	.LASF122
+ 1173 06ba 07       		.byte	0x7
+ 1174 06bb 8E02     		.2byte	0x28e
+ 1175 06bd CE000000 		.4byte	0xce
+ 1176 06c1 34       		.byte	0x34
+ 1177 06c2 00       		.byte	0
+ 1178 06c3 0A       		.uleb128 0xa
+ 1179 06c4 850A0000 		.4byte	.LASF134
+ 1180 06c8 07       		.byte	0x7
+ 1181 06c9 9102     		.2byte	0x291
+ 1182 06cb FF050000 		.4byte	0x5ff
+ 1183 06cf 11       		.uleb128 0x11
+ 1184 06d0 E0080000 		.4byte	.LASF135
+ 1185 06d4 4C       		.byte	0x4c
+ 1186 06d5 08       		.byte	0x8
+ 1187 06d6 2F       		.byte	0x2f
+ 1188 06d7 C0070000 		.4byte	0x7c0
+ 1189 06db 09       		.uleb128 0x9
+ 1190 06dc FF000000 		.4byte	.LASF136
+ 1191 06e0 08       		.byte	0x8
+ 1192 06e1 31       		.byte	0x31
+ 1193 06e2 CE000000 		.4byte	0xce
+ 1194 06e6 00       		.byte	0
+ 1195 06e7 09       		.uleb128 0x9
+ 1196 06e8 54010000 		.4byte	.LASF137
+ 1197 06ec 08       		.byte	0x8
+ 1198 06ed 33       		.byte	0x33
+ 1199 06ee CE000000 		.4byte	0xce
+ 1200 06f2 04       		.byte	0x4
+ 1201 06f3 09       		.uleb128 0x9
+ 1202 06f4 08000000 		.4byte	.LASF138
+ 1203 06f8 08       		.byte	0x8
+ 1204 06f9 34       		.byte	0x34
+ 1205 06fa CE000000 		.4byte	0xce
+ 1206 06fe 08       		.byte	0x8
+ 1207 06ff 09       		.uleb128 0x9
+ 1208 0700 D8000000 		.4byte	.LASF139
+ 1209 0704 08       		.byte	0x8
+ 1210 0705 35       		.byte	0x35
+ 1211 0706 CE000000 		.4byte	0xce
+ 1212 070a 0C       		.byte	0xc
+ 1213 070b 09       		.uleb128 0x9
+ 1214 070c 89080000 		.4byte	.LASF140
+ 1215 0710 08       		.byte	0x8
+ 1216 0711 37       		.byte	0x37
+ 1217 0712 CE000000 		.4byte	0xce
+ 1218 0716 10       		.byte	0x10
+ 1219 0717 09       		.uleb128 0x9
+ 1220 0718 2C090000 		.4byte	.LASF141
+ 1221 071c 08       		.byte	0x8
+ 1222 071d 38       		.byte	0x38
+ 1223 071e CE000000 		.4byte	0xce
+ 1224 0722 14       		.byte	0x14
+ 1225 0723 09       		.uleb128 0x9
+ 1226 0724 35090000 		.4byte	.LASF142
+ 1227 0728 08       		.byte	0x8
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 24
+
+
+ 1228 0729 39       		.byte	0x39
+ 1229 072a CE000000 		.4byte	0xce
+ 1230 072e 18       		.byte	0x18
+ 1231 072f 09       		.uleb128 0x9
+ 1232 0730 28080000 		.4byte	.LASF143
+ 1233 0734 08       		.byte	0x8
+ 1234 0735 3A       		.byte	0x3a
+ 1235 0736 40050000 		.4byte	0x540
+ 1236 073a 1C       		.byte	0x1c
+ 1237 073b 09       		.uleb128 0x9
+ 1238 073c FA090000 		.4byte	.LASF144
+ 1239 0740 08       		.byte	0x8
+ 1240 0741 3C       		.byte	0x3c
+ 1241 0742 CE000000 		.4byte	0xce
+ 1242 0746 20       		.byte	0x20
+ 1243 0747 09       		.uleb128 0x9
+ 1244 0748 7E030000 		.4byte	.LASF145
+ 1245 074c 08       		.byte	0x8
+ 1246 074d 3D       		.byte	0x3d
+ 1247 074e CE000000 		.4byte	0xce
+ 1248 0752 24       		.byte	0x24
+ 1249 0753 09       		.uleb128 0x9
+ 1250 0754 12010000 		.4byte	.LASF146
+ 1251 0758 08       		.byte	0x8
+ 1252 0759 3F       		.byte	0x3f
+ 1253 075a CE000000 		.4byte	0xce
+ 1254 075e 28       		.byte	0x28
+ 1255 075f 09       		.uleb128 0x9
+ 1256 0760 330B0000 		.4byte	.LASF147
+ 1257 0764 08       		.byte	0x8
+ 1258 0765 40       		.byte	0x40
+ 1259 0766 CE000000 		.4byte	0xce
+ 1260 076a 2C       		.byte	0x2c
+ 1261 076b 09       		.uleb128 0x9
+ 1262 076c 0B0A0000 		.4byte	.LASF148
+ 1263 0770 08       		.byte	0x8
+ 1264 0771 42       		.byte	0x42
+ 1265 0772 CE000000 		.4byte	0xce
+ 1266 0776 30       		.byte	0x30
+ 1267 0777 09       		.uleb128 0x9
+ 1268 0778 CD070000 		.4byte	.LASF149
+ 1269 077c 08       		.byte	0x8
+ 1270 077d 43       		.byte	0x43
+ 1271 077e CE000000 		.4byte	0xce
+ 1272 0782 34       		.byte	0x34
+ 1273 0783 09       		.uleb128 0x9
+ 1274 0784 1E060000 		.4byte	.LASF150
+ 1275 0788 08       		.byte	0x8
+ 1276 0789 45       		.byte	0x45
+ 1277 078a CE000000 		.4byte	0xce
+ 1278 078e 38       		.byte	0x38
+ 1279 078f 09       		.uleb128 0x9
+ 1280 0790 E7000000 		.4byte	.LASF151
+ 1281 0794 08       		.byte	0x8
+ 1282 0795 46       		.byte	0x46
+ 1283 0796 CE000000 		.4byte	0xce
+ 1284 079a 3C       		.byte	0x3c
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 25
+
+
+ 1285 079b 09       		.uleb128 0x9
+ 1286 079c 330A0000 		.4byte	.LASF152
+ 1287 07a0 08       		.byte	0x8
+ 1288 07a1 48       		.byte	0x48
+ 1289 07a2 CE000000 		.4byte	0xce
+ 1290 07a6 40       		.byte	0x40
+ 1291 07a7 09       		.uleb128 0x9
+ 1292 07a8 93050000 		.4byte	.LASF153
+ 1293 07ac 08       		.byte	0x8
+ 1294 07ad 49       		.byte	0x49
+ 1295 07ae CE000000 		.4byte	0xce
+ 1296 07b2 44       		.byte	0x44
+ 1297 07b3 09       		.uleb128 0x9
+ 1298 07b4 44090000 		.4byte	.LASF154
+ 1299 07b8 08       		.byte	0x8
+ 1300 07b9 4B       		.byte	0x4b
+ 1301 07ba CE000000 		.4byte	0xce
+ 1302 07be 48       		.byte	0x48
+ 1303 07bf 00       		.byte	0
+ 1304 07c0 03       		.uleb128 0x3
+ 1305 07c1 F9010000 		.4byte	.LASF155
+ 1306 07c5 08       		.byte	0x8
+ 1307 07c6 4C       		.byte	0x4c
+ 1308 07c7 CF060000 		.4byte	0x6cf
+ 1309 07cb 03       		.uleb128 0x3
+ 1310 07cc 29060000 		.4byte	.LASF156
+ 1311 07d0 09       		.byte	0x9
+ 1312 07d1 3F       		.byte	0x3f
+ 1313 07d2 CE000000 		.4byte	0xce
+ 1314 07d6 12       		.uleb128 0x12
+ 1315 07d7 01       		.byte	0x1
+ 1316 07d8 3E000000 		.4byte	0x3e
+ 1317 07dc 0A       		.byte	0xa
+ 1318 07dd 1A       		.byte	0x1a
+ 1319 07de 0D080000 		.4byte	0x80d
+ 1320 07e2 13       		.uleb128 0x13
+ 1321 07e3 73070000 		.4byte	.LASF157
+ 1322 07e7 00       		.byte	0
+ 1323 07e8 13       		.uleb128 0x13
+ 1324 07e9 D9020000 		.4byte	.LASF158
+ 1325 07ed 01       		.byte	0x1
+ 1326 07ee 13       		.uleb128 0x13
+ 1327 07ef 42050000 		.4byte	.LASF159
+ 1328 07f3 02       		.byte	0x2
+ 1329 07f4 13       		.uleb128 0x13
+ 1330 07f5 96040000 		.4byte	.LASF160
+ 1331 07f9 03       		.byte	0x3
+ 1332 07fa 13       		.uleb128 0x13
+ 1333 07fb E10A0000 		.4byte	.LASF161
+ 1334 07ff 04       		.byte	0x4
+ 1335 0800 13       		.uleb128 0x13
+ 1336 0801 73090000 		.4byte	.LASF162
+ 1337 0805 05       		.byte	0x5
+ 1338 0806 13       		.uleb128 0x13
+ 1339 0807 580A0000 		.4byte	.LASF163
+ 1340 080b 06       		.byte	0x6
+ 1341 080c 00       		.byte	0
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 26
+
+
+ 1342 080d 03       		.uleb128 0x3
+ 1343 080e 23090000 		.4byte	.LASF164
+ 1344 0812 0A       		.byte	0xa
+ 1345 0813 22       		.byte	0x22
+ 1346 0814 D6070000 		.4byte	0x7d6
+ 1347 0818 08       		.uleb128 0x8
+ 1348 0819 06       		.byte	0x6
+ 1349 081a 0A       		.byte	0xa
+ 1350 081b 24       		.byte	0x24
+ 1351 081c 69080000 		.4byte	0x869
+ 1352 0820 09       		.uleb128 0x9
+ 1353 0821 170B0000 		.4byte	.LASF165
+ 1354 0825 0A       		.byte	0xa
+ 1355 0826 26       		.byte	0x26
+ 1356 0827 0D080000 		.4byte	0x80d
+ 1357 082b 00       		.byte	0
+ 1358 082c 09       		.uleb128 0x9
+ 1359 082d 3E090000 		.4byte	.LASF166
+ 1360 0831 0A       		.byte	0xa
+ 1361 0832 27       		.byte	0x27
+ 1362 0833 A2000000 		.4byte	0xa2
+ 1363 0837 01       		.byte	0x1
+ 1364 0838 09       		.uleb128 0x9
+ 1365 0839 C30B0000 		.4byte	.LASF167
+ 1366 083d 0A       		.byte	0xa
+ 1367 083e 28       		.byte	0x28
+ 1368 083f A2000000 		.4byte	0xa2
+ 1369 0843 02       		.byte	0x2
+ 1370 0844 09       		.uleb128 0x9
+ 1371 0845 82070000 		.4byte	.LASF168
+ 1372 0849 0A       		.byte	0xa
+ 1373 084a 29       		.byte	0x29
+ 1374 084b A2000000 		.4byte	0xa2
+ 1375 084f 03       		.byte	0x3
+ 1376 0850 09       		.uleb128 0x9
+ 1377 0851 FD050000 		.4byte	.LASF169
+ 1378 0855 0A       		.byte	0xa
+ 1379 0856 2A       		.byte	0x2a
+ 1380 0857 A2000000 		.4byte	0xa2
+ 1381 085b 04       		.byte	0x4
+ 1382 085c 09       		.uleb128 0x9
+ 1383 085d 4A010000 		.4byte	.LASF170
+ 1384 0861 0A       		.byte	0xa
+ 1385 0862 2B       		.byte	0x2b
+ 1386 0863 A2000000 		.4byte	0xa2
+ 1387 0867 05       		.byte	0x5
+ 1388 0868 00       		.byte	0
+ 1389 0869 03       		.uleb128 0x3
+ 1390 086a 170B0000 		.4byte	.LASF165
+ 1391 086e 0A       		.byte	0xa
+ 1392 086f 2C       		.byte	0x2c
+ 1393 0870 18080000 		.4byte	0x818
+ 1394 0874 14       		.uleb128 0x14
+ 1395 0875 3C010000 		.4byte	.LASF204
+ 1396 0879 01       		.byte	0x1
+ 1397 087a 11       		.byte	0x11
+ 1398 087b 00000000 		.4byte	.LFB604
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 27
+
+
+ 1399 087f 78010000 		.4byte	.LFE604-.LFB604
+ 1400 0883 01       		.uleb128 0x1
+ 1401 0884 9C       		.byte	0x9c
+ 1402 0885 DC080000 		.4byte	0x8dc
+ 1403 0889 15       		.uleb128 0x15
+ 1404 088a 06000000 		.4byte	.LVL0
+ 1405 088e C90A0000 		.4byte	0xac9
+ 1406 0892 16       		.uleb128 0x16
+ 1407 0893 0C000000 		.4byte	.LVL1
+ 1408 0897 D40A0000 		.4byte	0xad4
+ 1409 089b A5080000 		.4byte	0x8a5
+ 1410 089f 17       		.uleb128 0x17
+ 1411 08a0 01       		.uleb128 0x1
+ 1412 08a1 50       		.byte	0x50
+ 1413 08a2 01       		.uleb128 0x1
+ 1414 08a3 30       		.byte	0x30
+ 1415 08a4 00       		.byte	0
+ 1416 08a5 16       		.uleb128 0x16
+ 1417 08a6 A0000000 		.4byte	.LVL2
+ 1418 08aa D40A0000 		.4byte	0xad4
+ 1419 08ae B8080000 		.4byte	0x8b8
+ 1420 08b2 17       		.uleb128 0x17
+ 1421 08b3 01       		.uleb128 0x1
+ 1422 08b4 50       		.byte	0x50
+ 1423 08b5 01       		.uleb128 0x1
+ 1424 08b6 31       		.byte	0x31
+ 1425 08b7 00       		.byte	0
+ 1426 08b8 15       		.uleb128 0x15
+ 1427 08b9 52010000 		.4byte	.LVL3
+ 1428 08bd E00A0000 		.4byte	0xae0
+ 1429 08c1 15       		.uleb128 0x15
+ 1430 08c2 56010000 		.4byte	.LVL4
+ 1431 08c6 EB0A0000 		.4byte	0xaeb
+ 1432 08ca 18       		.uleb128 0x18
+ 1433 08cb 5E010000 		.4byte	.LVL5
+ 1434 08cf F60A0000 		.4byte	0xaf6
+ 1435 08d3 17       		.uleb128 0x17
+ 1436 08d4 01       		.uleb128 0x1
+ 1437 08d5 50       		.byte	0x50
+ 1438 08d6 03       		.uleb128 0x3
+ 1439 08d7 0A       		.byte	0xa
+ 1440 08d8 9001     		.2byte	0x190
+ 1441 08da 00       		.byte	0
+ 1442 08db 00       		.byte	0
+ 1443 08dc 19       		.uleb128 0x19
+ 1444 08dd 06080000 		.4byte	.LASF171
+ 1445 08e1 0B       		.byte	0xb
+ 1446 08e2 0108     		.2byte	0x801
+ 1447 08e4 E8080000 		.4byte	0x8e8
+ 1448 08e8 05       		.uleb128 0x5
+ 1449 08e9 C3000000 		.4byte	0xc3
+ 1450 08ed 1A       		.uleb128 0x1a
+ 1451 08ee 88070000 		.4byte	.LASF172
+ 1452 08f2 04       		.byte	0x4
+ 1453 08f3 A7       		.byte	0xa7
+ 1454 08f4 F8080000 		.4byte	0x8f8
+ 1455 08f8 0C       		.uleb128 0xc
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 28
+
+
+ 1456 08f9 04       		.byte	0x4
+ 1457 08fa FE080000 		.4byte	0x8fe
+ 1458 08fe 1B       		.uleb128 0x1b
+ 1459 08ff 12050000 		.4byte	0x512
+ 1460 0903 1A       		.uleb128 0x1a
+ 1461 0904 9F0A0000 		.4byte	.LASF173
+ 1462 0908 0C       		.byte	0xc
+ 1463 0909 5E       		.byte	0x5e
+ 1464 090a E7050000 		.4byte	0x5e7
+ 1465 090e 1A       		.uleb128 0x1a
+ 1466 090f 09060000 		.4byte	.LASF174
+ 1467 0913 0D       		.byte	0xd
+ 1468 0914 1F       		.byte	0x1f
+ 1469 0915 19090000 		.4byte	0x919
+ 1470 0919 1B       		.uleb128 0x1b
+ 1471 091a C0070000 		.4byte	0x7c0
+ 1472 091e 1A       		.uleb128 0x1a
+ 1473 091f EC020000 		.4byte	.LASF175
+ 1474 0923 0E       		.byte	0xe
+ 1475 0924 87       		.byte	0x87
+ 1476 0925 C3060000 		.4byte	0x6c3
+ 1477 0929 1C       		.uleb128 0x1c
+ 1478 092a 660A0000 		.4byte	.LASF176
+ 1479 092e 0F       		.byte	0xf
+ 1480 092f 19       		.byte	0x19
+ 1481 0930 E5000000 		.4byte	0xe5
+ 1482 0934 05       		.uleb128 0x5
+ 1483 0935 03       		.byte	0x3
+ 1484 0936 00000000 		.4byte	courant
+ 1485 093a 1C       		.uleb128 0x1c
+ 1486 093b F40A0000 		.4byte	.LASF177
+ 1487 093f 0F       		.byte	0xf
+ 1488 0940 1A       		.byte	0x1a
+ 1489 0941 40050000 		.4byte	0x540
+ 1490 0945 05       		.uleb128 0x5
+ 1491 0946 03       		.byte	0x3
+ 1492 0947 00000000 		.4byte	alarme_acc
+ 1493 094b 1C       		.uleb128 0x1c
+ 1494 094c 7F080000 		.4byte	.LASF178
+ 1495 0950 0F       		.byte	0xf
+ 1496 0951 1B       		.byte	0x1b
+ 1497 0952 40050000 		.4byte	0x540
+ 1498 0956 05       		.uleb128 0x5
+ 1499 0957 03       		.byte	0x3
+ 1500 0958 00000000 		.4byte	alarme_FC
+ 1501 095c 1C       		.uleb128 0x1c
+ 1502 095d 9A080000 		.4byte	.LASF179
+ 1503 0961 0F       		.byte	0xf
+ 1504 0962 1C       		.byte	0x1c
+ 1505 0963 A2000000 		.4byte	0xa2
+ 1506 0967 05       		.uleb128 0x5
+ 1507 0968 03       		.byte	0x3
+ 1508 0969 00000000 		.4byte	borne_inferieur
+ 1509 096d 1C       		.uleb128 0x1c
+ 1510 096e 40060000 		.4byte	.LASF180
+ 1511 0972 0F       		.byte	0xf
+ 1512 0973 1D       		.byte	0x1d
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 29
+
+
+ 1513 0974 A2000000 		.4byte	0xa2
+ 1514 0978 05       		.uleb128 0x5
+ 1515 0979 03       		.byte	0x3
+ 1516 097a 00000000 		.4byte	borne_superieur
+ 1517 097e 06       		.uleb128 0x6
+ 1518 097f 1D050000 		.4byte	0x51d
+ 1519 0983 8E090000 		.4byte	0x98e
+ 1520 0987 07       		.uleb128 0x7
+ 1521 0988 D9000000 		.4byte	0xd9
+ 1522 098c 63       		.byte	0x63
+ 1523 098d 00       		.byte	0
+ 1524 098e 1C       		.uleb128 0x1c
+ 1525 098f 6A030000 		.4byte	.LASF181
+ 1526 0993 0F       		.byte	0xf
+ 1527 0994 1E       		.byte	0x1e
+ 1528 0995 7E090000 		.4byte	0x97e
+ 1529 0999 05       		.uleb128 0x5
+ 1530 099a 03       		.byte	0x3
+ 1531 099b 00000000 		.4byte	buffer
+ 1532 099f 1C       		.uleb128 0x1c
+ 1533 09a0 EE040000 		.4byte	.LASF182
+ 1534 09a4 0F       		.byte	0xf
+ 1535 09a5 1F       		.byte	0x1f
+ 1536 09a6 7E090000 		.4byte	0x97e
+ 1537 09aa 05       		.uleb128 0x5
+ 1538 09ab 03       		.byte	0x3
+ 1539 09ac 00000000 		.4byte	buffer_0
+ 1540 09b0 1C       		.uleb128 0x1c
+ 1541 09b1 FC040000 		.4byte	.LASF183
+ 1542 09b5 0F       		.byte	0xf
+ 1543 09b6 20       		.byte	0x20
+ 1544 09b7 7E090000 		.4byte	0x97e
+ 1545 09bb 05       		.uleb128 0x5
+ 1546 09bc 03       		.byte	0x3
+ 1547 09bd 00000000 		.4byte	buffer_1
+ 1548 09c1 06       		.uleb128 0x6
+ 1549 09c2 32050000 		.4byte	0x532
+ 1550 09c6 D2090000 		.4byte	0x9d2
+ 1551 09ca 1D       		.uleb128 0x1d
+ 1552 09cb D9000000 		.4byte	0xd9
+ 1553 09cf AF16     		.2byte	0x16af
+ 1554 09d1 00       		.byte	0
+ 1555 09d2 1C       		.uleb128 0x1c
+ 1556 09d3 32030000 		.4byte	.LASF184
+ 1557 09d7 0F       		.byte	0xf
+ 1558 09d8 21       		.byte	0x21
+ 1559 09d9 C1090000 		.4byte	0x9c1
+ 1560 09dd 05       		.uleb128 0x5
+ 1561 09de 03       		.byte	0x3
+ 1562 09df 00000000 		.4byte	imageBufferCache
+ 1563 09e3 1C       		.uleb128 0x1c
+ 1564 09e4 D5040000 		.4byte	.LASF185
+ 1565 09e8 0F       		.byte	0xf
+ 1566 09e9 22       		.byte	0x22
+ 1567 09ea F4090000 		.4byte	0x9f4
+ 1568 09ee 05       		.uleb128 0x5
+ 1569 09ef 03       		.byte	0x3
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 30
+
+
+ 1570 09f0 00000000 		.4byte	etat
+ 1571 09f4 05       		.uleb128 0x5
+ 1572 09f5 94000000 		.4byte	0x94
+ 1573 09f9 1C       		.uleb128 0x1c
+ 1574 09fa 43020000 		.4byte	.LASF186
+ 1575 09fe 0F       		.byte	0xf
+ 1576 09ff 23       		.byte	0x23
+ 1577 0a00 F4090000 		.4byte	0x9f4
+ 1578 0a04 05       		.uleb128 0x5
+ 1579 0a05 03       		.byte	0x3
+ 1580 0a06 00000000 		.4byte	bouton
+ 1581 0a0a 1C       		.uleb128 0x1c
+ 1582 0a0b DB030000 		.4byte	.LASF187
+ 1583 0a0f 0A       		.byte	0xa
+ 1584 0a10 2F       		.byte	0x2f
+ 1585 0a11 1B0A0000 		.4byte	0xa1b
+ 1586 0a15 05       		.uleb128 0x5
+ 1587 0a16 03       		.byte	0x3
+ 1588 0a17 00000000 		.4byte	currentScreen
+ 1589 0a1b 05       		.uleb128 0x5
+ 1590 0a1c 69080000 		.4byte	0x869
+ 1591 0a20 1C       		.uleb128 0x1c
+ 1592 0a21 71030000 		.4byte	.LASF188
+ 1593 0a25 0A       		.byte	0xa
+ 1594 0a26 30       		.byte	0x30
+ 1595 0a27 32050000 		.4byte	0x532
+ 1596 0a2b 05       		.uleb128 0x5
+ 1597 0a2c 03       		.byte	0x3
+ 1598 0a2d 00000000 		.4byte	postion_MENU
+ 1599 0a31 1C       		.uleb128 0x1c
+ 1600 0a32 72000000 		.4byte	.LASF189
+ 1601 0a36 0A       		.byte	0xa
+ 1602 0a37 31       		.byte	0x31
+ 1603 0a38 32050000 		.4byte	0x532
+ 1604 0a3c 05       		.uleb128 0x5
+ 1605 0a3d 03       		.byte	0x3
+ 1606 0a3e 00000000 		.4byte	selection_MENU
+ 1607 0a42 06       		.uleb128 0x6
+ 1608 0a43 25000000 		.4byte	0x25
+ 1609 0a47 530A0000 		.4byte	0xa53
+ 1610 0a4b 1D       		.uleb128 0x1d
+ 1611 0a4c D9000000 		.4byte	0xd9
+ 1612 0a50 4F01     		.2byte	0x14f
+ 1613 0a52 00       		.byte	0
+ 1614 0a53 1C       		.uleb128 0x1c
+ 1615 0a54 F7040000 		.4byte	.LASF190
+ 1616 0a58 0A       		.byte	0xa
+ 1617 0a59 32       		.byte	0x32
+ 1618 0a5a 420A0000 		.4byte	0xa42
+ 1619 0a5e 05       		.uleb128 0x5
+ 1620 0a5f 03       		.byte	0x3
+ 1621 0a60 00000000 		.4byte	data
+ 1622 0a64 06       		.uleb128 0x6
+ 1623 0a65 25000000 		.4byte	0x25
+ 1624 0a69 740A0000 		.4byte	0xa74
+ 1625 0a6d 07       		.uleb128 0x7
+ 1626 0a6e D9000000 		.4byte	0xd9
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 31
+
+
+ 1627 0a72 F9       		.byte	0xf9
+ 1628 0a73 00       		.byte	0
+ 1629 0a74 1C       		.uleb128 0x1c
+ 1630 0a75 75060000 		.4byte	.LASF191
+ 1631 0a79 0A       		.byte	0xa
+ 1632 0a7a 33       		.byte	0x33
+ 1633 0a7b 640A0000 		.4byte	0xa64
+ 1634 0a7f 05       		.uleb128 0x5
+ 1635 0a80 03       		.byte	0x3
+ 1636 0a81 00000000 		.4byte	vecteurespacee
+ 1637 0a85 1C       		.uleb128 0x1c
+ 1638 0a86 00000000 		.4byte	.LASF192
+ 1639 0a8a 0A       		.byte	0xa
+ 1640 0a8b 38       		.byte	0x38
+ 1641 0a8c 40050000 		.4byte	0x540
+ 1642 0a90 05       		.uleb128 0x5
+ 1643 0a91 03       		.byte	0x3
+ 1644 0a92 00000000 		.4byte	yassine
+ 1645 0a96 1C       		.uleb128 0x1c
+ 1646 0a97 220C0000 		.4byte	.LASF193
+ 1647 0a9b 0A       		.byte	0xa
+ 1648 0a9c 39       		.byte	0x39
+ 1649 0a9d A2000000 		.4byte	0xa2
+ 1650 0aa1 05       		.uleb128 0x5
+ 1651 0aa2 03       		.byte	0x3
+ 1652 0aa3 00000000 		.4byte	andree
+ 1653 0aa7 1C       		.uleb128 0x1c
+ 1654 0aa8 68090000 		.4byte	.LASF194
+ 1655 0aac 0A       		.byte	0xa
+ 1656 0aad 40       		.byte	0x40
+ 1657 0aae EA000000 		.4byte	0xea
+ 1658 0ab2 05       		.uleb128 0x5
+ 1659 0ab3 03       		.byte	0x3
+ 1660 0ab4 00000000 		.4byte	INFRAROUGE
+ 1661 0ab8 1C       		.uleb128 0x1c
+ 1662 0ab9 22050000 		.4byte	.LASF195
+ 1663 0abd 0A       		.byte	0xa
+ 1664 0abe 41       		.byte	0x41
+ 1665 0abf EA000000 		.4byte	0xea
+ 1666 0ac3 05       		.uleb128 0x5
+ 1667 0ac4 03       		.byte	0x3
+ 1668 0ac5 00000000 		.4byte	ROUGE
+ 1669 0ac9 1E       		.uleb128 0x1e
+ 1670 0aca 58070000 		.4byte	.LASF196
+ 1671 0ace 58070000 		.4byte	.LASF196
+ 1672 0ad2 10       		.byte	0x10
+ 1673 0ad3 3E       		.byte	0x3e
+ 1674 0ad4 1F       		.uleb128 0x1f
+ 1675 0ad5 FF0A0000 		.4byte	.LASF197
+ 1676 0ad9 FF0A0000 		.4byte	.LASF197
+ 1677 0add 11       		.byte	0x11
+ 1678 0ade BD04     		.2byte	0x4bd
+ 1679 0ae0 1E       		.uleb128 0x1e
+ 1680 0ae1 4F080000 		.4byte	.LASF198
+ 1681 0ae5 4F080000 		.4byte	.LASF198
+ 1682 0ae9 12       		.byte	0x12
+ 1683 0aea 3D       		.byte	0x3d
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 32
+
+
+ 1684 0aeb 1E       		.uleb128 0x1e
+ 1685 0aec 93010000 		.4byte	.LASF199
+ 1686 0af0 93010000 		.4byte	.LASF199
+ 1687 0af4 13       		.byte	0x13
+ 1688 0af5 55       		.byte	0x55
+ 1689 0af6 1F       		.uleb128 0x1f
+ 1690 0af7 4A020000 		.4byte	.LASF200
+ 1691 0afb 4A020000 		.4byte	.LASF200
+ 1692 0aff 14       		.byte	0x14
+ 1693 0b00 ED02     		.2byte	0x2ed
+ 1694 0b02 00       		.byte	0
+ 1695              		.section	.debug_abbrev,"",%progbits
+ 1696              	.Ldebug_abbrev0:
+ 1697 0000 01       		.uleb128 0x1
+ 1698 0001 11       		.uleb128 0x11
+ 1699 0002 01       		.byte	0x1
+ 1700 0003 25       		.uleb128 0x25
+ 1701 0004 0E       		.uleb128 0xe
+ 1702 0005 13       		.uleb128 0x13
+ 1703 0006 0B       		.uleb128 0xb
+ 1704 0007 03       		.uleb128 0x3
+ 1705 0008 0E       		.uleb128 0xe
+ 1706 0009 1B       		.uleb128 0x1b
+ 1707 000a 0E       		.uleb128 0xe
+ 1708 000b 55       		.uleb128 0x55
+ 1709 000c 17       		.uleb128 0x17
+ 1710 000d 11       		.uleb128 0x11
+ 1711 000e 01       		.uleb128 0x1
+ 1712 000f 10       		.uleb128 0x10
+ 1713 0010 17       		.uleb128 0x17
+ 1714 0011 00       		.byte	0
+ 1715 0012 00       		.byte	0
+ 1716 0013 02       		.uleb128 0x2
+ 1717 0014 24       		.uleb128 0x24
+ 1718 0015 00       		.byte	0
+ 1719 0016 0B       		.uleb128 0xb
+ 1720 0017 0B       		.uleb128 0xb
+ 1721 0018 3E       		.uleb128 0x3e
+ 1722 0019 0B       		.uleb128 0xb
+ 1723 001a 03       		.uleb128 0x3
+ 1724 001b 0E       		.uleb128 0xe
+ 1725 001c 00       		.byte	0
+ 1726 001d 00       		.byte	0
+ 1727 001e 03       		.uleb128 0x3
+ 1728 001f 16       		.uleb128 0x16
+ 1729 0020 00       		.byte	0
+ 1730 0021 03       		.uleb128 0x3
+ 1731 0022 0E       		.uleb128 0xe
+ 1732 0023 3A       		.uleb128 0x3a
+ 1733 0024 0B       		.uleb128 0xb
+ 1734 0025 3B       		.uleb128 0x3b
+ 1735 0026 0B       		.uleb128 0xb
+ 1736 0027 49       		.uleb128 0x49
+ 1737 0028 13       		.uleb128 0x13
+ 1738 0029 00       		.byte	0
+ 1739 002a 00       		.byte	0
+ 1740 002b 04       		.uleb128 0x4
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 33
+
+
+ 1741 002c 24       		.uleb128 0x24
+ 1742 002d 00       		.byte	0
+ 1743 002e 0B       		.uleb128 0xb
+ 1744 002f 0B       		.uleb128 0xb
+ 1745 0030 3E       		.uleb128 0x3e
+ 1746 0031 0B       		.uleb128 0xb
+ 1747 0032 03       		.uleb128 0x3
+ 1748 0033 08       		.uleb128 0x8
+ 1749 0034 00       		.byte	0
+ 1750 0035 00       		.byte	0
+ 1751 0036 05       		.uleb128 0x5
+ 1752 0037 35       		.uleb128 0x35
+ 1753 0038 00       		.byte	0
+ 1754 0039 49       		.uleb128 0x49
+ 1755 003a 13       		.uleb128 0x13
+ 1756 003b 00       		.byte	0
+ 1757 003c 00       		.byte	0
+ 1758 003d 06       		.uleb128 0x6
+ 1759 003e 01       		.uleb128 0x1
+ 1760 003f 01       		.byte	0x1
+ 1761 0040 49       		.uleb128 0x49
+ 1762 0041 13       		.uleb128 0x13
+ 1763 0042 01       		.uleb128 0x1
+ 1764 0043 13       		.uleb128 0x13
+ 1765 0044 00       		.byte	0
+ 1766 0045 00       		.byte	0
+ 1767 0046 07       		.uleb128 0x7
+ 1768 0047 21       		.uleb128 0x21
+ 1769 0048 00       		.byte	0
+ 1770 0049 49       		.uleb128 0x49
+ 1771 004a 13       		.uleb128 0x13
+ 1772 004b 2F       		.uleb128 0x2f
+ 1773 004c 0B       		.uleb128 0xb
+ 1774 004d 00       		.byte	0
+ 1775 004e 00       		.byte	0
+ 1776 004f 08       		.uleb128 0x8
+ 1777 0050 13       		.uleb128 0x13
+ 1778 0051 01       		.byte	0x1
+ 1779 0052 0B       		.uleb128 0xb
+ 1780 0053 0B       		.uleb128 0xb
+ 1781 0054 3A       		.uleb128 0x3a
+ 1782 0055 0B       		.uleb128 0xb
+ 1783 0056 3B       		.uleb128 0x3b
+ 1784 0057 0B       		.uleb128 0xb
+ 1785 0058 01       		.uleb128 0x1
+ 1786 0059 13       		.uleb128 0x13
+ 1787 005a 00       		.byte	0
+ 1788 005b 00       		.byte	0
+ 1789 005c 09       		.uleb128 0x9
+ 1790 005d 0D       		.uleb128 0xd
+ 1791 005e 00       		.byte	0
+ 1792 005f 03       		.uleb128 0x3
+ 1793 0060 0E       		.uleb128 0xe
+ 1794 0061 3A       		.uleb128 0x3a
+ 1795 0062 0B       		.uleb128 0xb
+ 1796 0063 3B       		.uleb128 0x3b
+ 1797 0064 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 34
+
+
+ 1798 0065 49       		.uleb128 0x49
+ 1799 0066 13       		.uleb128 0x13
+ 1800 0067 38       		.uleb128 0x38
+ 1801 0068 0B       		.uleb128 0xb
+ 1802 0069 00       		.byte	0
+ 1803 006a 00       		.byte	0
+ 1804 006b 0A       		.uleb128 0xa
+ 1805 006c 16       		.uleb128 0x16
+ 1806 006d 00       		.byte	0
+ 1807 006e 03       		.uleb128 0x3
+ 1808 006f 0E       		.uleb128 0xe
+ 1809 0070 3A       		.uleb128 0x3a
+ 1810 0071 0B       		.uleb128 0xb
+ 1811 0072 3B       		.uleb128 0x3b
+ 1812 0073 05       		.uleb128 0x5
+ 1813 0074 49       		.uleb128 0x49
+ 1814 0075 13       		.uleb128 0x13
+ 1815 0076 00       		.byte	0
+ 1816 0077 00       		.byte	0
+ 1817 0078 0B       		.uleb128 0xb
+ 1818 0079 0F       		.uleb128 0xf
+ 1819 007a 00       		.byte	0
+ 1820 007b 0B       		.uleb128 0xb
+ 1821 007c 0B       		.uleb128 0xb
+ 1822 007d 00       		.byte	0
+ 1823 007e 00       		.byte	0
+ 1824 007f 0C       		.uleb128 0xc
+ 1825 0080 0F       		.uleb128 0xf
+ 1826 0081 00       		.byte	0
+ 1827 0082 0B       		.uleb128 0xb
+ 1828 0083 0B       		.uleb128 0xb
+ 1829 0084 49       		.uleb128 0x49
+ 1830 0085 13       		.uleb128 0x13
+ 1831 0086 00       		.byte	0
+ 1832 0087 00       		.byte	0
+ 1833 0088 0D       		.uleb128 0xd
+ 1834 0089 15       		.uleb128 0x15
+ 1835 008a 01       		.byte	0x1
+ 1836 008b 27       		.uleb128 0x27
+ 1837 008c 19       		.uleb128 0x19
+ 1838 008d 01       		.uleb128 0x1
+ 1839 008e 13       		.uleb128 0x13
+ 1840 008f 00       		.byte	0
+ 1841 0090 00       		.byte	0
+ 1842 0091 0E       		.uleb128 0xe
+ 1843 0092 05       		.uleb128 0x5
+ 1844 0093 00       		.byte	0
+ 1845 0094 49       		.uleb128 0x49
+ 1846 0095 13       		.uleb128 0x13
+ 1847 0096 00       		.byte	0
+ 1848 0097 00       		.byte	0
+ 1849 0098 0F       		.uleb128 0xf
+ 1850 0099 13       		.uleb128 0x13
+ 1851 009a 01       		.byte	0x1
+ 1852 009b 03       		.uleb128 0x3
+ 1853 009c 0E       		.uleb128 0xe
+ 1854 009d 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 35
+
+
+ 1855 009e 0B       		.uleb128 0xb
+ 1856 009f 3A       		.uleb128 0x3a
+ 1857 00a0 0B       		.uleb128 0xb
+ 1858 00a1 3B       		.uleb128 0x3b
+ 1859 00a2 05       		.uleb128 0x5
+ 1860 00a3 01       		.uleb128 0x1
+ 1861 00a4 13       		.uleb128 0x13
+ 1862 00a5 00       		.byte	0
+ 1863 00a6 00       		.byte	0
+ 1864 00a7 10       		.uleb128 0x10
+ 1865 00a8 0D       		.uleb128 0xd
+ 1866 00a9 00       		.byte	0
+ 1867 00aa 03       		.uleb128 0x3
+ 1868 00ab 0E       		.uleb128 0xe
+ 1869 00ac 3A       		.uleb128 0x3a
+ 1870 00ad 0B       		.uleb128 0xb
+ 1871 00ae 3B       		.uleb128 0x3b
+ 1872 00af 05       		.uleb128 0x5
+ 1873 00b0 49       		.uleb128 0x49
+ 1874 00b1 13       		.uleb128 0x13
+ 1875 00b2 38       		.uleb128 0x38
+ 1876 00b3 0B       		.uleb128 0xb
+ 1877 00b4 00       		.byte	0
+ 1878 00b5 00       		.byte	0
+ 1879 00b6 11       		.uleb128 0x11
+ 1880 00b7 13       		.uleb128 0x13
+ 1881 00b8 01       		.byte	0x1
+ 1882 00b9 03       		.uleb128 0x3
+ 1883 00ba 0E       		.uleb128 0xe
+ 1884 00bb 0B       		.uleb128 0xb
+ 1885 00bc 0B       		.uleb128 0xb
+ 1886 00bd 3A       		.uleb128 0x3a
+ 1887 00be 0B       		.uleb128 0xb
+ 1888 00bf 3B       		.uleb128 0x3b
+ 1889 00c0 0B       		.uleb128 0xb
+ 1890 00c1 01       		.uleb128 0x1
+ 1891 00c2 13       		.uleb128 0x13
+ 1892 00c3 00       		.byte	0
+ 1893 00c4 00       		.byte	0
+ 1894 00c5 12       		.uleb128 0x12
+ 1895 00c6 04       		.uleb128 0x4
+ 1896 00c7 01       		.byte	0x1
+ 1897 00c8 0B       		.uleb128 0xb
+ 1898 00c9 0B       		.uleb128 0xb
+ 1899 00ca 49       		.uleb128 0x49
+ 1900 00cb 13       		.uleb128 0x13
+ 1901 00cc 3A       		.uleb128 0x3a
+ 1902 00cd 0B       		.uleb128 0xb
+ 1903 00ce 3B       		.uleb128 0x3b
+ 1904 00cf 0B       		.uleb128 0xb
+ 1905 00d0 01       		.uleb128 0x1
+ 1906 00d1 13       		.uleb128 0x13
+ 1907 00d2 00       		.byte	0
+ 1908 00d3 00       		.byte	0
+ 1909 00d4 13       		.uleb128 0x13
+ 1910 00d5 28       		.uleb128 0x28
+ 1911 00d6 00       		.byte	0
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 36
+
+
+ 1912 00d7 03       		.uleb128 0x3
+ 1913 00d8 0E       		.uleb128 0xe
+ 1914 00d9 1C       		.uleb128 0x1c
+ 1915 00da 0B       		.uleb128 0xb
+ 1916 00db 00       		.byte	0
+ 1917 00dc 00       		.byte	0
+ 1918 00dd 14       		.uleb128 0x14
+ 1919 00de 2E       		.uleb128 0x2e
+ 1920 00df 01       		.byte	0x1
+ 1921 00e0 3F       		.uleb128 0x3f
+ 1922 00e1 19       		.uleb128 0x19
+ 1923 00e2 03       		.uleb128 0x3
+ 1924 00e3 0E       		.uleb128 0xe
+ 1925 00e4 3A       		.uleb128 0x3a
+ 1926 00e5 0B       		.uleb128 0xb
+ 1927 00e6 3B       		.uleb128 0x3b
+ 1928 00e7 0B       		.uleb128 0xb
+ 1929 00e8 8701     		.uleb128 0x87
+ 1930 00ea 19       		.uleb128 0x19
+ 1931 00eb 11       		.uleb128 0x11
+ 1932 00ec 01       		.uleb128 0x1
+ 1933 00ed 12       		.uleb128 0x12
+ 1934 00ee 06       		.uleb128 0x6
+ 1935 00ef 40       		.uleb128 0x40
+ 1936 00f0 18       		.uleb128 0x18
+ 1937 00f1 9742     		.uleb128 0x2117
+ 1938 00f3 19       		.uleb128 0x19
+ 1939 00f4 01       		.uleb128 0x1
+ 1940 00f5 13       		.uleb128 0x13
+ 1941 00f6 00       		.byte	0
+ 1942 00f7 00       		.byte	0
+ 1943 00f8 15       		.uleb128 0x15
+ 1944 00f9 898201   		.uleb128 0x4109
+ 1945 00fc 00       		.byte	0
+ 1946 00fd 11       		.uleb128 0x11
+ 1947 00fe 01       		.uleb128 0x1
+ 1948 00ff 31       		.uleb128 0x31
+ 1949 0100 13       		.uleb128 0x13
+ 1950 0101 00       		.byte	0
+ 1951 0102 00       		.byte	0
+ 1952 0103 16       		.uleb128 0x16
+ 1953 0104 898201   		.uleb128 0x4109
+ 1954 0107 01       		.byte	0x1
+ 1955 0108 11       		.uleb128 0x11
+ 1956 0109 01       		.uleb128 0x1
+ 1957 010a 31       		.uleb128 0x31
+ 1958 010b 13       		.uleb128 0x13
+ 1959 010c 01       		.uleb128 0x1
+ 1960 010d 13       		.uleb128 0x13
+ 1961 010e 00       		.byte	0
+ 1962 010f 00       		.byte	0
+ 1963 0110 17       		.uleb128 0x17
+ 1964 0111 8A8201   		.uleb128 0x410a
+ 1965 0114 00       		.byte	0
+ 1966 0115 02       		.uleb128 0x2
+ 1967 0116 18       		.uleb128 0x18
+ 1968 0117 9142     		.uleb128 0x2111
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 37
+
+
+ 1969 0119 18       		.uleb128 0x18
+ 1970 011a 00       		.byte	0
+ 1971 011b 00       		.byte	0
+ 1972 011c 18       		.uleb128 0x18
+ 1973 011d 898201   		.uleb128 0x4109
+ 1974 0120 01       		.byte	0x1
+ 1975 0121 11       		.uleb128 0x11
+ 1976 0122 01       		.uleb128 0x1
+ 1977 0123 31       		.uleb128 0x31
+ 1978 0124 13       		.uleb128 0x13
+ 1979 0125 00       		.byte	0
+ 1980 0126 00       		.byte	0
+ 1981 0127 19       		.uleb128 0x19
+ 1982 0128 34       		.uleb128 0x34
+ 1983 0129 00       		.byte	0
+ 1984 012a 03       		.uleb128 0x3
+ 1985 012b 0E       		.uleb128 0xe
+ 1986 012c 3A       		.uleb128 0x3a
+ 1987 012d 0B       		.uleb128 0xb
+ 1988 012e 3B       		.uleb128 0x3b
+ 1989 012f 05       		.uleb128 0x5
+ 1990 0130 49       		.uleb128 0x49
+ 1991 0131 13       		.uleb128 0x13
+ 1992 0132 3F       		.uleb128 0x3f
+ 1993 0133 19       		.uleb128 0x19
+ 1994 0134 3C       		.uleb128 0x3c
+ 1995 0135 19       		.uleb128 0x19
+ 1996 0136 00       		.byte	0
+ 1997 0137 00       		.byte	0
+ 1998 0138 1A       		.uleb128 0x1a
+ 1999 0139 34       		.uleb128 0x34
+ 2000 013a 00       		.byte	0
+ 2001 013b 03       		.uleb128 0x3
+ 2002 013c 0E       		.uleb128 0xe
+ 2003 013d 3A       		.uleb128 0x3a
+ 2004 013e 0B       		.uleb128 0xb
+ 2005 013f 3B       		.uleb128 0x3b
+ 2006 0140 0B       		.uleb128 0xb
+ 2007 0141 49       		.uleb128 0x49
+ 2008 0142 13       		.uleb128 0x13
+ 2009 0143 3F       		.uleb128 0x3f
+ 2010 0144 19       		.uleb128 0x19
+ 2011 0145 3C       		.uleb128 0x3c
+ 2012 0146 19       		.uleb128 0x19
+ 2013 0147 00       		.byte	0
+ 2014 0148 00       		.byte	0
+ 2015 0149 1B       		.uleb128 0x1b
+ 2016 014a 26       		.uleb128 0x26
+ 2017 014b 00       		.byte	0
+ 2018 014c 49       		.uleb128 0x49
+ 2019 014d 13       		.uleb128 0x13
+ 2020 014e 00       		.byte	0
+ 2021 014f 00       		.byte	0
+ 2022 0150 1C       		.uleb128 0x1c
+ 2023 0151 34       		.uleb128 0x34
+ 2024 0152 00       		.byte	0
+ 2025 0153 03       		.uleb128 0x3
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 38
+
+
+ 2026 0154 0E       		.uleb128 0xe
+ 2027 0155 3A       		.uleb128 0x3a
+ 2028 0156 0B       		.uleb128 0xb
+ 2029 0157 3B       		.uleb128 0x3b
+ 2030 0158 0B       		.uleb128 0xb
+ 2031 0159 49       		.uleb128 0x49
+ 2032 015a 13       		.uleb128 0x13
+ 2033 015b 3F       		.uleb128 0x3f
+ 2034 015c 19       		.uleb128 0x19
+ 2035 015d 02       		.uleb128 0x2
+ 2036 015e 18       		.uleb128 0x18
+ 2037 015f 00       		.byte	0
+ 2038 0160 00       		.byte	0
+ 2039 0161 1D       		.uleb128 0x1d
+ 2040 0162 21       		.uleb128 0x21
+ 2041 0163 00       		.byte	0
+ 2042 0164 49       		.uleb128 0x49
+ 2043 0165 13       		.uleb128 0x13
+ 2044 0166 2F       		.uleb128 0x2f
+ 2045 0167 05       		.uleb128 0x5
+ 2046 0168 00       		.byte	0
+ 2047 0169 00       		.byte	0
+ 2048 016a 1E       		.uleb128 0x1e
+ 2049 016b 2E       		.uleb128 0x2e
+ 2050 016c 00       		.byte	0
+ 2051 016d 3F       		.uleb128 0x3f
+ 2052 016e 19       		.uleb128 0x19
+ 2053 016f 3C       		.uleb128 0x3c
+ 2054 0170 19       		.uleb128 0x19
+ 2055 0171 6E       		.uleb128 0x6e
+ 2056 0172 0E       		.uleb128 0xe
+ 2057 0173 03       		.uleb128 0x3
+ 2058 0174 0E       		.uleb128 0xe
+ 2059 0175 3A       		.uleb128 0x3a
+ 2060 0176 0B       		.uleb128 0xb
+ 2061 0177 3B       		.uleb128 0x3b
+ 2062 0178 0B       		.uleb128 0xb
+ 2063 0179 00       		.byte	0
+ 2064 017a 00       		.byte	0
+ 2065 017b 1F       		.uleb128 0x1f
+ 2066 017c 2E       		.uleb128 0x2e
+ 2067 017d 00       		.byte	0
+ 2068 017e 3F       		.uleb128 0x3f
+ 2069 017f 19       		.uleb128 0x19
+ 2070 0180 3C       		.uleb128 0x3c
+ 2071 0181 19       		.uleb128 0x19
+ 2072 0182 6E       		.uleb128 0x6e
+ 2073 0183 0E       		.uleb128 0xe
+ 2074 0184 03       		.uleb128 0x3
+ 2075 0185 0E       		.uleb128 0xe
+ 2076 0186 3A       		.uleb128 0x3a
+ 2077 0187 0B       		.uleb128 0xb
+ 2078 0188 3B       		.uleb128 0x3b
+ 2079 0189 05       		.uleb128 0x5
+ 2080 018a 00       		.byte	0
+ 2081 018b 00       		.byte	0
+ 2082 018c 00       		.byte	0
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 39
+
+
+ 2083              		.section	.debug_aranges,"",%progbits
+ 2084 0000 1C000000 		.4byte	0x1c
+ 2085 0004 0200     		.2byte	0x2
+ 2086 0006 00000000 		.4byte	.Ldebug_info0
+ 2087 000a 04       		.byte	0x4
+ 2088 000b 00       		.byte	0
+ 2089 000c 0000     		.2byte	0
+ 2090 000e 0000     		.2byte	0
+ 2091 0010 00000000 		.4byte	.LFB604
+ 2092 0014 78010000 		.4byte	.LFE604-.LFB604
+ 2093 0018 00000000 		.4byte	0
+ 2094 001c 00000000 		.4byte	0
+ 2095              		.section	.debug_ranges,"",%progbits
+ 2096              	.Ldebug_ranges0:
+ 2097 0000 00000000 		.4byte	.LFB604
+ 2098 0004 78010000 		.4byte	.LFE604
+ 2099 0008 00000000 		.4byte	0
+ 2100 000c 00000000 		.4byte	0
+ 2101              		.section	.debug_line,"",%progbits
+ 2102              	.Ldebug_line0:
+ 2103 0000 06040000 		.section	.debug_str,"MS",%progbits,1
+ 2103      0200C103 
+ 2103      00000201 
+ 2103      FB0E0D00 
+ 2103      01010101 
+ 2104              	.LASF192:
+ 2105 0000 79617373 		.ascii	"yassine\000"
+ 2105      696E6500 
+ 2106              	.LASF138:
+ 2107 0008 72756E4D 		.ascii	"runMode\000"
+ 2107      6F646500 
+ 2108              	.LASF116:
+ 2109 0010 72784275 		.ascii	"rxBufSize\000"
+ 2109      6653697A 
+ 2109      6500
+ 2110              	.LASF66:
+ 2111 001a 666C6173 		.ascii	"flashCtlMainWs3Freq\000"
+ 2111      6843746C 
+ 2111      4D61696E 
+ 2111      57733346 
+ 2111      72657100 
+ 2112              	.LASF88:
+ 2113 002e 6770696F 		.ascii	"gpioPrtCfgInOffset\000"
+ 2113      50727443 
+ 2113      6667496E 
+ 2113      4F666673 
+ 2113      657400
+ 2114              	.LASF106:
+ 2115 0041 6970634C 		.ascii	"ipcLockStatusOffset\000"
+ 2115      6F636B53 
+ 2115      74617475 
+ 2115      734F6666 
+ 2115      73657400 
+ 2116              	.LASF32:
+ 2117 0055 63727970 		.ascii	"cryptoVersion\000"
+ 2117      746F5665 
+ 2117      7273696F 
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 40
+
+
+ 2117      6E00
+ 2118              	.LASF70:
+ 2119 0063 64774368 		.ascii	"dwChCtlPrioPos\000"
+ 2119      43746C50 
+ 2119      72696F50 
+ 2119      6F7300
+ 2120              	.LASF189:
+ 2121 0072 73656C65 		.ascii	"selection_MENU\000"
+ 2121      6374696F 
+ 2121      6E5F4D45 
+ 2121      4E5500
+ 2122              	.LASF28:
+ 2123 0081 70617373 		.ascii	"passBase\000"
+ 2123      42617365 
+ 2123      00
+ 2124              	.LASF104:
+ 2125 008a 63707573 		.ascii	"cpussRam2Ctl0\000"
+ 2125      7352616D 
+ 2125      3243746C 
+ 2125      3000
+ 2126              	.LASF41:
+ 2127 0098 63707573 		.ascii	"cpussIpcIrqNr\000"
+ 2127      73497063 
+ 2127      4972714E 
+ 2127      7200
+ 2128              	.LASF3:
+ 2129 00a6 5F5F7569 		.ascii	"__uint8_t\000"
+ 2129      6E74385F 
+ 2129      7400
+ 2130              	.LASF43:
+ 2131 00b0 63707573 		.ascii	"cpussFlashPaSize\000"
+ 2131      73466C61 
+ 2131      73685061 
+ 2131      53697A65 
+ 2131      00
+ 2132              	.LASF92:
+ 2133 00c1 63707573 		.ascii	"cpussCm4ClockCtlOffset\000"
+ 2133      73436D34 
+ 2133      436C6F63 
+ 2133      6B43746C 
+ 2133      4F666673 
+ 2134              	.LASF139:
+ 2135 00d8 636F756E 		.ascii	"countDirection\000"
+ 2135      74446972 
+ 2135      65637469 
+ 2135      6F6E00
+ 2136              	.LASF151:
+ 2137 00e7 73746F70 		.ascii	"stopInputMode\000"
+ 2137      496E7075 
+ 2137      744D6F64 
+ 2137      6500
+ 2138              	.LASF21:
+ 2139 00f5 63707573 		.ascii	"cpussBase\000"
+ 2139      73426173 
+ 2139      6500
+ 2140              	.LASF136:
+ 2141 00ff 70657269 		.ascii	"period\000"
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 41
+
+
+ 2141      6F6400
+ 2142              	.LASF50:
+ 2143 0106 70657269 		.ascii	"periClockNr\000"
+ 2143      436C6F63 
+ 2143      6B4E7200 
+ 2144              	.LASF146:
+ 2145 0112 63617074 		.ascii	"captureInput\000"
+ 2145      75726549 
+ 2145      6E707574 
+ 2145      00
+ 2146              	.LASF112:
+ 2147 011f 5F426F6F 		.ascii	"_Bool\000"
+ 2147      6C00
+ 2148              	.LASF12:
+ 2149 0125 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2149      206C6F6E 
+ 2149      6720756E 
+ 2149      7369676E 
+ 2149      65642069 
+ 2150              	.LASF204:
+ 2151 013c 63617053 		.ascii	"capSense_task\000"
+ 2151      656E7365 
+ 2151      5F746173 
+ 2151      6B00
+ 2152              	.LASF170:
+ 2153 014a 54595045 		.ascii	"TYPEGRAPH\000"
+ 2153      47524150 
+ 2153      4800
+ 2154              	.LASF137:
+ 2155 0154 636C6F63 		.ascii	"clockPrescaler\000"
+ 2155      6B507265 
+ 2155      7363616C 
+ 2155      657200
+ 2156              	.LASF74:
+ 2157 0163 70657269 		.ascii	"periTrCmdOffset\000"
+ 2157      5472436D 
+ 2157      644F6666 
+ 2157      73657400 
+ 2158              	.LASF129:
+ 2159 0173 72785269 		.ascii	"rxRingBuf\000"
+ 2159      6E674275 
+ 2159      6600
+ 2160              	.LASF98:
+ 2161 017d 63707573 		.ascii	"cpussSysTickCtlOffset\000"
+ 2161      73537973 
+ 2161      5469636B 
+ 2161      43746C4F 
+ 2161      66667365 
+ 2162              	.LASF199:
+ 2163 0193 43617053 		.ascii	"CapSense_ScanAllWidgets\000"
+ 2163      656E7365 
+ 2163      5F536361 
+ 2163      6E416C6C 
+ 2163      57696467 
+ 2164              	.LASF118:
+ 2165 01ab 74784275 		.ascii	"txBuf\000"
+ 2165      6600
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 42
+
+
+ 2166              	.LASF39:
+ 2167 01b1 70726F74 		.ascii	"protVersion\000"
+ 2167      56657273 
+ 2167      696F6E00 
+ 2168              	.LASF59:
+ 2169 01bd 666C6173 		.ascii	"flashPipeRequired\000"
+ 2169      68506970 
+ 2169      65526571 
+ 2169      75697265 
+ 2169      6400
+ 2170              	.LASF63:
+ 2171 01cf 666C6173 		.ascii	"flashCtlMainWs0Freq\000"
+ 2171      6843746C 
+ 2171      4D61696E 
+ 2171      57733046 
+ 2171      72657100 
+ 2172              	.LASF15:
+ 2173 01e3 696E7431 		.ascii	"int16_t\000"
+ 2173      365F7400 
+ 2174              	.LASF11:
+ 2175 01eb 6C6F6E67 		.ascii	"long long int\000"
+ 2175      206C6F6E 
+ 2175      6720696E 
+ 2175      7400
+ 2176              	.LASF155:
+ 2177 01f9 63795F73 		.ascii	"cy_stc_tcpwm_counter_config_t\000"
+ 2177      74635F74 
+ 2177      6370776D 
+ 2177      5F636F75 
+ 2177      6E746572 
+ 2178              	.LASF125:
+ 2179 0217 63795F73 		.ascii	"cy_stc_scb_spi_context\000"
+ 2179      74635F73 
+ 2179      63625F73 
+ 2179      70695F63 
+ 2179      6F6E7465 
+ 2180              	.LASF79:
+ 2181 022e 70657269 		.ascii	"periDivCmdTypeSelPos\000"
+ 2181      44697643 
+ 2181      6D645479 
+ 2181      70655365 
+ 2181      6C506F73 
+ 2182              	.LASF186:
+ 2183 0243 626F7574 		.ascii	"bouton\000"
+ 2183      6F6E00
+ 2184              	.LASF200:
+ 2185 024a 76546173 		.ascii	"vTaskDelay\000"
+ 2185      6B44656C 
+ 2185      617900
+ 2186              	.LASF96:
+ 2187 0255 63707573 		.ascii	"cpussTrimRamCtlOffset\000"
+ 2187      73547269 
+ 2187      6D52616D 
+ 2187      43746C4F 
+ 2187      66667365 
+ 2188              	.LASF37:
+ 2189 026b 69706356 		.ascii	"ipcVersion\000"
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 43
+
+
+ 2189      65727369 
+ 2189      6F6E00
+ 2190              	.LASF99:
+ 2191 0276 63707573 		.ascii	"cpussCm0NmiCtlOffset\000"
+ 2191      73436D30 
+ 2191      4E6D6943 
+ 2191      746C4F66 
+ 2191      66736574 
+ 2192              	.LASF81:
+ 2193 028b 70657269 		.ascii	"periDivCmdPaTypeSelPos\000"
+ 2193      44697643 
+ 2193      6D645061 
+ 2193      54797065 
+ 2193      53656C50 
+ 2194              	.LASF113:
+ 2195 02a2 63795F63 		.ascii	"cy_cb_scb_spi_handle_events_t\000"
+ 2195      625F7363 
+ 2195      625F7370 
+ 2195      695F6861 
+ 2195      6E646C65 
+ 2196              	.LASF47:
+ 2197 02c0 73727373 		.ascii	"srssNumClkpath\000"
+ 2197      4E756D43 
+ 2197      6C6B7061 
+ 2197      746800
+ 2198              	.LASF26:
+ 2199 02cf 6873696F 		.ascii	"hsiomBase\000"
+ 2199      6D426173 
+ 2199      6500
+ 2200              	.LASF158:
+ 2201 02d9 4D41494E 		.ascii	"MAIN_MENU\000"
+ 2201      5F4D454E 
+ 2201      5500
+ 2202              	.LASF8:
+ 2203 02e3 6C6F6E67 		.ascii	"long int\000"
+ 2203      20696E74 
+ 2203      00
+ 2204              	.LASF175:
+ 2205 02ec 55415254 		.ascii	"UART_1_context\000"
+ 2205      5F315F63 
+ 2205      6F6E7465 
+ 2205      787400
+ 2206              	.LASF57:
+ 2207 02fb 63727970 		.ascii	"cryptoMemSize\000"
+ 2207      746F4D65 
+ 2207      6D53697A 
+ 2207      6500
+ 2208              	.LASF23:
+ 2209 0309 70657269 		.ascii	"periBase\000"
+ 2209      42617365 
+ 2209      00
+ 2210              	.LASF111:
+ 2211 0312 75696E74 		.ascii	"uint8\000"
+ 2211      3800
+ 2212              	.LASF55:
+ 2213 0318 73797350 		.ascii	"sysPmSimoPresent\000"
+ 2213      6D53696D 
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 44
+
+
+ 2213      6F507265 
+ 2213      73656E74 
+ 2213      00
+ 2214              	.LASF16:
+ 2215 0329 75696E74 		.ascii	"uint16_t\000"
+ 2215      31365F74 
+ 2215      00
+ 2216              	.LASF184:
+ 2217 0332 696D6167 		.ascii	"imageBufferCache\000"
+ 2217      65427566 
+ 2217      66657243 
+ 2217      61636865 
+ 2217      00
+ 2218              	.LASF110:
+ 2219 0343 646F7562 		.ascii	"double\000"
+ 2219      6C6500
+ 2220              	.LASF84:
+ 2221 034a 70657269 		.ascii	"periDiv16_5CtlOffset\000"
+ 2221      44697631 
+ 2221      365F3543 
+ 2221      746C4F66 
+ 2221      66736574 
+ 2222              	.LASF48:
+ 2223 035f 73727373 		.ascii	"srssNumPll\000"
+ 2223      4E756D50 
+ 2223      6C6C00
+ 2224              	.LASF181:
+ 2225 036a 62756666 		.ascii	"buffer\000"
+ 2225      657200
+ 2226              	.LASF188:
+ 2227 0371 706F7374 		.ascii	"postion_MENU\000"
+ 2227      696F6E5F 
+ 2227      4D454E55 
+ 2227      00
+ 2228              	.LASF145:
+ 2229 037e 63617074 		.ascii	"captureInputMode\000"
+ 2229      75726549 
+ 2229      6E707574 
+ 2229      4D6F6465 
+ 2229      00
+ 2230              	.LASF82:
+ 2231 038f 70657269 		.ascii	"periDiv8CtlOffset\000"
+ 2231      44697638 
+ 2231      43746C4F 
+ 2231      66667365 
+ 2231      7400
+ 2232              	.LASF89:
+ 2233 03a1 6770696F 		.ascii	"gpioPrtCfgOutOffset\000"
+ 2233      50727443 
+ 2233      66674F75 
+ 2233      744F6666 
+ 2233      73657400 
+ 2234              	.LASF22:
+ 2235 03b5 666C6173 		.ascii	"flashcBase\000"
+ 2235      68634261 
+ 2235      736500
+ 2236              	.LASF9:
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 45
+
+
+ 2237 03c0 5F5F7569 		.ascii	"__uint32_t\000"
+ 2237      6E743332 
+ 2237      5F7400
+ 2238              	.LASF52:
+ 2239 03cb 70617373 		.ascii	"passSarChannels\000"
+ 2239      53617243 
+ 2239      68616E6E 
+ 2239      656C7300 
+ 2240              	.LASF187:
+ 2241 03db 63757272 		.ascii	"currentScreen\000"
+ 2241      656E7453 
+ 2241      63726565 
+ 2241      6E00
+ 2242              	.LASF4:
+ 2243 03e9 5F5F696E 		.ascii	"__int16_t\000"
+ 2243      7431365F 
+ 2243      7400
+ 2244              	.LASF117:
+ 2245 03f3 72784275 		.ascii	"rxBufIdx\000"
+ 2245      66496478 
+ 2245      00
+ 2246              	.LASF95:
+ 2247 03fc 63707573 		.ascii	"cpussCm4PwrCtlOffset\000"
+ 2247      73436D34 
+ 2247      50777243 
+ 2247      746C4F66 
+ 2247      66736574 
+ 2248              	.LASF119:
+ 2249 0411 74784275 		.ascii	"txBufSize\000"
+ 2249      6653697A 
+ 2249      6500
+ 2250              	.LASF90:
+ 2251 041b 6770696F 		.ascii	"gpioPrtCfgSioOffset\000"
+ 2251      50727443 
+ 2251      66675369 
+ 2251      6F4F6666 
+ 2251      73657400 
+ 2252              	.LASF94:
+ 2253 042f 63707573 		.ascii	"cpussCm0StatusOffset\000"
+ 2253      73436D30 
+ 2253      53746174 
+ 2253      75734F66 
+ 2253      66736574 
+ 2254              	.LASF13:
+ 2255 0444 756E7369 		.ascii	"unsigned int\000"
+ 2255      676E6564 
+ 2255      20696E74 
+ 2255      00
+ 2256              	.LASF130:
+ 2257 0451 72785269 		.ascii	"rxRingBufSize\000"
+ 2257      6E674275 
+ 2257      6653697A 
+ 2257      6500
+ 2258              	.LASF202:
+ 2259 045f 43415053 		.ascii	"CAPSENS.c\000"
+ 2259      454E532E 
+ 2259      6300
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 46
+
+
+ 2260              	.LASF27:
+ 2261 0469 6770696F 		.ascii	"gpioBase\000"
+ 2261      42617365 
+ 2261      00
+ 2262              	.LASF75:
+ 2263 0472 70657269 		.ascii	"periTrCmdGrSelMsk\000"
+ 2263      5472436D 
+ 2263      64477253 
+ 2263      656C4D73 
+ 2263      6B00
+ 2264              	.LASF10:
+ 2265 0484 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2265      20756E73 
+ 2265      69676E65 
+ 2265      6420696E 
+ 2265      7400
+ 2266              	.LASF160:
+ 2267 0496 4F505449 		.ascii	"OPTION_2\000"
+ 2267      4F4E5F32 
+ 2267      00
+ 2268              	.LASF124:
+ 2269 049f 63795F63 		.ascii	"cy_cb_scb_uart_handle_events_t\000"
+ 2269      625F7363 
+ 2269      625F7561 
+ 2269      72745F68 
+ 2269      616E646C 
+ 2270              	.LASF40:
+ 2271 04be 63707573 		.ascii	"cpussIpcNr\000"
+ 2271      73497063 
+ 2271      4E7200
+ 2272              	.LASF42:
+ 2273 04c9 63707573 		.ascii	"cpussDwChNr\000"
+ 2273      73447743 
+ 2273      684E7200 
+ 2274              	.LASF185:
+ 2275 04d5 65746174 		.ascii	"etat\000"
+ 2275      00
+ 2276              	.LASF65:
+ 2277 04da 666C6173 		.ascii	"flashCtlMainWs2Freq\000"
+ 2277      6843746C 
+ 2277      4D61696E 
+ 2277      57733246 
+ 2277      72657100 
+ 2278              	.LASF182:
+ 2279 04ee 62756666 		.ascii	"buffer_0\000"
+ 2279      65725F30 
+ 2279      00
+ 2280              	.LASF190:
+ 2281 04f7 64617461 		.ascii	"data\000"
+ 2281      00
+ 2282              	.LASF183:
+ 2283 04fc 62756666 		.ascii	"buffer_1\000"
+ 2283      65725F31 
+ 2283      00
+ 2284              	.LASF76:
+ 2285 0505 70657269 		.ascii	"periTrGrOffset\000"
+ 2285      54724772 
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 47
+
+
+ 2285      4F666673 
+ 2285      657400
+ 2286              	.LASF103:
+ 2287 0514 63707573 		.ascii	"cpussRam1Ctl0\000"
+ 2287      7352616D 
+ 2287      3143746C 
+ 2287      3000
+ 2288              	.LASF195:
+ 2289 0522 524F5547 		.ascii	"ROUGE\000"
+ 2289      4500
+ 2290              	.LASF121:
+ 2291 0528 63624576 		.ascii	"cbEvents\000"
+ 2291      656E7473 
+ 2291      00
+ 2292              	.LASF87:
+ 2293 0531 6770696F 		.ascii	"gpioPrtCfgOffset\000"
+ 2293      50727443 
+ 2293      66674F66 
+ 2293      66736574 
+ 2293      00
+ 2294              	.LASF159:
+ 2295 0542 4F505449 		.ascii	"OPTION_1\000"
+ 2295      4F4E5F31 
+ 2295      00
+ 2296              	.LASF35:
+ 2297 054b 6770696F 		.ascii	"gpioVersion\000"
+ 2297      56657273 
+ 2297      696F6E00 
+ 2298              	.LASF107:
+ 2299 0557 63795F73 		.ascii	"cy_stc_device_t\000"
+ 2299      74635F64 
+ 2299      65766963 
+ 2299      655F7400 
+ 2300              	.LASF123:
+ 2301 0567 63795F73 		.ascii	"cy_stc_scb_spi_context_t\000"
+ 2301      74635F73 
+ 2301      63625F73 
+ 2301      70695F63 
+ 2301      6F6E7465 
+ 2302              	.LASF0:
+ 2303 0580 73686F72 		.ascii	"short int\000"
+ 2303      7420696E 
+ 2303      7400
+ 2304              	.LASF25:
+ 2305 058a 70726F74 		.ascii	"protBase\000"
+ 2305      42617365 
+ 2305      00
+ 2306              	.LASF153:
+ 2307 0593 636F756E 		.ascii	"countInputMode\000"
+ 2307      74496E70 
+ 2307      75744D6F 
+ 2307      646500
+ 2308              	.LASF91:
+ 2309 05a2 63707573 		.ascii	"cpussCm0ClockCtlOffset\000"
+ 2309      73436D30 
+ 2309      436C6F63 
+ 2309      6B43746C 
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 48
+
+
+ 2309      4F666673 
+ 2310              	.LASF30:
+ 2311 05b9 63727970 		.ascii	"cryptoBase\000"
+ 2311      746F4261 
+ 2311      736500
+ 2312              	.LASF38:
+ 2313 05c4 70657269 		.ascii	"periVersion\000"
+ 2313      56657273 
+ 2313      696F6E00 
+ 2314              	.LASF31:
+ 2315 05d0 63707573 		.ascii	"cpussVersion\000"
+ 2315      73566572 
+ 2315      73696F6E 
+ 2315      00
+ 2316              	.LASF19:
+ 2317 05dd 73697A65 		.ascii	"sizetype\000"
+ 2317      74797065 
+ 2317      00
+ 2318              	.LASF68:
+ 2319 05e6 64774368 		.ascii	"dwChOffset\000"
+ 2319      4F666673 
+ 2319      657400
+ 2320              	.LASF20:
+ 2321 05f1 6C6F6E67 		.ascii	"long double\000"
+ 2321      20646F75 
+ 2321      626C6500 
+ 2322              	.LASF169:
+ 2323 05fd 464C4147 		.ascii	"FLAG_DEPART\000"
+ 2323      5F444550 
+ 2323      41525400 
+ 2324              	.LASF174:
+ 2325 0609 43595F45 		.ascii	"CY_EINK_Timer_config\000"
+ 2325      494E4B5F 
+ 2325      54696D65 
+ 2325      725F636F 
+ 2325      6E666967 
+ 2326              	.LASF150:
+ 2327 061e 73746172 		.ascii	"startInput\000"
+ 2327      74496E70 
+ 2327      757400
+ 2328              	.LASF156:
+ 2329 0629 5469636B 		.ascii	"TickType_t\000"
+ 2329      54797065 
+ 2329      5F7400
+ 2330              	.LASF53:
+ 2331 0634 65704D6F 		.ascii	"epMonitorNr\000"
+ 2331      6E69746F 
+ 2331      724E7200 
+ 2332              	.LASF180:
+ 2333 0640 626F726E 		.ascii	"borne_superieur\000"
+ 2333      655F7375 
+ 2333      70657269 
+ 2333      65757200 
+ 2334              	.LASF72:
+ 2335 0650 64775374 		.ascii	"dwStatusChIdxPos\000"
+ 2335      61747573 
+ 2335      43684964 
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 49
+
+
+ 2335      78506F73 
+ 2335      00
+ 2336              	.LASF54:
+ 2337 0661 75646250 		.ascii	"udbPresent\000"
+ 2337      72657365 
+ 2337      6E7400
+ 2338              	.LASF128:
+ 2339 066c 72785374 		.ascii	"rxStatus\000"
+ 2339      61747573 
+ 2339      00
+ 2340              	.LASF191:
+ 2341 0675 76656374 		.ascii	"vecteurespacee\000"
+ 2341      65757265 
+ 2341      73706163 
+ 2341      656500
+ 2342              	.LASF34:
+ 2343 0684 666C6173 		.ascii	"flashcVersion\000"
+ 2343      68635665 
+ 2343      7273696F 
+ 2343      6E00
+ 2344              	.LASF51:
+ 2345 0692 736D6966 		.ascii	"smifDeviceNr\000"
+ 2345      44657669 
+ 2345      63654E72 
+ 2345      00
+ 2346              	.LASF201:
+ 2347 069f 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2347      43313120 
+ 2347      352E342E 
+ 2347      31203230 
+ 2347      31363036 
+ 2348 06d2 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m4 -mfloat-abi=s"
+ 2348      20726576 
+ 2348      6973696F 
+ 2348      6E203233 
+ 2348      37373135 
+ 2349 0705 6F667466 		.ascii	"oftfp -mfpu=fpv4-sp-d16 -mthumb -g -Og -ffunction-s"
+ 2349      70202D6D 
+ 2349      6670753D 
+ 2349      66707634 
+ 2349      2D73702D 
+ 2350 0738 65637469 		.ascii	"ections -ffat-lto-objects\000"
+ 2350      6F6E7320 
+ 2350      2D666661 
+ 2350      742D6C74 
+ 2350      6F2D6F62 
+ 2351              	.LASF109:
+ 2352 0752 666C6F61 		.ascii	"float\000"
+ 2352      7400
+ 2353              	.LASF196:
+ 2354 0758 43617053 		.ascii	"CapSense_ProcessAllWidgets\000"
+ 2354      656E7365 
+ 2354      5F50726F 
+ 2354      63657373 
+ 2354      416C6C57 
+ 2355              	.LASF157:
+ 2356 0773 5052494E 		.ascii	"PRINCIPAL_PAGE\000"
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 50
+
+
+ 2356      43495041 
+ 2356      4C5F5041 
+ 2356      474500
+ 2357              	.LASF168:
+ 2358 0782 464C4147 		.ascii	"FLAG3\000"
+ 2358      3300
+ 2359              	.LASF172:
+ 2360 0788 63795F64 		.ascii	"cy_device\000"
+ 2360      65766963 
+ 2360      6500
+ 2361              	.LASF101:
+ 2362 0792 63707573 		.ascii	"cpussRomCtl\000"
+ 2362      73526F6D 
+ 2362      43746C00 
+ 2363              	.LASF71:
+ 2364 079e 64774368 		.ascii	"dwChCtlPreemptablePos\000"
+ 2364      43746C50 
+ 2364      7265656D 
+ 2364      70746162 
+ 2364      6C65506F 
+ 2365              	.LASF133:
+ 2366 07b4 74784C65 		.ascii	"txLeftToTransmit\000"
+ 2366      6674546F 
+ 2366      5472616E 
+ 2366      736D6974 
+ 2366      00
+ 2367              	.LASF24:
+ 2368 07c5 75646242 		.ascii	"udbBase\000"
+ 2368      61736500 
+ 2369              	.LASF149:
+ 2370 07cd 73746172 		.ascii	"startInputMode\000"
+ 2370      74496E70 
+ 2370      75744D6F 
+ 2370      646500
+ 2371              	.LASF17:
+ 2372 07dc 696E7433 		.ascii	"int32_t\000"
+ 2372      325F7400 
+ 2373              	.LASF2:
+ 2374 07e4 756E7369 		.ascii	"unsigned char\000"
+ 2374      676E6564 
+ 2374      20636861 
+ 2374      7200
+ 2375              	.LASF67:
+ 2376 07f2 666C6173 		.ascii	"flashCtlMainWs4Freq\000"
+ 2376      6843746C 
+ 2376      4D61696E 
+ 2376      57733446 
+ 2376      72657100 
+ 2377              	.LASF171:
+ 2378 0806 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2378      52784275 
+ 2378      66666572 
+ 2378      00
+ 2379              	.LASF85:
+ 2380 0813 70657269 		.ascii	"periDiv24_5CtlOffset\000"
+ 2380      44697632 
+ 2380      345F3543 
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 51
+
+
+ 2380      746C4F66 
+ 2380      66736574 
+ 2381              	.LASF143:
+ 2382 0828 656E6162 		.ascii	"enableCompareSwap\000"
+ 2382      6C65436F 
+ 2382      6D706172 
+ 2382      65537761 
+ 2382      7000
+ 2383              	.LASF102:
+ 2384 083a 63707573 		.ascii	"cpussRam0Ctl0\000"
+ 2384      7352616D 
+ 2384      3043746C 
+ 2384      3000
+ 2385              	.LASF114:
+ 2386 0848 73746174 		.ascii	"status\000"
+ 2386      757300
+ 2387              	.LASF198:
+ 2388 084f 43617053 		.ascii	"CapSense_UpdateAllBaselines\000"
+ 2388      656E7365 
+ 2388      5F557064 
+ 2388      61746541 
+ 2388      6C6C4261 
+ 2389              	.LASF78:
+ 2390 086b 70657269 		.ascii	"periDivCmdDivSelMsk\000"
+ 2390      44697643 
+ 2390      6D644469 
+ 2390      7653656C 
+ 2390      4D736B00 
+ 2391              	.LASF178:
+ 2392 087f 616C6172 		.ascii	"alarme_FC\000"
+ 2392      6D655F46 
+ 2392      4300
+ 2393              	.LASF140:
+ 2394 0889 636F6D70 		.ascii	"compareOrCapture\000"
+ 2394      6172654F 
+ 2394      72436170 
+ 2394      74757265 
+ 2394      00
+ 2395              	.LASF179:
+ 2396 089a 626F726E 		.ascii	"borne_inferieur\000"
+ 2396      655F696E 
+ 2396      66657269 
+ 2396      65757200 
+ 2397              	.LASF49:
+ 2398 08aa 73727373 		.ascii	"srssNumHfroot\000"
+ 2398      4E756D48 
+ 2398      66726F6F 
+ 2398      7400
+ 2399              	.LASF62:
+ 2400 08b8 666C6173 		.ascii	"flashEraseDelay\000"
+ 2400      68457261 
+ 2400      73654465 
+ 2400      6C617900 
+ 2401              	.LASF45:
+ 2402 08c8 63707573 		.ascii	"cpussFmIrq\000"
+ 2402      73466D49 
+ 2402      727100
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 52
+
+
+ 2403              	.LASF77:
+ 2404 08d3 70657269 		.ascii	"periTrGrSize\000"
+ 2404      54724772 
+ 2404      53697A65 
+ 2404      00
+ 2405              	.LASF135:
+ 2406 08e0 63795F73 		.ascii	"cy_stc_tcpwm_counter_config\000"
+ 2406      74635F74 
+ 2406      6370776D 
+ 2406      5F636F75 
+ 2406      6E746572 
+ 2407              	.LASF56:
+ 2408 08fc 70726F74 		.ascii	"protBusMasterMask\000"
+ 2408      4275734D 
+ 2408      61737465 
+ 2408      724D6173 
+ 2408      6B00
+ 2409              	.LASF100:
+ 2410 090e 63707573 		.ascii	"cpussCm4NmiCtlOffset\000"
+ 2410      73436D34 
+ 2410      4E6D6943 
+ 2410      746C4F66 
+ 2410      66736574 
+ 2411              	.LASF164:
+ 2412 0923 6C6F6361 		.ascii	"location\000"
+ 2412      74696F6E 
+ 2412      00
+ 2413              	.LASF141:
+ 2414 092c 636F6D70 		.ascii	"compare0\000"
+ 2414      61726530 
+ 2414      00
+ 2415              	.LASF142:
+ 2416 0935 636F6D70 		.ascii	"compare1\000"
+ 2416      61726531 
+ 2416      00
+ 2417              	.LASF166:
+ 2418 093e 464C4147 		.ascii	"FLAG1\000"
+ 2418      3100
+ 2419              	.LASF154:
+ 2420 0944 636F756E 		.ascii	"countInput\000"
+ 2420      74496E70 
+ 2420      757400
+ 2421              	.LASF108:
+ 2422 094f 63686172 		.ascii	"char\000"
+ 2422      00
+ 2423              	.LASF64:
+ 2424 0954 666C6173 		.ascii	"flashCtlMainWs1Freq\000"
+ 2424      6843746C 
+ 2424      4D61696E 
+ 2424      57733146 
+ 2424      72657100 
+ 2425              	.LASF194:
+ 2426 0968 494E4652 		.ascii	"INFRAROUGE\000"
+ 2426      41524F55 
+ 2426      474500
+ 2427              	.LASF162:
+ 2428 0973 4F505449 		.ascii	"OPTION_3_inferieur\000"
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 53
+
+
+ 2428      4F4E5F33 
+ 2428      5F696E66 
+ 2428      65726965 
+ 2428      757200
+ 2429              	.LASF5:
+ 2430 0986 5F5F7569 		.ascii	"__uint16_t\000"
+ 2430      6E743136 
+ 2430      5F7400
+ 2431              	.LASF83:
+ 2432 0991 70657269 		.ascii	"periDiv16CtlOffset\000"
+ 2432      44697631 
+ 2432      3643746C 
+ 2432      4F666673 
+ 2432      657400
+ 2433              	.LASF93:
+ 2434 09a4 63707573 		.ascii	"cpussCm4StatusOffset\000"
+ 2434      73436D34 
+ 2434      53746174 
+ 2434      75734F66 
+ 2434      66736574 
+ 2435              	.LASF7:
+ 2436 09b9 5F5F696E 		.ascii	"__int32_t\000"
+ 2436      7433325F 
+ 2436      7400
+ 2437              	.LASF33:
+ 2438 09c3 64775665 		.ascii	"dwVersion\000"
+ 2438      7273696F 
+ 2438      6E00
+ 2439              	.LASF36:
+ 2440 09cd 6873696F 		.ascii	"hsiomVersion\000"
+ 2440      6D566572 
+ 2440      73696F6E 
+ 2440      00
+ 2441              	.LASF61:
+ 2442 09da 666C6173 		.ascii	"flashProgramDelay\000"
+ 2442      6850726F 
+ 2442      6772616D 
+ 2442      44656C61 
+ 2442      7900
+ 2443              	.LASF131:
+ 2444 09ec 72785269 		.ascii	"rxRingBufHead\000"
+ 2444      6E674275 
+ 2444      66486561 
+ 2444      6400
+ 2445              	.LASF144:
+ 2446 09fa 696E7465 		.ascii	"interruptSources\000"
+ 2446      72727570 
+ 2446      74536F75 
+ 2446      72636573 
+ 2446      00
+ 2447              	.LASF148:
+ 2448 0a0b 72656C6F 		.ascii	"reloadInput\000"
+ 2448      6164496E 
+ 2448      70757400 
+ 2449              	.LASF6:
+ 2450 0a17 73686F72 		.ascii	"short unsigned int\000"
+ 2450      7420756E 
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 54
+
+
+ 2450      7369676E 
+ 2450      65642069 
+ 2450      6E7400
+ 2451              	.LASF69:
+ 2452 0a2a 64774368 		.ascii	"dwChSize\000"
+ 2452      53697A65 
+ 2452      00
+ 2453              	.LASF152:
+ 2454 0a33 73746F70 		.ascii	"stopInput\000"
+ 2454      496E7075 
+ 2454      7400
+ 2455              	.LASF105:
+ 2456 0a3d 69706353 		.ascii	"ipcStructSize\000"
+ 2456      74727563 
+ 2456      7453697A 
+ 2456      6500
+ 2457              	.LASF44:
+ 2458 0a4b 63707573 		.ascii	"cpussIpc0Irq\000"
+ 2458      73497063 
+ 2458      30497271 
+ 2458      00
+ 2459              	.LASF163:
+ 2460 0a58 4F505449 		.ascii	"OPTION_3_ETAT\000"
+ 2460      4F4E5F33 
+ 2460      5F455441 
+ 2460      5400
+ 2461              	.LASF176:
+ 2462 0a66 636F7572 		.ascii	"courant\000"
+ 2462      616E7400 
+ 2463              	.LASF122:
+ 2464 0a6e 696E6974 		.ascii	"initKey\000"
+ 2464      4B657900 
+ 2465              	.LASF115:
+ 2466 0a76 72784275 		.ascii	"rxBuf\000"
+ 2466      6600
+ 2467              	.LASF18:
+ 2468 0a7c 75696E74 		.ascii	"uint32_t\000"
+ 2468      33325F74 
+ 2468      00
+ 2469              	.LASF134:
+ 2470 0a85 63795F73 		.ascii	"cy_stc_scb_uart_context_t\000"
+ 2470      74635F73 
+ 2470      63625F75 
+ 2470      6172745F 
+ 2470      636F6E74 
+ 2471              	.LASF173:
+ 2472 0a9f 43595F45 		.ascii	"CY_EINK_SPIM_context\000"
+ 2472      494E4B5F 
+ 2472      5350494D 
+ 2472      5F636F6E 
+ 2472      74657874 
+ 2473              	.LASF46:
+ 2474 0ab4 63707573 		.ascii	"cpussNotConnectedIrq\000"
+ 2474      734E6F74 
+ 2474      436F6E6E 
+ 2474      65637465 
+ 2474      64497271 
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 55
+
+
+ 2475              	.LASF60:
+ 2476 0ac9 666C6173 		.ascii	"flashWriteDelay\000"
+ 2476      68577269 
+ 2476      74654465 
+ 2476      6C617900 
+ 2477              	.LASF14:
+ 2478 0ad9 75696E74 		.ascii	"uint8_t\000"
+ 2478      385F7400 
+ 2479              	.LASF161:
+ 2480 0ae1 4F505449 		.ascii	"OPTION_3_superieur\000"
+ 2480      4F4E5F33 
+ 2480      5F737570 
+ 2480      65726965 
+ 2480      757200
+ 2481              	.LASF177:
+ 2482 0af4 616C6172 		.ascii	"alarme_acc\000"
+ 2482      6D655F61 
+ 2482      636300
+ 2483              	.LASF197:
+ 2484 0aff 43617053 		.ascii	"CapSense_IsWidgetActive\000"
+ 2484      656E7365 
+ 2484      5F497357 
+ 2484      69646765 
+ 2484      74416374 
+ 2485              	.LASF165:
+ 2486 0b17 73637265 		.ascii	"screen\000"
+ 2486      656E00
+ 2487              	.LASF86:
+ 2488 0b1e 6770696F 		.ascii	"gpioPrtIntrCfgOffset\000"
+ 2488      50727449 
+ 2488      6E747243 
+ 2488      66674F66 
+ 2488      66736574 
+ 2489              	.LASF147:
+ 2490 0b33 72656C6F 		.ascii	"reloadInputMode\000"
+ 2490      6164496E 
+ 2490      7075744D 
+ 2490      6F646500 
+ 2491              	.LASF132:
+ 2492 0b43 72785269 		.ascii	"rxRingBufTail\000"
+ 2492      6E674275 
+ 2492      66546169 
+ 2492      6C00
+ 2493              	.LASF97:
+ 2494 0b51 63707573 		.ascii	"cpussTrimRomCtlOffset\000"
+ 2494      73547269 
+ 2494      6D526F6D 
+ 2494      43746C4F 
+ 2494      66667365 
+ 2495              	.LASF127:
+ 2496 0b67 74785374 		.ascii	"txStatus\000"
+ 2496      61747573 
+ 2496      00
+ 2497              	.LASF1:
+ 2498 0b70 7369676E 		.ascii	"signed char\000"
+ 2498      65642063 
+ 2498      68617200 
+ARM GAS  C:\Users\Mahrukh\AppData\Local\Temp\ccP1CMgi.s 			page 56
+
+
+ 2499              	.LASF29:
+ 2500 0b7c 69706342 		.ascii	"ipcBase\000"
+ 2500      61736500 
+ 2501              	.LASF80:
+ 2502 0b84 70657269 		.ascii	"periDivCmdPaDivSelPos\000"
+ 2502      44697643 
+ 2502      6D645061 
+ 2502      44697653 
+ 2502      656C506F 
+ 2503              	.LASF126:
+ 2504 0b9a 63795F73 		.ascii	"cy_stc_scb_uart_context\000"
+ 2504      74635F73 
+ 2504      63625F75 
+ 2504      6172745F 
+ 2504      636F6E74 
+ 2505              	.LASF73:
+ 2506 0bb2 64775374 		.ascii	"dwStatusChIdxMsk\000"
+ 2506      61747573 
+ 2506      43684964 
+ 2506      784D736B 
+ 2506      00
+ 2507              	.LASF167:
+ 2508 0bc3 464C4147 		.ascii	"FLAG2\000"
+ 2508      3200
+ 2509              	.LASF203:
+ 2510 0bc9 433A5C55 		.ascii	"C:\\Users\\Mahrukh\\OneDrive\\Documents\\ESSAI_3\\L"
+ 2510      73657273 
+ 2510      5C4D6168 
+ 2510      72756B68 
+ 2510      5C4F6E65 
+ 2511 0bf6 61626F72 		.ascii	"aboratoire3.cydsn\000"
+ 2511      61746F69 
+ 2511      7265332E 
+ 2511      63796473 
+ 2511      6E00
+ 2512              	.LASF58:
+ 2513 0c08 666C6173 		.ascii	"flashRwwRequired\000"
+ 2513      68527777 
+ 2513      52657175 
+ 2513      69726564 
+ 2513      00
+ 2514              	.LASF120:
+ 2515 0c19 74784275 		.ascii	"txBufIdx\000"
+ 2515      66496478 
+ 2515      00
+ 2516              	.LASF193:
+ 2517 0c22 616E6472 		.ascii	"andree\000"
+ 2517      656500
+ 2518              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -1,0 +1,6 @@
+C:\Users\Mahrukh\OneDrive\Documents\ESSAI_3\Laboratoire3.cydsn\Laboratoire3.cyprj|1879010c-4a56-4c64-a09d-2aaa11a3428d
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|d6ab1261-4e25-4912-b6a6-974a208d5f09
+C:\Users\Mahrukh\OneDrive\Documents\PSoC Creator\4.4\Downloads ( 4.4).cylib\Downloads ( 4.4).cyprj|e088aa16-41da-46f3-8741-6bf01ec5ad85
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|62799f32-216a-4c35-b598-c4a01153fd9d
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|97959378-04d8-4099-bc0d-887d0b2acdcd
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|421adab7-fc47-4b06-9c1c-8738b45b7b4c
